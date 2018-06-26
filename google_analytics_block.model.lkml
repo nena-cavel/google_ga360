@@ -1,4 +1,4 @@
-connection: "bigquery-connectors-ga360"
+connection: "prod-data-playground-std-bq"
 
 # include all the views
 include: "*.view"

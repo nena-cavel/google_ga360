@@ -20,7 +20,7 @@ view: ga_sessions {
 
 
   # SCENARIO 1: Only one property
-  sql_table_name: `ga360.sessions_*` ;;
+  sql_table_name: `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` ;;
 
 
 
