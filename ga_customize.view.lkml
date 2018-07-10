@@ -20,8 +20,7 @@ view: ga_sessions {
 
 
   # SCENARIO 1: Only one property
-  sql_table_name: `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` ;;
-
+sql_table_name: (SELECT * FROM `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` WHERE SUBSTR(suffix,0,1) != 'i') ;;
 
 
   # SCENARIO 2: Multiple properties. The property will dynamically look at the selected dataset using a filter.
@@ -116,7 +115,11 @@ view: hits_publisher {
   #extends: [hits_publisher_base]   # Comment out this line to remove fields
 }
 
+view: hits_contentGroup {
+  extends: [hits_contentGroup_base]
+}
 #  We only want some of the interaction fields.
+
 view: hits_social {
   extends: [hits_social_base]
 
