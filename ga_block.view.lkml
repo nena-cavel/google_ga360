@@ -113,6 +113,11 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST([${first_hit.page}]) as first_page ;;
     relationship: one_to_one
   }
+  join: customDimensions {
+    view_label: "Custom Dimensions - Sessions"
+    sql: LEFT JOIN UNNEST([${ga_sessions.customDimensions}]) as customDimensions ;;
+    relationship: one_to_one
+  }
 }
 
 view: ga_sessions_base {
@@ -708,3 +713,13 @@ view: hits_eventInfo_base {
 # #   extension: required
 #   dimension: sourcePropertyDisplayName {label: "Property Display Name"}
 # }
+
+view: customDimensions_base  {
+  extension: required
+  dimension: site_region {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=53) ;;
+  }
+
+
+
+}

@@ -158,3 +158,7 @@ view: hits_customDimensions {
 view: hits_customVariables {
   extends: [hits_customVariables_base]
 }
+
+view: customDimensions {
+  extends: [customDimensions_base]
+}
