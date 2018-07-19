@@ -121,7 +121,7 @@ explore: ga_sessions_base {
   }
   join: customDimensions {
     view_label: "Custom Dimensions - Sessions"
-    sql: LEFT JOIN UNNEST([${ga_sessions.customDimensions}]) as customDimensions ;;
+    sql: LEFT JOIN UNNEST(${ga_sessions.customDimensions}) as customDimensions ;;
     relationship: one_to_one
   }
 }
@@ -132,7 +132,9 @@ view: ga_sessions_base {
     type: date_time
     sql: CAST(CONCAT(SUBSTR(${TABLE}.suffix,0,4),'-',SUBSTR(${TABLE}.suffix,5,2),'-',SUBSTR(${TABLE}.suffix,7,2)) AS TIMESTAMP) ;;
   }
-
+  dimension: site_region {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
+  }
   dimension: id {
     primary_key: yes
     sql: CONCAT(CAST(${fullVisitorId} AS STRING), '|', COALESCE(CAST(${visitId} AS STRING),'')) ;;
@@ -773,7 +775,7 @@ view: hits_eventInfo_base {
 view: customDimensions_base  {
   extension: required
   dimension: site_region {
-    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=53) ;;
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
   }
 
 
