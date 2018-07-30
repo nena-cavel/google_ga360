@@ -46,10 +46,6 @@ view: dau_mau_derived {
     sql: ${unique_visitors} ;;
 
   }
-  dimension_group: visit_month {
-    timeframes: [month,month_name,month_num]
-    sql: (TIMESTAMP(${visitStart_date})) ;;
-    type:  time
-  }
+
 
 }
