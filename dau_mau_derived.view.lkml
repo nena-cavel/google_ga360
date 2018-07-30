@@ -48,7 +48,7 @@ view: dau_mau_derived {
   }
   dimension_group: visit_month {
     timeframes: [month,month_name,month_num]
-    sql: (TIMESTAMP(${visitStart_date}) ;;
+    sql: (TIMESTAMP(${visitStart_date})) ;;
     type:  time
   }
 
