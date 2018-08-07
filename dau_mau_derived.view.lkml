@@ -6,7 +6,7 @@ view: dau_mau_derived {
     explore_source: ga_sessions {
       column: unique_visitors {}
       column: site_region {}
-      column: visitStart_date {}
+      column: visitStartSeconds {}
       column: operatingSystem { field: device.operatingSystem }
       filters: {
         field: ga_sessions.partition_date
@@ -33,9 +33,8 @@ view: dau_mau_derived {
   dimension: site_region {
     label: "Session Site Region"
   }
-  dimension: visitStart_date {
+  dimension: visitStartSeconds{
     label: "Session Visit Start Date"
-    type: date_time
 
   }
   dimension: operatingSystem {
