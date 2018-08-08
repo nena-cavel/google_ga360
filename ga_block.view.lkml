@@ -5,7 +5,7 @@ explore: ga_sessions_base {
   view_label: "Session"
   join: totals {
     view_label: "Session"
-    sql: LEFT JOIN UNNEST([${ga_sessions.totals}]) as totals ;;
+    sql:  LEFT JOIN UNNEST([${ga_sessions.totals}]) as totals ;;
     relationship: one_to_one
   }
   join: trafficSource {
@@ -76,6 +76,12 @@ explore: ga_sessions_base {
     relationship: one_to_one
   }
 
+  join: hits_contentGroup {
+    view_label: "Session: Hits: ContentGroup Info"
+    sql: LEFT JOIN UNNEST([${hits.contentGroup}]) as hits_contentGroup ;;
+    relationship: one_to_one
+  }
+
   # join: hits_sourcePropertyInfo {
   #   view_label: "Session: Hits: Property"
   #   sql: LEFT JOIN UNNEST([hits.sourcePropertyInfo]) as hits_sourcePropertyInfo ;;
@@ -113,15 +119,22 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST([${first_hit.page}]) as first_page ;;
     relationship: one_to_one
   }
+  join: customDimensions {
+    view_label: "Custom Dimensions - Sessions"
+    sql: LEFT JOIN UNNEST(${ga_sessions.customDimensions}) as customDimensions ;;
+    relationship: one_to_one
+  }
 }
 
 view: ga_sessions_base {
   extension: required
   dimension: partition_date {
     type: date_time
-    sql: TIMESTAMP(PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'^\d\d\d\d\d\d\d\d')))  ;;
+    sql: CAST(CONCAT(SUBSTR(${TABLE}.suffix,0,4),'-',SUBSTR(${TABLE}.suffix,5,2),'-',SUBSTR(${TABLE}.suffix,7,2)) AS TIMESTAMP) ;;
   }
-
+  dimension: site_region {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
+  }
   dimension: id {
     primary_key: yes
     sql: CONCAT(CAST(${fullVisitorId} AS STRING), '|', COALESCE(CAST(${visitId} AS STRING),'')) ;;
@@ -156,12 +169,31 @@ view: ga_sessions_base {
     hidden: yes
   }
 
+  dimension: Member {
+    type: yesno
+    sql: (
+        ${Prospect} IS FALSE
+
+    );;
+  }
+
+  dimension: Prospect {
+  type:  yesno
+  sql: (
+    (${memberID} is NULL AND ${totals.transactions} IS NULL )
+    AND
+    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') is FALSE AND ${totals.transactions} IS NULL)
+)
+
+       ;;
+}
+
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
     label: "Visit Start"
     type: time
-    sql: (TIMESTAMP(${partition_date})) ;;
+    sql: (TIMESTAMP(${visitStartSeconds})) ;;
   }
   ## use visit or hit start time instead
   dimension: date {
@@ -228,6 +260,10 @@ view: ga_sessions_base {
   dimension: trafficSource {hidden:yes}
   dimension: device {hidden:yes}
   dimension: customDimensions {hidden:yes}
+  dimension: memberID {
+    type: string
+    sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=12);;
+  }
   dimension: hits {hidden:yes}
   dimension: hits_eventInfo {hidden:yes}
 
@@ -346,6 +382,9 @@ view: totals_base {
     type: sum
     sql: ${TABLE}.transactions ;;
   }
+  dimension: transactions {
+    sql: ${TABLE}.transactions ;;
+  }
   measure: transactionRevenue_total {
     label: "Transaction Revenue Total"
     type: sum
@@ -458,7 +497,9 @@ view: hits_base {
     primary_key: yes
     sql: CONCAT(${ga_sessions.id},'|',FORMAT('%05d',${hitNumber})) ;;
   }
-  dimension: hitNumber {}
+  dimension: hitNumber {
+    type: number
+  }
   dimension: time {}
   dimension_group: hit {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -498,13 +539,25 @@ view: hits_base {
   dimension: eventInfo {hidden:yes}
   dimension: exceptionInfo {hidden: yes}
   dimension: experiment {hidden: yes}
+  dimension: contentGroup {hidden: yes}
 
 
   set: detail {
     fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits_page.pagePath, hits.pageTitle]
   }
 }
-
+view: hits_contentGroup_base {
+  extension: required
+  dimension: id {
+    primary_key: yes
+    sql: CONCAT(${ga_sessions.id},'|',FORMAT('%05d',${hits.hitNumber})) ;;
+  }
+  dimension: contentGroup1 {}
+  dimension: contentGroup2 {}
+  dimension: contentGroup3 {}
+  dimension: contentGroup4 {}
+  dimension: contentGroup5 {}
+}
 view: hits_page_base {
   extension: required
   dimension: pagePath {
@@ -670,6 +723,16 @@ view: contentInfo_base {
 view: hits_customDimensions_base {
   extension: required
   dimension: index {type:number}
+  dimension: siteRegionHit {
+    type:string
+    sql: CASE WHEN ${index} = 3 THEN UPPER(${value}) ELSE NULL END;;
+    map_layer_name: countries
+    }
+
+  dimension: memberID {
+    type: string
+    sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
+  }
   dimension: value {}
 }
 
@@ -708,3 +771,13 @@ view: hits_eventInfo_base {
 # #   extension: required
 #   dimension: sourcePropertyDisplayName {label: "Property Display Name"}
 # }
+
+view: customDimensions_base  {
+  extension: required
+  dimension: site_region {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
+  }
+
+
+
+}
