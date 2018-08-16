@@ -10,7 +10,7 @@ view: dau_mau_derived {
       column: operatingSystem { field: device.operatingSystem }
       filters: {
         field: ga_sessions.partition_date
-        value: "3 months ago for 3 months"
+        value: "12 months ago for 12 months"
       }
       filters: {
         field: hits_appInfo.screenName
