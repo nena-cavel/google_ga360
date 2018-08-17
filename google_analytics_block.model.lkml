@@ -16,12 +16,6 @@ explore: ga_sessions {
   }
 }
 
-#explore:funnel_growth_dashboard {
-#  hidden: no
-#  join: ga_sessions {
-#    from: ga_sessions
-#    type: left_outer
-#    relationship: one_to_one
-#    sql_on: ${funnel_growth_dashboard.id}=${ga_sessions.id} ;;
-#  }
-#  }
+
+explore: dau_mau_derived {
+}
