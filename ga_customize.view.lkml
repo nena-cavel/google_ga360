@@ -101,6 +101,9 @@ view: hits_transaction {
   #extends: [hits_transaction_base]  # Comment out to remove fields
 }
 
+view: hits_latency {
+  extends: [hits_latency_base]
+}
 view: hits_item {
   extends: [hits_item_base]
 }

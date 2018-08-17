@@ -49,6 +49,11 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST([${hits.transaction}]) as hits_transaction ;;
     relationship: one_to_one
   }
+  join: hits_latency {
+    view_label: "Session: Hits: Latency Tracking"
+    sql: LEFT JOIN UNNEST([${hits.latencyTracking}]) as hits_latency ;;
+    relationship: one_to_one
+  }
   join: hits_item {
     view_label: "Session: Hits: Item"
     sql: LEFT JOIN UNNEST([${hits.item}]) as hits_item ;;
@@ -170,14 +175,25 @@ view: ga_sessions_base {
     );;
   }
 
-  dimension: Prospect {
+  dimension: funnelProspect {
   type:  yesno
   sql: (
-    (${memberID} is NULL AND ${totals.transactions} IS NULL )
+     ((${totals.transactions} IS NOT NULL AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) OR ${memberID} is NULL)
+    OR
+   (
+  (${memberID} is NULL AND ${totals.transactions} IS NULL)
     AND
-    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') is FALSE AND ${totals.transactions} IS NULL)
+    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL))
 )
+       ;;
+}
 
+dimension: Prospect {
+  type:  yesno
+  sql:
+    (${memberID} is NULL AND ${totals.transactions} IS NULL)
+    AND
+    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL)
        ;;
 }
 
@@ -187,6 +203,7 @@ view: ga_sessions_base {
     label: "Visit Start"
     type: time
     sql: (TIMESTAMP(${visitStartSeconds})) ;;
+    convert_tz: no
   }
   ## use visit or hit start time instead
   dimension: date {
@@ -533,7 +550,7 @@ view: hits_base {
   dimension: exceptionInfo {hidden: yes}
   dimension: experiment {hidden: yes}
   dimension: contentGroup {hidden: yes}
-
+  dimension: latencyTracking {hidden: yes}
 
   set: detail {
     fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits_page.pagePath, hits.pageTitle]
@@ -585,6 +602,47 @@ view: hits_transaction_base {
   dimension: localTransactionTax {label: "Local Transaction Tax"}
   dimension: localTransactionShipping {label: "Local Transaction Shipping"}
 }
+
+view: hits_latency_base {
+  extension: required
+  # dimension:  id {
+  #   primary_key: yes
+  #   sql: ${hits.id} ;;
+  # }
+  # dimension: page_time_percentile {
+  # type: tier
+  #   sql: ${domInteractiveTime};;
+  #   tiers: [1,2,5,10]
+  # }
+
+  # dimension: custom_tiering_page_time {
+  #   type: string
+  #   sql: CASE WHEN ${domInteractiveTime} < {% parameter load_time_1 %} THEN 'Low'
+  #   WHEN ${domInteractiveTime} >= {% parameter load_time_1 %} AND  THEN 'Low' ;;
+  # }
+
+  parameter: load_time_1 {
+     type: number
+  }
+   parameter: load_time_2 {
+     type: number
+   }
+   parameter: load_time_3 {
+    type: number
+   }
+   parameter: load_time_4 {
+     type: number
+   }
+
+
+
+  dimension: domInteractiveTime {
+    type: number
+    sql: ${TABLE}.domInteractiveTime/1000.0 ;;
+  }
+  dimension: pageLoadTime {}
+  dimension: pageDownloadTime {}
+  }
 
 view: hits_item_base {
   extension: required
