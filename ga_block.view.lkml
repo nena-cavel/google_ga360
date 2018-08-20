@@ -734,6 +734,10 @@ view: hits_customDimensions_base {
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
   }
   dimension: value {}
+  dimension: application_type {
+    type: string
+    sql: CASE WHEN ${index} = 1 then LOWER(${value}) else null end ;;
+  }
 }
 
 view: hits_customMetrics_base {
@@ -771,6 +775,8 @@ view: hits_eventInfo_base {
 # #   extension: required
 #   dimension: sourcePropertyDisplayName {label: "Property Display Name"}
 # }
+
+
 
 view: customDimensions_base  {
   extension: required

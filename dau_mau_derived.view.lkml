@@ -7,15 +7,15 @@ view: dau_mau_derived {
       column: site_region {}
       column: unique_visitors {}
       column: visitStartSeconds {}
-      column: operatingSystem { field: device.operatingSystem }
+      column: memberID {}
       filters: {
         field: ga_sessions.partition_date
         value: "12 months ago for 12 months"
       }
-      filters: {
-        field: hits_appInfo.screenName
-        value: "food_% ,Food_%,Food%,%activity%,Search%,journey%,connect%,Track,connect_%, crowdsourcing%, profile_%, QuickAdd, recipe%, MealDetails"
-      }
+      #filters: {
+      #  field: hits_appInfo.screenName
+       # value: "food_% ,Food_%,Food%,%activity%,Search%,journey%,connect%,Track,connect_%, crowdsourcing%, profile_%, QuickAdd, recipe%, Recipe, MemberFoods, More, MealDetails"
+      #}
       filters: {
         field: device.operatingSystem
         value: "iOS,Android"
@@ -72,6 +72,11 @@ view: dau_mau_derived {
   measure: count_of_days {
   type: count_distinct
   sql: ${dayofmonth_date};;
+  }
+
+  measure: unique_visitors_metric {
+    type:  sum
+    sql: ${unique_visitors} ;;
   }
 
 
