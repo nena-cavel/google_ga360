@@ -7,22 +7,22 @@ view: dau_mau_derived {
       column: site_region {}
       column: unique_visitors {}
       column: visitStartSeconds {}
-      column: memberID {}
+      column: application_type {}
       filters: {
         field: ga_sessions.partition_date
         value: "12 months ago for 12 months"
       }
-      #filters: {
-      #  field: hits_appInfo.screenName
-       # value: "food_% ,Food_%,Food%,%activity%,Search%,journey%,connect%,Track,connect_%, crowdsourcing%, profile_%, QuickAdd, recipe%, Recipe, MemberFoods, More, MealDetails"
-      #}
       filters: {
-        field: device.operatingSystem
-        value: "iOS,Android"
+        field: hits_appInfo.screenName
+        value: "food_% ,Food_%,Food%,%activity%,Search%,journey%,connect%,Track,connect_%, crowdsourcing%, profile_%, QuickAdd, recipe%, Recipe, MemberFoods, More, MealDetails"
+      }
+      filters: {
+        field: ga_sessions.application_type
+        value: "iOS,Android, ios"
       }
       filters: {
         field: ga_sessions.site_region
-        value: "us,de,fr,ca,br,se,be,nl,ch,au,nz"
+        value: "us,de,gb,fr,ca,br,se,be,nl,ch,au,nz"
       }
     }
   }
@@ -50,8 +50,8 @@ view: dau_mau_derived {
   sql:  (TIMESTAMP(${visitStartSeconds}))  ;;
   }
 
-  dimension: operatingSystem {
-    label: "Session: Device Operating System"
+  dimension: application_type {
+    label: "Application Type"
   }
   dimension: visitorID {
     label: "Visitor ID"

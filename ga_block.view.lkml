@@ -140,6 +140,9 @@ view: ga_sessions_base {
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
   }
+  dimension: application_type {
+    sql: (SELECT value FROM unnest(${TABLE}.customDimensions) WHERE index=1) ;;
+  }
   dimension: id {
     primary_key: yes
     sql: CONCAT(CAST(${fullVisitorId} AS STRING), '|', COALESCE(CAST(${visitId} AS STRING),'')) ;;
@@ -792,10 +795,10 @@ view: hits_customDimensions_base {
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
   }
   dimension: value {}
-  dimension: application_type {
-    type: string
-    sql: CASE WHEN ${index} = 1 then LOWER(${value}) else null end ;;
-  }
+ # dimension: application_type {
+ #   type: string
+ #   sql: CASE WHEN ${index} = 1 then LOWER(${value}) else null end ;;
+ # }
 }
 
 view: hits_customMetrics_base {
@@ -841,6 +844,9 @@ view: customDimensions_base  {
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
   }
+ # dimension: application_type {
+   # sql: (select value from UNNEST(${TABLE}.customDimensions) Where index=1) ;;
+  #}
 
 
 
