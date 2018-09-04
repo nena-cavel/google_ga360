@@ -18,5 +18,5 @@ explore: ga_sessions {
 
 
 explore: dau_mau_derived {
-
+persist_for: "240 hours"
 }
