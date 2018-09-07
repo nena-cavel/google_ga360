@@ -12,12 +12,12 @@ view: prize_screen_views_20180907 {
   }
 
   measure: total_screen_views {
-    type: sum
+    type: max
     sql: ${TABLE}.total_screen_views ;;
   }
 
   measure: unique_screen_views {
-    type: sum
+    type: max
     sql: ${TABLE}.unique_screen_views ;;
   }
 
