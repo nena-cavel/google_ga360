@@ -2,7 +2,7 @@ view: prize_screen_views_20180907 {
   sql_table_name: jleavitt.Prize_Screen_Views_20180907 ;;
 
   measure: time_on_screen {
-    type: max
+    type: time
     sql: parse_time('%M:%S', ${TABLE}.new_time_on_screen) ;;
   }
 
