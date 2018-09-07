@@ -2,8 +2,9 @@ view: prize_screen_views_20180907 {
   sql_table_name: jleavitt.Prize_Screen_Views_20180907 ;;
 
   measure: time_on_screen {
-    type: date_time
-    sql: parse_time('%M:%S', ${TABLE}.new_time_on_screen) ;;
+    type: sum
+    sql: (cast(format_time('%M', parse_time('%M:%S', ${TABLE}.new_time_on_screen)) as int64) * 60) +
+    cast(format_time('%S', parse_time('%M:%S', ${TABLE}.new_time_on_screen)) as int64) ;;
   }
 
   dimension: reward {
