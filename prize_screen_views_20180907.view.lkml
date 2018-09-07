@@ -3,7 +3,7 @@ view: prize_screen_views_20180907 {
 
   measure: time_on_screen {
     type: string
-    sql: parse_date('%M:%S', ${TABLE}.new_time_on_screen) ;;
+    sql: parse_time('%M:%S', ${TABLE}.new_time_on_screen) ;;
   }
 
   dimension: reward {
