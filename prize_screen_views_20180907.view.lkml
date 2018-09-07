@@ -1,9 +1,9 @@
 view: prize_screen_views_20180907 {
   sql_table_name: jleavitt.Prize_Screen_Views_20180907 ;;
 
-  dimension: new_time_on_screen {
+  measure: time_on_screen {
     type: string
-    sql: ${TABLE}.new_time_on_screen ;;
+    sql: parse_date('%M:%S', ${TABLE}.new_time_on_screen) ;;
   }
 
   dimension: reward {

@@ -21,6 +21,6 @@ explore: dau_mau_derived {
 persist_for: "240 hours"
 }
 
-explore:prize_screen_view_counts{
+explore:prize_screen_views_20180907{
   persist_for: "24 hours"
 }
