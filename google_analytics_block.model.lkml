@@ -20,3 +20,7 @@ explore: ga_sessions {
 explore: dau_mau_derived {
 persist_for: "240 hours"
 }
+
+explore:prize_screen_view_counts{
+  persist_for: "24 hours"
+}
