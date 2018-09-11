@@ -17,12 +17,12 @@ view: rewards_prize_views_20180910 {
   }
 
   measure: total_screen_views {
-    type: number
+    type: max
     sql: ${TABLE}.total_screen_views ;;
   }
 
   measure: unique_screen_views {
-    type: number
+    type: max
     sql: ${TABLE}.unique_screen_views ;;
   }
 
