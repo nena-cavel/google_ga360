@@ -147,6 +147,9 @@ view: ga_sessions_base {
     primary_key: yes
     sql: CONCAT(CAST(${fullVisitorId} AS STRING), '|', COALESCE(CAST(${visitId} AS STRING),'')) ;;
   }
+  dimension: funnelid {
+    sql: CONCAT(CAST(${fullVisitorId} AS STRING), '|', COALESCE(CAST(${date} AS STRING),'')) ;;
+  }
   dimension: visitorId {label: "Visitor ID"}
 
   dimension: visitnumber {
@@ -188,7 +191,7 @@ view: ga_sessions_base {
   dimension: funnelProspect {
   type:  yesno
   sql: (
-     ((${totals.transactions} IS NOT NULL AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) OR ${memberID} is NULL)
+     ((${totals.transactions} =  1 AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ))
     OR
    (
   (${memberID} is NULL AND ${totals.transactions} IS NULL)
@@ -509,6 +512,7 @@ view: device_base {
   dimension: mobileDeviceMarketingName {label: "Mobile Device Marketing Name"}
   dimension: mobileDeviceModel {label: "Mobile Device Model"}
   dimension: mobileDeviceInputSelector {label: "Mobile Device Input Selector"}
+  dimension: deviceCategory {label: "Device Category"}
 }
 
 view: hits_base {

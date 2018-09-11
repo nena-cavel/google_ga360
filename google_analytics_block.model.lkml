@@ -12,7 +12,7 @@ explore: ga_sessions {
     from: funnel_growth_dashboard
     type: inner
     relationship:  one_to_one
-    sql_on: ${ga_sessions.id}=${funnel_growth_dashboard.id} ;;
+    sql_on: ${ga_sessions.funnelid}=${funnel_growth_dashboard.id} ;;
   }
 }
 
