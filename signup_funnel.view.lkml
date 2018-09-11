@@ -1,9 +1,8 @@
 
 view: funnel_growth_dashboard {
  derived_table: {
-  sql: SELECT CONCAT(CAST(sessions.fullVisitorId AS STRING), '|', COALESCE(CAST(sessions.visitId AS STRING),'')) as id
+  sql: SELECT CONCAT(CAST(sessions.fullVisitorId AS STRING), '|', COALESCE(CAST(sessions.date AS STRING),'')) as id
     , sessions.fullVisitorId as full_visitor_id
-    , TIMESTAMP_SECONDS(sessions.visitStarttime) AS session_start
     , sessions.suffix as suffix
     , MIN(
        CASE WHEN REGEXP_CONTAINS(hits_contentGroup.contentGroup3, '^sign:..:plan$')
@@ -63,7 +62,7 @@ view: funnel_growth_dashboard {
     LEFT JOIN UNNEST([hits.page]) as hits_page
     LEFT JOIN UNNEST([hits.contentGroup]) as hits_contentGroup
   WHERE {% condition event_time %} TIMESTAMP_SECONDS(sessions.visitStarttime) {% endcondition %}
-   GROUP BY 1,2,3,4
+   GROUP BY 1,2,3
     ;;
  }
  filter: page_1 {
@@ -100,20 +99,20 @@ view: funnel_growth_dashboard {
   #   hidden: TRUE
   sql: ${TABLE}.full_visitor_id ;;
  }
- dimension_group: session_start {
-  type: time
+# dimension_group: session_start {
+#  type: time
   #   hidden: TRUE
-  convert_tz: no
-  timeframes: [
-   time,
-   date,
-   week,
-   month,
-   year,
-   raw
-  ]
-  sql: ${TABLE}.session_start ;;
- }
+#  convert_tz: no
+#  timeframes: [
+#   time,
+#   date,
+#   week,
+#   month,
+#   year,
+#   raw
+#  ]
+#  sql: ${TABLE}.session_start ;;
+# }
 
 
   dimension: partition_date {
@@ -348,7 +347,7 @@ view: funnel_growth_dashboard {
     }
   }
  set: detail {
-  fields: [id, full_visitor_id, session_start_time]
+  fields: [id, full_visitor_id]
  }
  parameter: value_1 {
   type: number
