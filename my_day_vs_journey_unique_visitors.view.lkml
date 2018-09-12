@@ -1,6 +1,6 @@
 view: my_day_vs_journey_unique_visitors {
   derived_table: {
-    persist_for:"168 hours"
+    sql_trigger_value: SELECT EXTRACT(WEEK FROM CURRENT_DATE() AS ONCEPERWEEK) ;;
     sql: WITH funnel_growth_dashboard AS (SELECT CONCAT(CAST(sessions.fullVisitorId AS STRING), '|', COALESCE(CAST(sessions.date AS STRING),'')) as id
           , sessions.fullVisitorId as full_visitor_id
           , sessions.suffix as suffix
@@ -91,7 +91,7 @@ view: my_day_vs_journey_unique_visitors {
   }
 
   measure: unique_visitors {
-    type: count_distinct
+    type: max
     sql: ${TABLE}.unique_visitors ;;
   }
 
