@@ -21,10 +21,10 @@ explore: dau_mau_derived {
 persist_for: "240 hours"
 }
 
-explore:prize_screen_views_20180907{
+explore:rewards_prize_views_20180910 {
   persist_for: "24 hours"
 }
 
-explore:rewards_prize_views_20180910{
+explore:my_day_vs_journey_unique_visitors {
   persist_for: "24 hours"
 }
