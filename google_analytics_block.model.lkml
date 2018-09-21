@@ -14,6 +14,14 @@ explore: ga_sessions {
     relationship:  one_to_one
     sql_on: ${ga_sessions.funnelid}=${funnel_growth_dashboard.id} ;;
   }
+ join: invited_users {
+   from: invited_users
+   type: inner
+   relationship: one_to_one
+   sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
+      AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
+      AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
+ }
 }
 
 
