@@ -7,7 +7,7 @@ view: rewards_onboarding_fullscreen_views {
     #             length(screenname)-13),'__',' '),'_',' ') as Reward,
 
           count(uuid) as total_screen_views,
-          count(distinct uuid) as unique_screen_views,
+          count(distinct uuid) as unique_screen_views
       # min(date) as min_date, max(date) as max_date
         FROM
           (SELECT
@@ -41,11 +41,24 @@ view: rewards_onboarding_fullscreen_views {
         group by 1
         order by 3 desc ;;
   }
-  dimension: date {
-    type: string
-    sql: ${TABLE}.date ;;
+  # dimension: date {
+  #   type: string
+  #   sql: ${TABLE}.date ;;
+  # }
+  dimension_group: date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql:  cast(parse_date('%Y%m%d', ${TABLE}.date) as timestamp)    ;;
   }
-
   # dimension: min_date {
   #   type: string
   #   sql: ${TABLE}.min_date ;;

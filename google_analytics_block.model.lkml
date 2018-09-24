@@ -36,3 +36,7 @@ explore:rewards_prize_views_20180910 {
 explore:my_day_vs_journey_unique_visitors {
   persist_for: "168 hours"
 }
+
+explore: rewards_onboarding_fullscreen_views {
+  persist_for: "24 hours"
+}
