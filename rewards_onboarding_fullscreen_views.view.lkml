@@ -49,7 +49,7 @@ view: rewards_onboarding_fullscreen_views {
     ]
     convert_tz: no
     datatype: date
-    sql:  cast(parse_date('%Y%m%d', date) as timestamp)
+    sql:  cast(parse_date('%Y%m%d', ${TABLE}.date) as timestamp)
   }
 
   measure: total_screen_views {
@@ -59,7 +59,7 @@ view: rewards_onboarding_fullscreen_views {
 
   measure: unique_screen_views {
     type: max
-    #sql: ${TABLE}.unique_screen_views ;;
+    sql: ${TABLE}.unique_screen_views ;;
   }
 
   measure: count {
