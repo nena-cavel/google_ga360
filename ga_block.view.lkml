@@ -116,12 +116,18 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST(${ga_sessions.hits}) as first_hit ;;
     relationship: one_to_one
     sql_where: ${first_hit.hitNumber} = 1 ;;
-    fields: [first_hit.page]
+    fields: [first_hit.page,first_hit.contentGroup]
   }
   join: first_page {
     view_label: "Session: First Page Visited"
     from: hits_page
     sql: LEFT JOIN UNNEST([${first_hit.page}]) as first_page ;;
+    relationship: one_to_one
+  }
+  join: first_pagename {
+    view_label: "Session: First Page Visited"
+    from: hits_contentGroup
+    sql: LEFT JOIN UNNEST([${first_hit.contentGroup}]) as first_pagename ;;
     relationship: one_to_one
   }
   join: customDimensions {
@@ -191,7 +197,7 @@ view: ga_sessions_base {
   dimension: funnelProspect {
   type:  yesno
   sql: (
-     ((${totals.transactions} =  1 AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ))
+     ((${totals.transactions} is not null AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) )
     OR
    (
   (${memberID} is NULL AND ${totals.transactions} IS NULL)
@@ -210,6 +216,12 @@ dimension: Prospect {
        ;;
 }
 
+dimension: iaf {
+  type:  yesno
+  sql:
+    (${first_pagename.contentGroup3} = 'visi:us:invited')
+ ;;
+}
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -347,6 +359,7 @@ view: totals_base {
     hidden: yes
     sql: ${ga_sessions.id} ;;
   }
+
   measure: visits_total {
     type: sum
     sql: ${TABLE}.visits ;;
@@ -524,6 +537,7 @@ view: hits_base {
   dimension: hitNumber {
     type: number
   }
+  dimension: type {}
   dimension: time {}
   dimension_group: hit {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -600,6 +614,7 @@ view: hits_page_base {
   dimension: pageTitle {label: "Page Title"}
   dimension: searchKeyword {label: "Search Keyword"}
   dimension: searchCategory{label: "Search Category"}
+
 }
 
 view: hits_transaction_base {
