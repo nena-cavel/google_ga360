@@ -1,6 +1,6 @@
 view: my_day_vs_journey_unique_visitors {
   derived_table: {
-    sql_trigger_value: SELECT EXTRACT(WEEK FROM CURRENT_DATE() AS ONCEPERWEEK) ;;
+    sql_trigger_value: SELECT EXTRACT(WEEK FROM CURRENT_DATE()) AS ONCEPERWEEK ;;
     sql: WITH funnel_growth_dashboard AS (SELECT CONCAT(CAST(sessions.fullVisitorId AS STRING), '|', COALESCE(CAST(sessions.date AS STRING),'')) as id
           , sessions.fullVisitorId as full_visitor_id
           , sessions.suffix as suffix
