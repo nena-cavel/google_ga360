@@ -222,6 +222,15 @@ dimension: iaf {
     (${first_pagename.contentGroup3} = 'visi:us:invited')
  ;;
 }
+
+dimension: importantLandingPage {
+  type: yesno
+  sql: REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:home$') OR
+  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'sign:..:plan') OR
+  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(plans-|prijzen)') OR
+  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:.*meeting-finder$') OR
+  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(about-WW|om-ww|over-ww|a-propos-de-ww|ueber-ww|sobre-ww|nous-sommes-ww)');;
+}
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -592,7 +601,9 @@ view: hits_contentGroup_base {
   }
   dimension: contentGroup1 {}
   dimension: contentGroup2 {}
-  dimension: contentGroup3 {}
+  dimension: contentGroup3 {
+    label: "Pagename"
+  }
   dimension: contentGroup4 {}
   dimension: contentGroup5 {}
 }
