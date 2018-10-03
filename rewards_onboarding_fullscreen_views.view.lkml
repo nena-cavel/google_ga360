@@ -1,6 +1,7 @@
 view: rewards_onboarding_fullscreen_views {
   derived_table: {
-    persist_for: "24 hours"
+    # persist_for: "24 hours"
+    sql_trigger_value: select current_date() ;;
     sql: select date,
       COUNT(DISTINCT fullVisitorId ) AS unique_screen_views,
       count(fullVisitorId) AS total_screen_views
