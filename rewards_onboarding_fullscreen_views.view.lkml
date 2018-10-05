@@ -43,11 +43,11 @@ view: rewards_onboarding_fullscreen_views {
     type: time
   }
   measure: operatingSystem {
-    type:  string
+    type:  count
     label: "Session: Device Operating System"
   }
   measure: appVersion {
-    type:  string
+    type:  count
     label: "Session: Hits: App Info Appversion"
   }
   measure: unique_visitors {
