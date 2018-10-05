@@ -23,9 +23,18 @@ view: rewards_onboarding_fullscreen_views {
       }
     }
   }
-  dimension: visitStart_date {
+  dimension_group: visitStart_date {
     label: "Session Visit Start Date"
-    type: date_date
+    # sql:  cast(${visitStart_date} as timestamp) ;;
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    type: time
   }
   dimension: operatingSystem {
     label: "Session: Device Operating System"
@@ -33,9 +42,9 @@ view: rewards_onboarding_fullscreen_views {
   dimension: appVersion {
     label: "Session: Hits: App Info Appversion"
   }
-  dimension: unique_visitors {
+  measure: unique_visitors {
     label: "Session Unique Visitors"
-    type: number
+    type: max
   }
 }
 
