@@ -1,43 +1,43 @@
 view: rewards_onboarding_fullscreen_views {
-    derived_table: {
-      explore_source: ga_sessions {
-        column: visitStart_date {}
-        column: operatingSystem { field: device.operatingSystem }
-        column: appVersion { field: hits_appInfo.appVersion }
-        column: unique_visitors {}
-        filters: {
-          field: ga_sessions.partition_date
-          value: "7 days ago for 7 days"
-        }
-        filters: {
-          field: hits_appInfo.appVersion
-          value: "7.0.0"
-        }
-        filters: {
-          field: hits_appInfo.screenName
-          value: "rewards%"
-        }
-        filters: {
-          field: ga_sessions.visitStart_date
-          value: "7 days ago for 7 days"
-        }
+  derived_table: {
+    explore_source: ga_sessions {
+      column: visitStart_date {}
+      column: operatingSystem { field: device.operatingSystem }
+      column: appVersion { field: hits_appInfo.appVersion }
+      column: unique_visitors {}
+      filters: {
+        field: ga_sessions.partition_date
+        value: "7 days ago for 7 days"
+      }
+      filters: {
+        field: hits_appInfo.appVersion
+        value: "7.0.0"
+      }
+      filters: {
+        field: hits_appInfo.screenName
+        value: "rewards%"
+      }
+      filters: {
+        field: ga_sessions.visitStart_date
+        value: "7 days"
       }
     }
-    dimension: visitStart_date {
-      label: "Session Visit Start Date"
-      type: date
-    }
-    dimension: operatingSystem {
-      label: "Session: Device Operating System"
-    }
-    dimension: appVersion {
-      label: "Session: Hits: App Info Appversion"
-    }
-    measure: unique_visitors {
-      label: "Session Unique Visitors"
-      type: max
-    }
   }
+  dimension: visitStart_date {
+    label: "Session Visit Start Date"
+    type: date_date
+  }
+  dimension: operatingSystem {
+    label: "Session: Device Operating System"
+  }
+  dimension: appVersion {
+    label: "Session: Hits: App Info Appversion"
+  }
+  dimension: unique_visitors {
+    label: "Session Unique Visitors"
+    type: number
+  }
+}
 
 
 
