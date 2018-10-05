@@ -25,7 +25,7 @@ view: rewards_onboarding_fullscreen_views {
     }
     dimension: visitStart_date {
       label: "Session Visit Start Date"
-      type: date_date
+      type: date
     }
     dimension: operatingSystem {
       label: "Session: Device Operating System"
