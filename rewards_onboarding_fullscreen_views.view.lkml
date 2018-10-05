@@ -1,7 +1,7 @@
 view: rewards_onboarding_fullscreen_views {
   derived_table: {
     explore_source: ga_sessions {
-      column: visitStart_date {}
+      column: visitStartSeconds {}
       column: operatingSystem { field: device.operatingSystem }
       column: appVersion { field: hits_appInfo.appVersion }
       column: unique_visitors {}
@@ -23,9 +23,15 @@ view: rewards_onboarding_fullscreen_views {
       }
     }
   }
+
+  dimension: visitStartSeconds {
+    label: "Session Visit Start Second"
+    hidden:  yes
+  }
+
   dimension_group: visitStart_date {
     label: "Session Visit Start Date"
-    # sql:  cast(${visitStart_date} as timestamp) ;;
+    sql: timestamp(${visitStartSeconds}) ;;
     timeframes: [
       raw,
       date,
@@ -36,10 +42,12 @@ view: rewards_onboarding_fullscreen_views {
     ]
     type: time
   }
-  dimension: operatingSystem {
+  measure: operatingSystem {
+    type:  string
     label: "Session: Device Operating System"
   }
-  dimension: appVersion {
+  measure: appVersion {
+    type:  string
     label: "Session: Hits: App Info Appversion"
   }
   measure: unique_visitors {
