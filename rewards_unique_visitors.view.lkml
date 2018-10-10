@@ -19,6 +19,10 @@ view: rewards_unique_visitors {
         }
       }
     }
+
+    dimension: partition_date {
+      primary_key: yes
+    }
     measure: unique_visitors {
       label: "Session Unique Visitors"
       type: sum_distinct
