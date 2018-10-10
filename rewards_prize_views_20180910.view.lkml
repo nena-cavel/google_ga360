@@ -20,7 +20,7 @@ view: rewards_prize_views_20180910 {
             h.hitnumber AS hitnumber,
             visitid
           FROM
-          `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` as a
+          `wwi-datalake-1.wwi_ga_pond.ga_sessions` as a
           JOIN
             UNNEST (customdimensions) AS cd
           JOIN
@@ -57,11 +57,13 @@ view: rewards_prize_views_20180910 {
 
   measure: total_screen_views {
     type: max
+    value_format: "0,\"K\""
     sql: ${TABLE}.total_screen_views ;;
   }
 
   measure: unique_screen_views {
     type: max
+    value_format: "0,\"K\""
     sql: ${TABLE}.unique_screen_views ;;
   }
 
