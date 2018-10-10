@@ -20,7 +20,7 @@ view: rewards_prize_views_20180910 {
             h.hitnumber AS hitnumber,
             visitid
           FROM
-          `wwi-datalake-1:wwi_ga_pond.ga_sessions` as a
+          `wwi-datalake-1.wwi_ga_pond.ga_sessions` as a
           JOIN
             UNNEST (customdimensions) AS cd
           JOIN

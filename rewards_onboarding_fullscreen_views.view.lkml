@@ -79,7 +79,7 @@ view: rewards_onboarding_fullscreen_views {
 #                 visitid
 #               FROM
 #               -- `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` as ga (changed!)
-#               `wwi-datalake-1:wwi_ga_pond.ga_sessions`
+#               `wwi-datalake-1.wwi_ga_pond.ga_sessions`
 #               JOIN
 #                 UNNEST (customdimensions) AS cd
 #               JOIN
