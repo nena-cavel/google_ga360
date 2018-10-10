@@ -57,11 +57,13 @@ view: rewards_prize_views_20180910 {
 
   measure: total_screen_views {
     type: max
+    value_format: "0,\" K\""
     sql: ${TABLE}.total_screen_views ;;
   }
 
   measure: unique_screen_views {
     type: max
+    value_format: "0,\" K\""
     sql: ${TABLE}.unique_screen_views ;;
   }
 
