@@ -20,7 +20,7 @@ view: ga_sessions {
 
 
   # SCENARIO 1: Only one property
-sql_table_name: (SELECT * FROM `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view` WHERE SUBSTR(suffix,0,1) != 'i') ;;
+sql_table_name: (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i') ;;
 
 
   # SCENARIO 2: Multiple properties. The property will dynamically look at the selected dataset using a filter.
