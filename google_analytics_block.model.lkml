@@ -40,3 +40,7 @@ explore: rewards_onboarding_fullscreen_views {
 explore: rewards_unique_visitors {
   persist_for: "24 hours"
 }
+
+explore: rewards_tracking_on_7 {
+  persist_for: "24 hours"
+}
