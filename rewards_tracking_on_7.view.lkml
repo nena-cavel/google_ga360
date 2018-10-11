@@ -23,7 +23,7 @@ view: rewards_tracking_on_7 {
     }
 
     dimension: myappversion {
-      sql: if((${TABLE}.appVersion})="7.0.0", "7","NOT 7") ;;
+      sql: if((${TABLE}.appVersion)="7.0.0", "7","NOT 7") ;;
     }
 
 
