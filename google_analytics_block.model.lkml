@@ -18,5 +18,17 @@ explore: ga_sessions {
 
 
 explore: dau_mau_derived {
-persist_for: "240 hours"
+persist_for: "72 hours"
+}
+
+explore: connect_penetration {
+  persist_for: "72 hours"
+}
+
+explore: engagement_score{
+  persist_for: "100 hours"
+}
+
+explore: poster_love {
+  persist_for: "72 hours"
 }
