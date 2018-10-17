@@ -86,6 +86,7 @@ order by 3 desc
   }
   dimension_group: date {
     timeframes: [date,month,month_name,month_num]
+    datatype: datetime
     type: time
     convert_tz: no
     sql: timestamp(${TABLE}.date) ;;
