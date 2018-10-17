@@ -37,7 +37,7 @@ FROM
   h.eventInfo.eventAction as event_name,
   h.type AS hit_type,
    COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_screenviews
-  FROM `wwi-data-playground-3.wwi_processed_data_std_views.ga_session_view`, UNNEST(customdimensions) as cd, unnest(hits) as h
+  FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
 
 
   WHERE SUFFIX Between '20180801'AND '20181231'
