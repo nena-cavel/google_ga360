@@ -31,7 +31,7 @@ ORDER BY 1 desc ;;
       type: date
     }
     measure: baseline {
-      sql:  select 627723  ;;
+      sql:  627723  ;;
       type: average
     }
 
