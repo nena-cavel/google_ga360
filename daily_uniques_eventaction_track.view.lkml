@@ -23,7 +23,7 @@ ORDER BY 1 desc ;;
 
     dimension: visitStart_date {
       label: "Session Visit Start Date"
-      type: date_date
+      type: date
     }
     measure: unique_visitors {
       label: "Session Unique Visitors"
