@@ -3,8 +3,8 @@ view: daily_uniques_eventaction_track {
     sql_trigger_value: select date(timestamp_sub(current_timestamp(), interval 10 hour)) ;;
     sql: #standardsql
 SELECT
-  CAST((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE))))  AS DATE) AS ga_sessions_visitstart_date_1,
-  COUNT(DISTINCT ga_sessions.fullVisitorId ) AS ga_sessions_unique_visitors
+  CAST((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE))))  AS DATE) AS session_date,
+  COUNT(DISTINCT ga_sessions.fullVisitorId ) AS unique_visitors
 FROM (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i')  AS ga_sessions
 LEFT JOIN UNNEST([ga_sessions.device]) as device
 LEFT JOIN UNNEST(ga_sessions.hits) as hits
@@ -21,12 +21,12 @@ from `wwi-data-playground-3.jleavitt.daily_uniques_eventaction_track_copy2`
 ORDER BY 1 desc ;;
   }
 
-    dimension: visitStart_date {
-      label: "Session Visit Start Date"
+    dimension: session_date {
+      label: "Session Date"
       type: date
     }
     measure: unique_visitors {
-      label: "Session Unique Visitors"
+      label: "Unique Visitors"
       type: max
     }
   }
