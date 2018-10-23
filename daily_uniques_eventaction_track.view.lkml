@@ -47,7 +47,7 @@ ORDER BY 1 desc ;;
   }
 
     measure: baseline {
-      sql:  627723  ;;
+      sql:  642154  ;;
       type: average
     }
 
