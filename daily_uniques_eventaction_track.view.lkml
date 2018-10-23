@@ -26,10 +26,26 @@ from `wwi-data-playground-3.jleavitt.daily_uniques_eventaction_track_copy2`
 ORDER BY 1 desc ;;
   }
 
-    dimension: session_date {
-      label: "Session Date"
-      type: date
-    }
+#     dimension: session_date {
+#       label: "Session Date"
+#       type: date
+#     }
+
+  dimension_group: session_date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.session_date ;;
+  }
+
     measure: baseline {
       sql:  627723  ;;
       type: average
