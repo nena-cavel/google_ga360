@@ -56,3 +56,7 @@ explore: rewards_unique_visitors {
 explore: rewards_tracking_on_7 {
   persist_for: "24 hours"
 }
+
+explore: daily_uniques_eventaction_track {
+  persist_for: "24 hours"
+}
