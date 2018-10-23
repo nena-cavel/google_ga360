@@ -10,7 +10,12 @@ LEFT JOIN UNNEST([ga_sessions.device]) as device
 LEFT JOIN UNNEST(ga_sessions.hits) as hits
 LEFT JOIN UNNEST([hits.eventInfo]) as hits_eventInfo
 
-WHERE ((CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP)  >= TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP('2018-10-20 12:00:00')), 'America/New_York'))) AND (((SELECT value FROM UNNEST(ga_sessions.customDimensions) WHERE index=53) = 'us')) AND (((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE))))  >= TIMESTAMP('2018-10-22 00:00:00'))) AND (device.browser = 'GoogleAnalytics') AND device.isMobile AND (hits_eventInfo.eventAction LIKE '%track%')
+WHERE ((CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP)  >= TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP('2018-10-20 12:00:00')), 'America/New_York')))
+AND (((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE))))  >= '2018-10-22'))
+AND (((SELECT value FROM UNNEST(ga_sessions.customDimensions) WHERE index=53) = 'us'))
+AND (device.browser = 'GoogleAnalytics')
+AND device.isMobile
+AND (hits_eventInfo.eventAction LIKE '%track%')
 GROUP BY 1
 
 union distinct
