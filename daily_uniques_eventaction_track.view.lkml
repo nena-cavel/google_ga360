@@ -30,6 +30,11 @@ ORDER BY 1 desc ;;
       label: "Session Date"
       type: date
     }
+    measure: baseline {
+      sql:  select 627723  ;;
+      type: average
+    }
+
     measure: unique_visitors {
       label: "Unique Visitors"
       type: max
