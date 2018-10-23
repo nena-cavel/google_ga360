@@ -51,6 +51,11 @@ ORDER BY 1 desc ;;
       type: average
     }
 
+  measure: baseline_3mos {
+    sql:  select 528206  ;;
+    type: average
+  }
+
     measure: unique_visitors {
       label: "Unique Visitors"
       type: max
