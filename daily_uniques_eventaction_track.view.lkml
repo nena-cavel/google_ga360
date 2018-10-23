@@ -3,7 +3,7 @@ view: daily_uniques_eventaction_track {
     sql_trigger_value: select date(timestamp_sub(current_timestamp(), interval 10 hour)) ;;
     sql: #standardsql
 SELECT
-  CAST((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE))))  AS DATE) AS session_date,
+  CAST(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York') AS DATE) AS session_date,
   COUNT(DISTINCT ga_sessions.fullVisitorId ) AS unique_visitors
 FROM (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i')  AS ga_sessions
 LEFT JOIN UNNEST([ga_sessions.device]) as device
