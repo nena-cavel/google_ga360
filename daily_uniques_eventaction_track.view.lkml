@@ -52,7 +52,7 @@ ORDER BY 1 desc ;;
     }
 
   measure: baseline_3mos {
-    sql:  select 528206  ;;
+    sql: 528206  ;;
     type: average
   }
 
