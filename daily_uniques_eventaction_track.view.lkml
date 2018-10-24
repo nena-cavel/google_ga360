@@ -48,13 +48,13 @@ ORDER BY 1 desc ;;
 
     measure: baseline {
       sql:  642154  ;;
-      value_format_name: thousands
+      value_format_name: none
       type: average
     }
 
   measure: baseline_3mos {
     sql: 528206  ;;
-    value_format_name: thousands
+    value_format_name: none
     type: average
   }
 
@@ -64,6 +64,10 @@ ORDER BY 1 desc ;;
       type: max
     }
   }
+
+named_value_format: none {
+  value_format: ""
+}
 
 named_value_format: millions {
   value_format: "0.0,,\"M\""
