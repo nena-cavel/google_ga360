@@ -46,7 +46,7 @@ ORDER BY 1 desc ;;
     sql: ${TABLE}.session_date ;;
   }
 
-    measure: baseline {
+  measure: baseline {
       sql:  642154  ;;
       value_format_name: none
       type: average
@@ -58,7 +58,7 @@ ORDER BY 1 desc ;;
     type: average
   }
 
-    measure: unique_visitors {
+  measure: unique_visitors {
       label: "Unique Visitors"
       value_format_name: thousands
       type: max
@@ -66,7 +66,7 @@ ORDER BY 1 desc ;;
   }
 
 named_value_format: none {
-  value_format: ""
+  value_format: " "
 }
 
 named_value_format: millions {
