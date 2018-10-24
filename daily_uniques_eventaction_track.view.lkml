@@ -48,11 +48,13 @@ ORDER BY 1 desc ;;
 
     measure: baseline {
       sql:  642154  ;;
+      value_format_name: thousands
       type: average
     }
 
   measure: baseline_3mos {
     sql: 528206  ;;
+    value_format_name: thousands
     type: average
   }
 
