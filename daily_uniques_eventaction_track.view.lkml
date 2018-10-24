@@ -58,6 +58,15 @@ ORDER BY 1 desc ;;
 
     measure: unique_visitors {
       label: "Unique Visitors"
+      value_format_name: thousands
       type: max
     }
   }
+
+named_value_format: millions {
+  value_format: "0.0,,\"M\""
+}
+
+named_value_format: thousands {
+  value_format: "0,\"K\""
+}
