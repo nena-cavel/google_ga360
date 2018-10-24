@@ -1,6 +1,6 @@
 view: daily_uniques_eventaction_track {
   derived_table: {
-    sql_trigger_value: select date(timestamp_sub(current_timestamp(), interval 10 hour)) ;;
+    sql_trigger_value: select date(timestamp_sub(current_timestamp(), interval 6 hour)) ;;
     sql: #standardsql
 SELECT
   CAST(timestamp(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE) AS session_date,
@@ -61,7 +61,7 @@ ORDER BY 1 desc ;;
   measure: unique_visitors {
       label: "Unique Visitors"
       value_format_name: thousands
-      type: max
+      type: average
     }
   }
 
