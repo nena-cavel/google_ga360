@@ -56,3 +56,10 @@ explore: rewards_unique_visitors {
 explore: rewards_tracking_on_7 {
   persist_for: "24 hours"
 }
+explore: post_love_score_daily {
+  persist_for: "48 hours"
+}
+
+explore: groups_launch {
+  persist_for: "48 hours"
+}
