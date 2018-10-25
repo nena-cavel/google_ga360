@@ -52,6 +52,18 @@ ORDER BY 1 desc ;;
       type: average
     }
 
+  measure: baseline_3mos_percentage {
+    sql: 0.1834695353 ;;
+    value_format: " "
+    type:  average
+  }
+
+  measure: baseline_1yr_percentage {
+    sql: 0.2173804809 ;;
+    value_format: " "
+    type:  average
+  }
+
   measure: baseline_3mos {
     sql: 528206  ;;
     value_format_name: none
