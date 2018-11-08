@@ -563,7 +563,8 @@ view: device_base {
   dimension: browserVersion {label:"Browser Version"}
   dimension: operatingSystem {label: "Operating System"}
   dimension: operatingSystemVersion {label: "Operating System Version"}
-  dimension: isMobile {label: "Is Mobile"}
+  dimension: isMobile {label: "Is Mobile"
+    type: yesno}
   dimension: flashVersion {label: "Flash Version"}
   dimension: javaEnabled {
     label: "Java Enabled"

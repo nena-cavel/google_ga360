@@ -26,7 +26,19 @@ explore: ga_sessions {
 
 
 explore: dau_mau_derived {
-persist_for: "240 hours"
+persist_for: "72 hours"
+}
+
+explore: connect_penetration {
+  persist_for: "72 hours"
+}
+
+explore: engagement_score{
+  persist_for: "100 hours"
+}
+
+explore: poster_love {
+  persist_for: "72 hours"
 }
 
 explore:rewards_prize_views_20180910 {
@@ -36,3 +48,24 @@ explore:rewards_prize_views_20180910 {
 explore: rewards_onboarding_fullscreen_views {
   persist_for: "24 hours"
 }
+
+explore: rewards_unique_visitors {
+  persist_for: "24 hours"
+}
+
+explore: rewards_tracking_on_7 {
+  persist_for: "24 hours"
+}
+
+explore: post_love_score_daily {
+  persist_for: "48 hours"
+}
+
+explore: groups_launch {
+  persist_for: "48 hours"
+
+
+
+}
+
+explore: daily_uniques_eventaction_track {}
