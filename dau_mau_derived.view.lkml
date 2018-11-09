@@ -40,14 +40,14 @@ view: dau_mau_derived {
       timeframes: [month,year,month_name,month_num,day_of_month]
       label: "Visit Start Month"
       type: time
-      sql: (TIMESTAMP(${visitStartSeconds})) ;;
+      sql: ${visitStartSeconds} ;;
     }
 
   dimension_group: dayofmonth {
   timeframes: [date]
   label: "date of visit start"
   type:  time
-  sql:  (TIMESTAMP(${visitStartSeconds}))  ;;
+  sql:  ((${visitStartSeconds}))  ;;
   }
 
   dimension: application_type {

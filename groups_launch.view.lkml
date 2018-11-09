@@ -5,11 +5,11 @@ SELECT DISTINCT
 (case when hcd.index=85 THEN hcd.value ELSE NULL END) as group_id,
 h.eventinfo.eventaction as event,
 tIMESTAMP_MILLIS(visitStartTime*1000) as gen_time,
-fullvisitorID as users,
+(case when cd.index=12 then cd.value END) as users,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events,
 row_number()OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as row_rank
-FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(hits) as h, unnest(h.customdimensions) as hcd
-WHERE SUFFIX BETWEEN '20180520' AND '20180530'
+FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
+WHERE SUFFIX BETWEEN '20181107' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
 AND regexp_contains(h.eventinfo.eventAction, 'connect_')
 Group by hcd.index,hcd.value,2,visitStartTime,4
@@ -18,6 +18,7 @@ ORDER BY 1,3;;
 
 dimension: group_id {
   type: string
+  label_from_parameter: group_id_name
   sql: ${TABLE}.group_id ;;
 }
 dimension: events {
@@ -40,7 +41,7 @@ measure: event_count {
 }
  measure: post_count {
   type: number
-  sql: if((${event_count})>7,1,0) ;;
+  sql: if((${event_count})>2,1,0) ;;
 }
 measure: running_post_count {
   type: running_total
@@ -51,6 +52,8 @@ measure: users {
   type: count_distinct
   sql: ${TABLE}.users ;;
 }
+
+
 dimension: row_number {
   type: number
   sql: ${TABLE}.row_rank ;;
@@ -73,7 +76,7 @@ dimension: row_number {
     type: time
     timeframes: [time,date,raw]
     convert_tz: no
-    sql:min(CASE WHEN (${row_number}=1 AND ${events}='connect_group_click') THEN ${TABLE}.gen_time else null end);;
+    sql:min(CASE WHEN (${row_number}=1 AND ${events} is not null) THEN ${TABLE}.gen_time else null end);;
   }
 
 
@@ -82,8 +85,15 @@ dimension: row_number {
    timeframes: [time,date,raw]
   datatype: timestamp
     convert_tz: no
-    sql:(CASE WHEN (${row_number}=1 AND ${events}='connect_group_click') THEN ${TABLE}.gen_time else null end);;
+    sql:(CASE WHEN (${row_number}=1 AND ${events} is not null) THEN ${TABLE}.gen_time else null end);;
   }
+parameter: group_id_name {
+  type: string
+  allowed_value: {
+    label: "Running"
+    value: "ec633201-3810-41ba-998d-d661f14aa6ae"
+  }
+}
 
 
 

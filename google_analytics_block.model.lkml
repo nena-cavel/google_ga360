@@ -64,6 +64,5 @@ explore: post_love_score_daily {
 explore: groups_launch {
   persist_for: "48 hours"
 
-
-
 }
+explore: reported_posts {}
