@@ -197,40 +197,83 @@ view: ga_sessions_base {
   dimension: funnelProspect {
   type:  yesno
   sql: (
-     ((${totals.transactions} is not null AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) )
-    OR
-   (
-  (${memberID} is NULL AND ${totals.transactions} IS NULL)
-    AND
-    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL))
-)
-       ;;
-}
+          ((${totals.transactions} is not null AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) )
+        OR
+          ((${memberID} is NULL AND ${totals.transactions} IS NULL)
+            AND
+          (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL))
+      )
+         ;;
+  }
 
-dimension: Prospect {
-  type:  yesno
-  sql:
-    (${memberID} is NULL AND ${totals.transactions} IS NULL)
-    AND
-    (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL)
-       ;;
-}
+  dimension: Prospect {
+    type:  yesno
+    sql:
+        (${memberID} is NULL AND ${totals.transactions} IS NULL)
+      AND
+        (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL)
+         ;;
+  }
 
-dimension: iaf {
-  type:  yesno
-  sql:
-    (${first_pagename.contentGroup3} = 'visi:us:invited')
- ;;
-}
+  dimension: iaf {
+    type:  yesno
+    sql:
+      (${first_pagename.contentGroup3} = 'visi:us:invited')
+    ;;
+  }
 
-dimension: importantLandingPage {
-  type: yesno
-  sql: REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:home$') OR
-  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'sign:..:plan') OR
-  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(plans-|prijzen)') OR
-  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:.*meeting-finder$') OR
-  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(about-WW|om-ww|over-ww|a-propos-de-ww|ueber-ww|sobre-ww|nous-sommes-ww)');;
-}
+  dimension: importantLandingPage {
+    type: yesno
+    sql:  REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:home$') OR
+          REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'sign:..:plan') OR
+          REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(plans-|prijzen)') OR
+          REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:.*meeting-finder$') OR
+          REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:..:(about-WW|om-ww|over-ww|a-propos-de-ww|ueber-ww|sobre-ww|nous-sommes-ww)');;
+  }
+
+  dimension: ukSEOpages {
+    type: yesno
+    sql:
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-5-reasons-you-experience-weight-gain-during-your-period') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-12-easy-dinner-ideas-busy-week-nights') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-24-delicious-breakfasts-try') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-0-smartpoints-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-our-30-most-popular-recipes-voted-you') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):recipe-roasted-peppers-and-red-onions-5b89446d2654d2001c75dc9d') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-can-you-eat-too-many-eggs') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-egg-recipes-by-the-dozen') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-egg-recipes-tips') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-eggs-101-how-to-cook-them-perfectly') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-what-happens-when-you-dont-take-10000-steps-day') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-what-are-rollovers') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-overnight-oats-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-Indian-food-Indian-takeaway') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):ios-apple-health-faq-help-support') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):food-zero-points-foods') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):eating-out-weight-watchers') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-restaurant-survival-guide') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-simple-cake-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-chocolate-dessert-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-weight-watchers-vegan-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-what-can-vegans-eat-weight-watchers') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):recipe-easy-fried-rice-5b97b376bccf5c0020a89ae0') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-healthy-salad-dressings-dips-dunks') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-recipes-peanut-butter-powder') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-chocolate-survival-guide') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-8-foods-keep-you-full') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-6-healthy-soup-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-12-tinned-bean-recipes') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-guide-to-nuts-and-seeds') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-smartpoints-help-support') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-effects-of-late-night-eating') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-homemade-hummus-recipe') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-fruit-smoothies-juices-smartpoints') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):recipe-creamy-mash-1-5625c064d9d5bb0934572a70') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):recipe-stuffed-chicken-breasts-with-mushrooms-and-stilton-5850d476b1bd0e411614a71f') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-best-plain-fat-free-yogurt') OR
+      REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-italian-restaurant-italian-food-guide');;
+  }
+
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
