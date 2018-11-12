@@ -12,6 +12,7 @@ FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, u
 WHERE SUFFIX BETWEEN '20181107' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
 AND regexp_contains(h.eventinfo.eventAction, 'connect_')
+AND (case when cd.index=12 then cd.value END) IS NOT NULL
 Group by hcd.index,hcd.value,2,visitStartTime,4
 ORDER BY 1,3;;
   }
@@ -39,9 +40,16 @@ measure: event_count {
   type: sum
   sql: ${TABLE}.total_events ;;
 }
+
+measure: event_count_count {
+  type: count
+  #sql: ${TABLE}.event ;;
+}
+
+
  measure: post_count {
   type: number
-  sql: if((${event_count})>2,1,0) ;;
+  sql: if((${event_count})>1,1,0) ;;
 }
 measure: running_post_count {
   type: running_total
@@ -50,6 +58,11 @@ measure: running_post_count {
 
 measure: users {
   type: count_distinct
+  sql: ${TABLE}.users ;;
+}
+
+dimension: member_uuid {
+  type: string
   sql: ${TABLE}.users ;;
 }
 
