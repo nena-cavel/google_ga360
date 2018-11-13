@@ -66,7 +66,11 @@ explore: groups_launch {
 
 }
 
-explore: reported_posts {}
+explore: reported_posts {
+  persist_for: "48 hours"
+}
 
 
 explore: daily_uniques_eventaction_track {}
+
+explore: barcode_scanner_report {}

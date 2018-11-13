@@ -7,7 +7,8 @@ h.eventinfo.eventaction as event,
 tIMESTAMP_MILLIS(visitStartTime*1000) as gen_time,
 (case when cd.index=12 then cd.value END) as users,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events,
-row_number()OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as row_rank
+row_number()OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as row_rank,
+sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-11-11 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as launch_numbering
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
 WHERE SUFFIX BETWEEN '20181107' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
@@ -72,6 +73,11 @@ dimension: row_number {
   sql: ${TABLE}.row_rank ;;
 }
 
+dimension: launch_numbering {
+  type: number
+  sql: ${TABLE}.launch_numbering ;;
+}
+
   dimension_group: second_post {
     type:time
     timeframes: [time,date,raw]
@@ -83,8 +89,16 @@ dimension: row_number {
     type:time
     timeframes: [time,date,raw]
     convert_tz: no
-    sql:min(CASE WHEN (${row_number}=2 AND ${events}='connect_post') THEN ${TABLE}.gen_time end);;
+    sql:min(CASE WHEN (${row_number}=2 AND ${events}='connect_post' ) THEN ${TABLE}.gen_time end);;
   }
+
+  measure: second_post_launch {
+    type:time
+    timeframes: [time,date,raw]
+    convert_tz: no
+    sql:min(CASE WHEN (${launch_numbering}=2 AND ${events}='connect_post' ) THEN ${TABLE}.gen_time end);;
+  }
+
   measure: first_visit_test {
     type: time
     timeframes: [time,date,raw]
