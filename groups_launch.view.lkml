@@ -4,19 +4,25 @@ view: groups_launch {
 SELECT DISTINCT
 (case when hcd.index=85 THEN hcd.value ELSE NULL END) as group_id,
 h.eventinfo.eventaction as event,
+device.language as language_market ,
 tIMESTAMP_MILLIS(visitStartTime*1000) as gen_time,
 (case when cd.index=12 then cd.value END) as users,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events,
 row_number()OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as row_rank,
 sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-11-11 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as launch_numbering
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
-WHERE SUFFIX BETWEEN '20181107' AND '20181231'
+WHERE SUFFIX BETWEEN '20181111' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
 AND regexp_contains(h.eventinfo.eventAction, 'connect_')
 AND (case when cd.index=12 then cd.value END) IS NOT NULL
-Group by hcd.index,hcd.value,2,visitStartTime,4
+Group by hcd.index,hcd.value,2,visitStartTime,3,4,5
 ORDER BY 1,3;;
   }
+
+dimension: language_market {
+  type: string
+  sql: ${TABLE}.language_market ;;
+}
 
 dimension: group_id {
   type: string
