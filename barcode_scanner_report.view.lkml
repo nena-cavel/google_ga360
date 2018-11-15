@@ -36,6 +36,17 @@ dimension: scan_name {
   sql: ${TABLE}.scan_name ;;
 }
 
+dimension: scan_name_group {
+  type: string
+  sql: (CASE WHEN ${TABLE}.scan_name = "barcodescanner_crowdsourced"
+  THEN "Crowdsourced"
+  WHEN ${TABLE}.scan_name="barcodescanner_crowdsourceditem" THEN "Crowdsourced"
+  WHEN ${TABLE}.scan_name= "barcodescanner_fooddatabase" THEN "WW Verified Food"
+  WHEN ${TABLE}.scan_name="barcodescanner_foodsnondatabase" THEN "Not in DB"
+  end)
+  ;;
+}
+
 measure: total_events {
   type: count_distinct
   sql: ${TABLE}.total_events ;;
