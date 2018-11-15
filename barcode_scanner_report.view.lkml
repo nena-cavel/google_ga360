@@ -10,13 +10,14 @@ FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, u
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-05-05', '2018-06-30', INTERVAL 7 day)) as date
 ON EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
-WHERE SUFFIX Between '20180506'AND '20180631'
+WHERE SUFFIX Between '20180101'AND '20181231'
 AND REGEXP_CONTAINS(h.eventinfo.eventaction, 'barcodescanner_fooddatabase|barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_foodsnondatabase')
 AND (CASE WHEN cd.index=53 then cd.value END) is not null
 GROUP BY 1,2,3,4,5 ;;
   }
   dimension_group: week_date {
     type: time
+    convert_tz: no
     timeframes: [date,week,week_of_year,raw]
     sql: timestamp(${TABLE}.gen_date) ;;
   }
