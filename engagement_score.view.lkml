@@ -2,6 +2,8 @@ view: engagement_score {
   derived_table: {
     sql: SELECT
 subquery.test_date as session_date,
+session_calendar.Year AS session_fiscal_year,
+session_calendar.WeekOfYear AS session_fiscal_week,
 subquery.operating_system as operating_system,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
@@ -49,7 +51,14 @@ FROM
 
   GROUP BY 1,2,3
   ) subquery
-GROUP BY 1,2 ;;
+
+  LEFT JOIN `wwi-data-playground-3.BQDW.DimDate` session_calendar
+  ON session_calendar.Date = subquery.test_date
+
+  GROUP BY 1, 2, 3, 4
+;;
+
+    sql_trigger_value: SELECT CURDATE() ;; # regenerate and persist once a day
   }
 
   dimension_group: session_date {
@@ -59,10 +68,22 @@ GROUP BY 1,2 ;;
     sql: timestamp(${TABLE}.session_date);;
     }
 
-    dimension: operating_system {
+  dimension: operating_system {
       type: string
       sql: ${TABLE}.operating_system;;
     }
+
+  dimension: fiscal_week {
+      type: number
+      description: "The fiscal week that the session took place on"
+      sql: ${TABLE}.session_fiscal_week ;;
+    }
+
+  dimension: fiscal_year {
+    type: number
+    description: "The fiscal year that the session took place on"
+    sql: ${TABLE}.session_fiscal_year ;;
+  }
 
   measure: profile_views {
     type: sum
