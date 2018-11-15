@@ -73,4 +73,6 @@ explore: reported_posts {
 
 explore: daily_uniques_eventaction_track {}
 
-explore: barcode_scanner_report {}
+explore: barcode_scanner_report {
+  persist_for: "48 hours"
+}
