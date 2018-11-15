@@ -8,7 +8,7 @@ h.eventinfo.eventaction as scan_name,
 CONCAT(fullvisitorid, CAST(visitId AS STRING), CAST(h.hitnumber AS STRING)) as total_events
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h
 INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-05-05', '2018-06-30', INTERVAL 7 day)) as date
+unnest(GENERATE_DATE_ARRAY('2018-01-01', '2018-12-31', INTERVAL 7 day)) as date
 ON EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
 WHERE SUFFIX Between '20180101'AND '20181231'
 AND REGEXP_CONTAINS(h.eventinfo.eventaction, 'barcodescanner_fooddatabase|barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_foodsnondatabase')
