@@ -35,6 +35,18 @@ explore: connect_penetration {
 
 explore: engagement_score{
   persist_for: "100 hours"
+  join: post_love_daily {
+    from: post_love_daily
+    type: inner
+    relationship: one_to_one
+    sql_on: ${engagement_score.session_date_date}=${post_love_daily.daily_date_date} ;;
+  }
+  join: connect_penetration_daily {
+    from: connect_penetration_daily
+    type: inner
+    relationship: one_to_one
+    sql_on: ${engagement_score.session_date_date}=${connect_penetration_daily.date_visited_date} ;;
+  }
 }
 
 explore: poster_love {
@@ -74,5 +86,8 @@ explore: reported_posts {
 explore: daily_uniques_eventaction_track {}
 
 explore: barcode_scanner_report {
+  persist_for: "72 hours"
+}
+explore: connect_daily_counts {
   persist_for: "48 hours"
 }
