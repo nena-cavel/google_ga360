@@ -49,6 +49,17 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST([${hits.transaction}]) as hits_transaction ;;
     relationship: one_to_one
   }
+  join: hits_product {
+    view_label: "Session: Hits: Product"
+    sql: LEFT JOIN UNNEST(${hits.product}) as hits_product ;;
+    relationship: one_to_many
+  }
+
+#  join: hits_product_customdimensions {
+#    sql: LEFT JOIN UNNEST(${hits_product.customDimensions}) as hits_product_customdimensions ;;
+#    relationship: one_to_one
+#  }
+
   join: hits_latency {
     view_label: "Session: Hits: Latency Tracking"
     sql: LEFT JOIN UNNEST([${hits.latencyTracking}]) as hits_latency ;;
@@ -351,6 +362,7 @@ view: ga_sessions_base {
     type: string
     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=12);;
   }
+
   dimension: hits {hidden:yes}
   dimension: hits_eventInfo {hidden:yes}
 
@@ -632,6 +644,7 @@ view: hits_base {
   dimension: experiment {hidden: yes}
   dimension: contentGroup {hidden: yes}
   dimension: latencyTracking {hidden: yes}
+  dimension: product {hidden:yes}
 
   set: detail {
     fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits_page.pagePath, hits.pageTitle]
@@ -651,6 +664,25 @@ view: hits_contentGroup_base {
   dimension: contentGroup4 {}
   dimension: contentGroup5 {}
 }
+view: hits_product_base {
+  extension: required
+  dimension: productSKU {}
+  dimension: v2ProductName { hidden:yes}
+  dimension: customDimensions {hidden:yes}
+  dimension: csp {
+   sql: (SELECT value FROM UNNEST(${hits_product.customDimensions}) WHERE index=50) ;;
+
+  }
+}
+#view: hits_product_customdimensions_base {
+#  extension: required
+#  dimension: index {type:number}
+#  dimension: value {}
+#  dimension: csp {
+#    type: string
+#    sql: case WHEN ${index} = 50 THEN ${value} ELSE NULL END;;
+#  }
+#}
 view: hits_page_base {
   extension: required
   dimension: pagePath {
@@ -868,6 +900,7 @@ view: hits_customDimensions_base {
     type: string
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
   }
+
   dimension: value {}
  # dimension: application_type {
  #   type: string
