@@ -2,6 +2,7 @@ view: connect_daily_counts {
   derived_table: {
     sql: SELECT DISTINCT
 (EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))) as generated_date,
+(CASE WHEN cd.index=53 then cd.value else null end) as region,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_trending" AND h.type = 'APPVIEW') then fullvisitorid END)) AS connect_traffic,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_new" AND h.type = 'APPVIEW') then fullvisitorid END)) AS following_traffic,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_following" AND h.type = 'APPVIEW') then fullvisitorid END)) AS new_traffic,
@@ -20,7 +21,7 @@ COUNT(CASE WHEN (h.appinfo.screenname = 'connect_load_more_trending' AND h.type=
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` , unnest(customdimensions) as cd, unnest(hits) as h
 WHERE SUFFIX Between '20181001'AND '20181230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
-group by 1  ;;
+group by 1 ,2 ;;
   }dimension_group: date {
     timeframes: [date,raw]
     datatype: datetime
@@ -92,6 +93,11 @@ measure: following_traffic {
 measure: new_traffic {
   type: sum
   sql: ${TABLE}.new_traffic ;;
+}
+
+dimension: region {
+  type: string
+  sql: ${TABLE}.region ;;
 }
 
 
