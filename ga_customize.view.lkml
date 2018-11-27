@@ -156,7 +156,14 @@ view: hits_eventInfo {
   }
 }
 
+view: hits_product {
+  extends:[hits_product_base]
 
+}
+
+#view: hits_product_customdimensions {
+#  extends: [hits_product_customdimensions_base]
+#}
 view: hits_customDimensions {
   extends: [hits_customDimensions_base]
 }
