@@ -1,5 +1,6 @@
 view: connect_daily_counts {
   derived_table: {
+    persist_for: "48 hours"
     sql: SELECT DISTINCT
 (EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))) as generated_date,
 (CASE WHEN cd.index=53 then cd.value else null end) as region,
