@@ -18,7 +18,8 @@ COUNT(DISTINCT(CASE WHEN (h.type = 'EVENT' AND h.eventinfo.eventaction = 'connec
 COUNT(DISTINCT (CASE WHEN (h.eventinfo.eventaction = 'connect_post_report' and h.type = 'EVENT') THEN CONCAT(CAST( h.hitnumber as string),cast(visitID as string)) end)) as reported_posts,
 COUNT(DISTINCT (CASE WHEN (h.type = 'EVENT' and h.eventinfo.eventaction = 'connect_comment_report' or h.eventinfo.eventaction = "connect_reply_report") THEN CONCAT(CAST( h.hitnumber as string),cast(visitID as string)) end)) as reported_comment,
 COUNT(DISTINCT (CASE WHEN (h.type = 'EVENT' AND h.eventinfo.eventaction = 'connect_user_block' OR h.eventinfo.eventaction = 'connect_block_member_profile') THEN CONCAT(CAST( h.hitnumber as string),cast(visitID as string)) end)) as member_blocks,
-COUNT(CASE WHEN (h.appinfo.screenname = 'connect_load_more_trending' AND h.type='APPVIEW' ) THEN h.appinfo.screenname end) as post_loads
+COUNT(CASE WHEN (h.appinfo.screenname = 'connect_load_more_trending' AND h.type='APPVIEW' ) THEN h.appinfo.screenname end) as post_loads,
+COUNT(DISTINCT (CASE WHEN regexp_contains(h.appinfo.screenName, 'food_dashboard') then fullvisitorID end)) AS all_users
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` , unnest(customdimensions) as cd, unnest(hits) as h
 WHERE SUFFIX Between '20181001'AND '20181230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
@@ -34,6 +35,11 @@ group by 1 ,2 ;;
   measure: connect_users {
     type: sum
     sql: ${TABLE}.connect_traffic ;;
+  }
+
+  measure: all_app_users {
+    type: sum
+    sql: ${TABLE}.all_users ;;
   }
 
   measure: connect_sessions {
@@ -99,6 +105,11 @@ measure: new_traffic {
 dimension: region {
   type: string
   sql: ${TABLE}.region ;;
+}
+
+dimension: region_group {
+  type: string
+  sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
 }
 
 

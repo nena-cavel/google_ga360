@@ -1,11 +1,25 @@
 view: post_love_score_daily {
   derived_table: {
     sql:
-
-sELECT
+sELECT distinct
 
 date_post_created,
 post_type,
+(CASE WHEN region = 'fr-CH'
+  THEN 'ch'
+  WHEN region ='de-CH' then 'ch'
+  wheN region = 'nl-BE' THEN 'be'
+  WHEN region ='sv-SE' THEN 'se'
+  WHEN region ='de-DE' then 'de'
+  WHEN region = 'en-GB' then 'gb'
+  WHEN region ='en-US' then 'us'
+  WHEN region = 'fr-FR' then 'fr'
+  WHEN region = 'nl-NL' then 'nl'
+  WHEN region = 'fr-CA' then 'ca'
+  WHEN region = 'fr-BE' THEN 'be'
+  WHEN region = 'en-AU' THEN 'au'
+  WHEN region = 'en-CA' then 'ca'
+  END) as region,
 post_id,
 
 (SUM(
@@ -34,6 +48,7 @@ FROM
 
   SELECT DISTINCT
   EXTRACT(date FROM payload_post.created_at) as date_post_created,
+  payload_post.locale as region,
   payload_post.subclass as post_type,
   cp.payload_post.uuid AS post_id,
   engagements.engagement_type,
@@ -78,7 +93,8 @@ FROM
 #INNER JOIN
 #unnest(GENERATE_DATE_ARRAY('2018-07-01', '2018-12-31', INTERVAL 1 MONTH)) as date
 #ON month_post_created = extract(month from date)
-GROUP BY 1,2,3
+WHERE region is not null
+GROUP BY 1,2,3,4
 
 order by 3 desc
 ;;
@@ -94,6 +110,16 @@ order by 3 desc
   dimension: post_type {
     type:  string
     sql: ${TABLE}.post_type ;;
+  }
+
+  dimension: region {
+    type: string
+    sql: ${TABLE}.region ;;
+  }
+
+  dimension: region_group {
+    type: string
+    sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
   }
 
   measure: likes {

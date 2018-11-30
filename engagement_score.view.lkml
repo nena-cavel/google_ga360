@@ -1,7 +1,8 @@
 view: engagement_score {
   derived_table: {
-    sql: SELECT
+    sql: SELECT DISTINCT
 subquery.test_date as session_date,
+region,
 subquery.operating_system as operating_system,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
@@ -16,6 +17,7 @@ FROM
 SELECT
 visitidcalc,
 CAST(test.start_time AS date) as test_date,
+region,
 test.operating_system as operating_system,
 SUM(CASE WHEN (test.screen_name = 'connect_stream_trending' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_stream,
 SUM(CASE WHEN (test.screen_name = 'connect_profile' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_profile,
@@ -29,6 +31,7 @@ FROM
  (
  SELECT DISTINCT
   (fullVisitorId) AS uuid,
+  (CASE WHEN cd.index=53 then cd.value else null end) as region,
   (CASE WHEN cd.index=1 THEN cd.value ELSE NULL END) AS operating_system,
   concat(cast(visitId as string),fullVisitorID) as visitidcalc,
   (timestamp_seconds(visitStartTime)) as start_time,
@@ -44,12 +47,13 @@ FROM
   and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
-  GROUP BY 1,2,3,4,5,6,7,8
+  and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
+  GROUP BY 1,2,3,4,5,6,7,8,9
   ) test
 
-  GROUP BY 1,2,3
+  GROUP BY 1,2,3,4
   ) subquery
-GROUP BY 1,2 ;;
+GROUP BY 1,2,3 ;;
   }
 
   dimension_group: session_date {
@@ -58,6 +62,16 @@ GROUP BY 1,2 ;;
     convert_tz: no
     sql: timestamp(${TABLE}.session_date);;
     }
+
+  dimension: region {
+    type: string
+    sql: ${TABLE}.region ;;
+  }
+
+  dimension: region_group {
+    type: string
+    sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
+  }
 
     dimension: operating_system {
       type: string

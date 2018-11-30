@@ -35,18 +35,15 @@ explore: connect_penetration {
 
 explore: engagement_score{
   persist_for: "100 hours"
-  join: post_love_daily {
-    from: post_love_daily
+  join: post_love_score_daily {
     type: inner
     relationship: one_to_one
-    sql_on: ${engagement_score.session_date_date}=${post_love_daily.daily_date_date} ;;
+    sql_on: ${engagement_score.region}=${post_love_score_daily.region}
+      AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
+      and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
   }
-  join: connect_penetration_daily {
-    from: connect_penetration_daily
-    type: inner
-    relationship: one_to_one
-    sql_on: ${engagement_score.session_date_date}=${connect_penetration_daily.date_visited_date} ;;
-  }
+
+
 }
 
 explore: poster_love {
@@ -90,4 +87,5 @@ explore: barcode_scanner_report {
 }
 explore: connect_daily_counts {
   persist_for: "48 hours"
+
 }
