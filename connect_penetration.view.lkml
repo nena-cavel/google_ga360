@@ -40,5 +40,11 @@ dimension: region {
   sql: ${TABLE}.region ;;
 }
 
+dimension: region_group {
+  type: string
+  sql:CASE WHEN regexp_contains(${TABLE}.region , 'au|nz')
+          THEN 'ANZ'
+          ELSE ${TABLE}.region END;;
+}
 
 }

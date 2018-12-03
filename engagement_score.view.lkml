@@ -32,7 +32,7 @@ FROM
  SELECT DISTINCT
   (fullVisitorId) AS uuid,
   (CASE WHEN cd.index=53 then cd.value else null end) as region,
-  (CASE WHEN cd.index=1 THEN cd.value ELSE NULL END) AS operating_system,
+  device.operatingSystem  AS operating_system,
   concat(cast(visitId as string),fullVisitorID) as visitidcalc,
   (timestamp_seconds(visitStartTime)) as start_time,
   (TIMESTAMP_MILLIS(1000 * (visitStartTime + totals.timeOnSite ))) AS session_end,
