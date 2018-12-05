@@ -12,7 +12,8 @@ tIMESTAMP_MILLIS(visitStartTime*1000) as gen_time,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events,
 row_number()OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as row_rank,
 sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-11-11 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as launch_numbering,
-sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-11-29 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as intl_launch_numbering
+sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-11-29 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as intl_launch_numbering,
+sum( CASE WHEN tIMESTAMP_MILLIS(visitStartTime*1000) >timestamp('2018-12-05 17:59:01') then 1 ELSE 0 END) OVER(PARTITION BY hcd.value,h.eventinfo.eventAction ORDER BY tIMESTAMP_MILLIS(visitStartTime*1000)) as us_launch_numbering
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
 WHERE SUFFIX BETWEEN '20181111' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
@@ -97,6 +98,11 @@ dimension: intl_launch_numbering {
   sql: ${TABLE}.intl_launch_numbering ;;
 }
 
+dimension: us_launch_numbering {
+  type: number
+  sql: ${TABLE}.us_launch_numbering ;;
+}
+
   dimension_group: second_post {
     type:time
     timeframes: [time,date,raw]
@@ -123,6 +129,13 @@ dimension: intl_launch_numbering {
     timeframes: [time,date,raw]
     convert_tz: no
     sql:min(CASE WHEN (${intl_launch_numbering}=2 AND ${events}='connect_post' ) THEN ${TABLE}.gen_time end);;
+  }
+
+  measure: second_post_us_launch {
+    type:time
+    timeframes: [time,date,raw]
+    convert_tz: no
+    sql:min(CASE WHEN (${us_launch_numbering}=2 AND ${events}='connect_post' ) THEN ${TABLE}.gen_time end);;
   }
 
   measure: first_visit_test {
