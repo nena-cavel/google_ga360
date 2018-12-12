@@ -12,7 +12,7 @@ group by 1 ,2,3,4 ;;
   }
 
 dimension_group: date_visited {
-  timeframes: [date,raw]
+  timeframes: [date,raw,week]
   datatype: datetime  # was date, but support changed it to datetime
   type: time
   convert_tz: no
