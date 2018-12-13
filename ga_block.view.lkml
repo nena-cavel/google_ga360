@@ -157,6 +157,19 @@ view: ga_sessions_base {
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
   }
+
+  dimension: market {
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|uk|ca|ch|au|se|br') THEN ${site_region} ELSE NULL END ;;
+  }
+
+  dimension: signupVersion {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index = 54) ;;
+  }
+
+  dimension: pricingEngine {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index = 57) ;;
+  }
+
   dimension: application_type {
     sql: (SELECT value FROM unnest(${TABLE}.customDimensions) WHERE index=1) ;;
   }
@@ -948,9 +961,7 @@ view: hits_eventInfo_base {
 
 view: customDimensions_base  {
   extension: required
-  dimension: site_region {
-    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
-  }
+
  # dimension: application_type {
    # sql: (select value from UNNEST(${TABLE}.customDimensions) Where index=1) ;;
   #}
