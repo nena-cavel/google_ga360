@@ -6,16 +6,45 @@ view: groups_kpis {
 device.language as market,
 h.appinfo.screenname as screen_name,
 extract(week from tIMESTAMP_MILLIS(visitStartTime*1000)) as gen_time,
+date as gen_date,
 (case when cd.index=12 then cd.value END) as users,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events
 
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
+inner join
+unnest(GENERATE_DATE_ARRAY('2018-11-11', '2018-12-31', INTERVAL 1 week)) as date
+ON EXTRACT( WEEK from tIMESTAMP_MILLIS(visitStartTime*1000)) = extract(week from date)
 WHERE SUFFIX BETWEEN '20181111' AND '20181231'
 AND (case when cd.index=12 then cd.value END) IS NOT NULL
 
-Group by 1,2,3,4,5
+Group by 1,2,3,4,5,6
 ;;
   }
+
+  dimension_group: week_date {
+    timeframes: [date,week,raw]
+    datatype: datetime
+    type: time
+    convert_tz: no
+    sql: timestamp(${TABLE}.gen_date) ;;
+  }
+dimension: country {
+  type: string
+  sql: CASE WHEN ${TABLE}.market = "en-us" THEN "United States"
+  WHEN ${TABLE}.market = "de-de" then "Germany"
+  WHEN ${TABLE}.market = "fr-fr" THEN "France"
+  WHEN ${TABLE}.market = "en-ca" THEN "Canada English"
+  WHEN ${TABLE}.market = "fr-ca" then "Canada French"
+  WHEN ${TABLE}.market = "en-au" then "Australia"
+  WHEN ${TABLE}.market = "en-gb" THEN "UK"
+  WHEN ${TABLE}.market = "nl-nl" THEN "Netherlands"
+  WHEN ${TABLE}.market = "sv-se" THEN "Sweden"
+  WHEN ${TABLE}.market = "en-nz" then "New Zealand"
+  WHEN ${TABLE}.market = "pt-br" THEN "Brazil"
+  WHEN ${TABLE}.market = "de-ch" then "Switzerland"
+  ELSE NULL END;;
+}
+
 
 dimension: session_date {
     type: number

@@ -4,6 +4,7 @@ view: groups_kpi_weekly {
 (case when hcd.index=85 THEN hcd.value ELSE NULL END) as group_id,
 h.eventinfo.eventaction as event,
 device.language as language_market ,
+device.operatingSystem as operating_system,
 EXTRACT( WEEK from tIMESTAMP_MILLIS(visitStartTime*1000)) as gen_time,
 date,
 (case when cd.index=12 then cd.value END) as users,
@@ -14,7 +15,7 @@ unnest(GENERATE_DATE_ARRAY('2018-11-11', '2018-12-31', INTERVAL 1 week)) as date
 ON EXTRACT( WEEK from tIMESTAMP_MILLIS(visitStartTime*1000)) = extract(week from date)
 WHERE SUFFIX BETWEEN '20181111' AND '20181231'
 and length(case when hcd.index=85 THEN hcd.value ELSE NULL END)>1
-GROUP BY 1,2,3,4,5,6 ;;
+GROUP BY 1,2,3,4,5,6,7;;
   }
 dimension_group: week_date {
     timeframes: [date,week,raw]
@@ -26,6 +27,11 @@ dimension_group: week_date {
 dimension: session_date {
   type: number
   sql: ${TABLE}.gen_time ;;
+}
+
+dimension: operating_system {
+  type: string
+  sql: ${TABLE}.operating_system ;;
 }
 
 dimension: group_id {
@@ -71,6 +77,12 @@ measure: more_than_2_posts{
     type: count_distinct
     sql: CASE WHEN (${TABLE}.event = "connect_post" AND ${TABLE}.total_events>2) THen ${TABLE}.group_id END ;;
   }
+  measure: more_than_2_postsorcomments_groups{
+    type: count_distinct
+    sql: CASE WHEN ((${TABLE}.event = "connect_post" or ${TABLE}.event = "connect_comment" or ${TABLE}.event = "connect_reply_to_member")
+      AND ${TABLE}.total_events>2)
+      THen ${TABLE}.group_id END ;;
+  }
   measure: total_posts_avg {
     type: average
     sql: (Case WHEN ${TABLE}.event = "connect_post"  then ${TABLE}.total_events else null end);;
@@ -102,5 +114,22 @@ measure: total_posts_filtered {
 measure: count_of_groups {
   type: count_distinct
   sql: ${TABLE}.group_id ;;
+}
+
+measure: total_groups_by_country {
+  type: max
+  sql: (Case WHEN ${TABLE}.language_market = "en-US" THEN 60
+  WHEN ${TABLE}.language_market = "en-GB" THEN 38
+  WHEN ${TABLE}.language_market = "pr-BR" THEN 29
+  WHEN ${TABLE}.language_market = "de-DE" THEN 27
+  WHEN ${TABLE}.language_market = "sv-SE" THEN 25
+  WHEN ${TABLE}.language_market = "fr-CA" THEN 25
+  WHEN ${TABLE}.language_market = "en-CA" THEN 24
+  WHEN ${TABLE}.language_market = "en-AU" THEN 24
+  WHEN ${TABLE}.language_market = "nl-NL" THEN 22
+  WHEN ${TABLE}.language_market = "fr-FR" THEN 22
+  WHEN ${TABLE}.language_market = "de-CH" THEN 22
+  WHEN ${TABLE}.language_market = "fr-BE" THEN 22
+  ELSE 391 end);;
 }
 }
