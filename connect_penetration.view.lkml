@@ -15,7 +15,7 @@ SELECT DISTINCT
 COUNT ( DISTINCT(CASE WHEN regexp_contains(h.appinfo.screenName, '^connect_') then fullvisitorID END)) AS connect_traffic,
 COUNT (DIStinct (CASE WHEN regexp_contains(h.appinfo.screenName, 'food_dashboard') then fullvisitorID end)) AS all_users
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` , unnest(customdimensions) as cd, unnest(hits) as h
-WHERE SUFFIX Between '20180201'AND '20181230'
+WHERE SUFFIX Between '20180101'AND '20181230'
 GROUP BY 1,2
 ) data
 WHERE regexp_contains(region, 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz') ;;
