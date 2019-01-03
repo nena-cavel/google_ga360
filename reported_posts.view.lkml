@@ -90,7 +90,7 @@ group by 1,2) auto
 ON (subquery.locale = auto.locale
   AND EXTRACT (Month FROM subquery.date_created) = auto.month)
 INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-01-01', '2018-12-31', INTERVAL 1 MONTH)) as date
+unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
 ON EXTRACT (Month FROM subquery.date_created) = extract(month from date)
 GROUP BY 1,2;;
   }
