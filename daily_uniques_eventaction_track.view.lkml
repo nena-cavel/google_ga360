@@ -21,7 +21,7 @@ GROUP BY 1
 union distinct
 
 select *
-from `wwi-data-playground-3.jleavitt.daily_uniques_eventaction_track_copy2`
+from `wwi-data-playground-3.jleavitt.daily_uniques_eventaction_track_base`
 
 ORDER BY 1 desc ;;
   }
