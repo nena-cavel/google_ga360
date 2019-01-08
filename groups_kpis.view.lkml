@@ -12,9 +12,9 @@ COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as
 
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
 inner join
-unnest(GENERATE_DATE_ARRAY('2018-11-11', '2018-12-31', INTERVAL 1 week)) as date
+unnest(GENERATE_DATE_ARRAY('2018-11-11', '2019-12-31', INTERVAL 1 week)) as date
 ON EXTRACT( WEEK from tIMESTAMP_MILLIS(visitStartTime*1000)) = extract(week from date)
-WHERE SUFFIX BETWEEN '20181111' AND '20181231'
+WHERE SUFFIX BETWEEN '20181111' AND '20191231'
 AND (case when cd.index=12 then cd.value END) IS NOT NULL
 
 Group by 1,2,3,4,5,6
