@@ -21,7 +21,7 @@ COUNT(DISTINCT (CASE WHEN (h.type = 'EVENT' AND h.eventinfo.eventaction = 'conne
 COUNT(CASE WHEN (h.appinfo.screenname = 'connect_load_more_trending' AND h.type='APPVIEW' ) THEN h.appinfo.screenname end) as post_loads,
 COUNT(DISTINCT (CASE WHEN regexp_contains(h.appinfo.screenName, 'food_dashboard') then fullvisitorID end)) AS all_users
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` , unnest(customdimensions) as cd, unnest(hits) as h
-WHERE SUFFIX Between '20181001'AND '20181230'
+WHERE SUFFIX Between '20181001'AND '20191230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
 group by 1 ,2 ;;
   }dimension_group: date {
