@@ -91,9 +91,9 @@ explore: connect_daily_counts {
 }
 
 explore: groups_kpis {
-  persist_for: "48 hours"
+  persist_for: "96 hours"
 }
 
 explore: groups_kpi_weekly {
-persist_for: "48 hours"
+persist_for: "96 hours"
 }
