@@ -159,7 +159,8 @@ view: ga_sessions_base {
   }
 
   dimension: market {
-    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|uk|ca|ch|au|se|br') THEN ${site_region} ELSE NULL END ;;
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
+          CASE WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
 
   dimension: signupVersion {
