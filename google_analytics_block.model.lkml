@@ -22,6 +22,12 @@ explore: ga_sessions {
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
  }
+  join: b2b_signup_funnel {
+    from: b2b_signup_funnel
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
+  }
 }
 
 
