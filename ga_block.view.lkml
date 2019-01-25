@@ -160,7 +160,7 @@ view: ga_sessions_base {
 
   dimension: market {
     sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
-          CASE WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
+       WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
 
   dimension: signupVersion {
@@ -298,6 +298,7 @@ view: ga_sessions_base {
       REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-best-plain-fat-free-yogurt') OR
       REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-italian-restaurant-italian-food-guide');;
   }
+
 
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
@@ -513,17 +514,26 @@ view: totals_base {
   }
   measure: screenViews_total {
     label: "Screen Views Total"
-    type: sum
+    type: count_distinct
+    sql_distinct_key: concat(${ga_sessions.id}, ${hits.id});;
     sql: ${TABLE}.screenViews ;;
   }
   measure: timeOnScreen_total{
     label: "Time On Screen Total"
     type: sum
+    sql_distinct_key: concat(${hits.id},${hits_appInfo.screenName});;
     sql: ${TABLE}.timeOnScreen ;;
+  }
+
+  measure: average_timeOnScreen {
+    label: "Average Time on Screen"
+    type: number
+    sql: 1.0 * (${timeOnScreen_total}/${uniqueScreenViews_total} );;
   }
   measure: uniqueScreenViews_total {
     label: "Unique Screen Views Total"
-    type: sum
+    type: count_distinct
+  #  sql_distinct_key:${hits.id};;
     sql: ${TABLE}.uniqueScreenViews ;;
   }
   dimension: timeOnScreen_total_unique{
