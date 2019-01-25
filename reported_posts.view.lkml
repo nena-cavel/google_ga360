@@ -74,7 +74,7 @@ payload_post.flags_count AS flagged_count,
 payload_post.invisible AS is_invisible,
 payload_post.updated_at AS date_updated,
 ROW_NUMBER() OVER(PARTITION BY payload_post.uuid order by payload_post.updated_at DESC) as row_rank
-FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Post`
+FROM `wwi-datalake-1.wwi_events_pond.connect_Post`
 WHERE payload_post.is_deleted IS FALSE
 AND payload_post.updated_at > TIMESTAMP('2018-01-01 00:00:01')
 and headers_action = 'Update'

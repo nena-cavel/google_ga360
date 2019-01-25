@@ -1,20 +1,22 @@
 view: groups_kpis {
-  derived_table: {
+  derived_table:
+  {
+    sql_trigger_value: SELECT MAX(SUFFIX)
+    FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` ;;
     sql:
    SELECT DISTINCT
 (case when hcd.index=85 THEN hcd.value ELSE NULL END) as group_id,
 device.language as market,
 h.appinfo.screenname as screen_name,
-extract(week from tIMESTAMP_MILLIS(visitStartTime*1000)) as gen_time,
 date as gen_date,
 (case when cd.index=12 then cd.value END) as users,
 COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_events
 
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h, unnest(h.customdimensions) as hcd
 inner join
-unnest(GENERATE_DATE_ARRAY('2018-11-11', '2019-12-31', INTERVAL 1 week)) as date
+unnest(GENERATE_DATE_ARRAY('2018-11-11', '2018-11-18', INTERVAL 1 week)) as date
 ON EXTRACT( WEEK from tIMESTAMP_MILLIS(visitStartTime*1000)) = extract(week from date)
-WHERE SUFFIX BETWEEN '20181111' AND '20191231'
+WHERE SUFFIX BETWEEN '20181111' AND '20181111'
 AND (case when cd.index=12 then cd.value END) IS NOT NULL
 
 Group by 1,2,3,4,5,6

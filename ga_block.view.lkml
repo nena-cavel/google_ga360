@@ -915,6 +915,17 @@ view: hits_customDimensions_base {
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
   }
 
+  dimension: group_id {
+    type: string
+    sql: CASE WHEN ${index} = 85 THEN ${value} ELSE NULL END ;;
+  }
+
+  measure: groups_users {
+    type: count_distinct
+    sql: (CASE WHEN length(${group_id})>5 then ${memberID} end) ;;
+
+  }
+
   dimension: value {}
  # dimension: application_type {
  #   type: string

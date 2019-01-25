@@ -66,9 +66,9 @@ sql_table_name: (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SU
   #   sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=2) ;;
   # }
 
-  # dimension: custom_dimension_3 {
-  #   sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=3) ;;
-  # }
+#   dimension: custom_dimension_3 {
+#     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=3) ;;
+#   }
 }
 
 view: geoNetwork {
@@ -165,10 +165,15 @@ view: hits_product {
 #  extends: [hits_product_customdimensions_base]
 #}
 view: hits_customDimensions {
-  extends: [hits_customDimensions_base]
+ extends: [hits_customDimensions_base]
+ # dimension: group_id {
+  #  sql: (SELECT value FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`.hits.customDimensions WHERE index=85) ;;
+ # }
+
 }
 
 view: hits_customVariables {
+
   extends: [hits_customVariables_base]
 }
 

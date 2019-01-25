@@ -81,6 +81,7 @@ GROUP BY 1,2,3 ;;
   measure: profile_views {
     type: sum
     sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_1
   }
 
   dimension: profile_views_dim {
@@ -91,6 +92,7 @@ GROUP BY 1,2,3 ;;
   measure: comment_views {
     type: sum
     sql: ${TABLE}.comment_views ;;
+    value_format_name: decimal_1
   }
 
   dimension: comment_views_dim {
@@ -100,36 +102,43 @@ GROUP BY 1,2,3 ;;
   measure: hashtag_views {
     type: sum
     sql: ${TABLE}.hashtag_views ;;
+    value_format_name: decimal_1
   }
 
   measure: see_more_of_posts {
     type: sum
     sql: ${TABLE}.see_more_of_posts ;;
+    value_format_name: decimal_1
   }
 
   measure: comments {
     type: sum
     sql: ${TABLE}.comments ;;
+    value_format_name: decimal_1
   }
   measure: follows {
     type: sum
     sql: ${TABLE}.follows ;;
+    value_format_name: decimal_1
   }
 
   measure: likes {
     type: sum
     sql: ${TABLE}.likes ;;
+    value_format_name: decimal_1
   }
 measure: eng_score {
   type:  average
   precision: 1
   sql: ${TABLE}.engagement_score ;;
+  value_format_name: decimal_1
 }
 
   measure: eng_score_sum {
     type:  sum
     precision: 1
     sql: ${TABLE}.engagement_score ;;
+    value_format_name: decimal_1
   }
 
 }
