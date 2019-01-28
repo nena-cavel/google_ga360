@@ -1,5 +1,6 @@
 view: engagement_score {
   derived_table: {
+    persist_for: "72 hours"
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
 region,
