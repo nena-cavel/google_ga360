@@ -1,5 +1,6 @@
 view: reported_posts {
   derived_table: {
+    persist_for: "72 hours"
     sql:
     SELECT DISTINCT
 date as month,
@@ -26,7 +27,7 @@ payload_post.invisible AS is_invisible,
 extract(date from payload_post.created_at) as date_created,
 payload_post.updated_at  AS date_updated,
 ROW_NUMBER() OVER(PARTITION BY payload_post.uuid  order by payload_post.updated_at desc ) as row_rank
-FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Post`
+FROM `wwi-datalake-1.wwi_events_pond.connect_Post`
 WHERE payload_post.is_deleted IS FALSE
 AND payload_post.updated_at  > TIMESTAMP('2018-01-01 00:00:01')
 #and headers_action = 'Update'
@@ -56,7 +57,7 @@ payload_post.flags_count AS flagged_count,
 payload_post.invisible AS is_invisible,
 payload_post.updated_at AS date_updated,
 ROW_NUMBER() OVER(PARTITION BY payload_post.uuid order by payload_post.updated_at DESC) as row_rank
-FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Post`
+FROM `wwi-datalake-1.wwi_events_pond.connect_Post`
 WHERE payload_post.is_deleted IS FALSE
 AND payload_post.updated_at > TIMESTAMP('2018-01-01 00:00:01')
 and headers_action = 'Update'
@@ -100,6 +101,25 @@ dimension: market {
   type: string
   drill_fields: [market]
   sql: ${TABLE}.locale ;;
+}
+
+dimension: market_name {
+  type: string
+  drill_fields: [market]
+  sql: (CASE WHEN ${TABLE}.locale = 'sv-SE' then 'Sweden'
+  WHEN regexp_contains(${TABLE}.locale , 'nl-NL|nl-BE') THEN 'Netherlands'
+  WHEN ${TABLE}.locale = 'de-CH' THEN 'Swiss-German'
+  WHEN ${TABLE}.locale = 'pt-BR' then 'Brazil'
+  WHEN ${TABLE}.locale = 'de-DE' then 'Germany'
+  WHEN ${TABLE}.locale = 'en-AU' then 'ANZ'
+  WHEN ${TABLE}.locale = 'en-GB' THEN 'UK'
+  WHEN ${TABLE}.locale = 'fr-CA' THEN 'Fr-Canada'
+  WHEN ${TABLE}.locale = 'en-US' then 'US'
+  WHEN ${TABLE}.locale = 'fr-CH' THEN 'Fr-Swiss'
+  WHEN ${TABLE}.locale = 'fr-FR' then 'France'
+  WHEN ${TABLE}.locale = 'en-CA' Then 'En-Canada'
+  WHEN ${TABLE}.locale = 'fr-BE' THEN 'Belgium'
+  END) ;;
 }
 
 dimension_group: month  {
