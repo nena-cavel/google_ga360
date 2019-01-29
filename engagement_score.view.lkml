@@ -5,6 +5,11 @@ view: engagement_score {
 subquery.test_date as session_date,
 region,
 subquery.operating_system as operating_system,
+COUNT(DISTINCT visitidcalc)*
+(AVG(subquery.view_profile)+AVG(subquery.view_comments*2)+AVG(subquery.view_hashtag)
++AVG(subquery.see_more_posts*0.1)+AVG(subquery.comments*4)+AVG(subquery.follow*2)
++AVG(subquery.likes*2)) as eng_count,
+COUNT(DISTINCT visitidcalc) as session_count,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
 AVG(subquery.view_hashtag) as hashtag_views,
@@ -54,6 +59,7 @@ FROM
 
   GROUP BY 1,2,3,4
   ) subquery
+  where subquery.operating_system NOT LIKE 'BlackBerry'
 GROUP BY 1,2,3 ;;
   }
 
@@ -84,6 +90,13 @@ GROUP BY 1,2,3 ;;
     sql: ${TABLE}.profile_views ;;
     value_format_name: decimal_1
   }
+
+  measure: med_profile_views {
+    type: median
+    sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_1
+  }
+
 
   dimension: profile_views_dim {
     type:  number
@@ -117,8 +130,32 @@ GROUP BY 1,2,3 ;;
     sql: ${TABLE}.comments ;;
     value_format_name: decimal_1
   }
+
+  measure: med_comments {
+    type: median
+    sql: ${TABLE}.comments ;;
+    value_format_name: decimal_1
+  }
+
+measure: total_eng_score {
+  type: sum
+  sql: ${TABLE}.eng_count ;;
+}
+
+measure: total_session_count {
+  type: sum
+  sql: ${TABLE}.session_count ;;
+}
+
+
   measure: follows {
     type: sum
+    sql: ${TABLE}.follows ;;
+    value_format_name: decimal_1
+  }
+
+  measure: med_follows {
+    type: median
     sql: ${TABLE}.follows ;;
     value_format_name: decimal_1
   }
@@ -128,12 +165,28 @@ GROUP BY 1,2,3 ;;
     sql: ${TABLE}.likes ;;
     value_format_name: decimal_1
   }
+
+  measure: med_likes {
+    type: median
+    sql: ${TABLE}.likes ;;
+    value_format_name: decimal_1
+  }
+
 measure: eng_score {
   type:  average
   precision: 1
   sql: ${TABLE}.engagement_score ;;
   value_format_name: decimal_1
 }
+
+  measure: eng_score_median {
+    type:  median
+    precision: 1
+    sql: ${TABLE}.engagement_score ;;
+    value_format_name: decimal_1
+  }
+
+
 
   measure: eng_score_sum {
     type:  sum
