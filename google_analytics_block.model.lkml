@@ -22,6 +22,12 @@ explore: ga_sessions {
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
  }
+  join: b2b_signup_funnel {
+    from: b2b_signup_funnel
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
+  }
 }
 
 
@@ -35,6 +41,15 @@ explore: connect_penetration {
 
 explore: engagement_score{
   persist_for: "100 hours"
+  join: post_love_score_daily {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${engagement_score.region}=${post_love_score_daily.region}
+      AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
+      and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
+  }
+
+
 }
 
 explore: poster_love {
@@ -73,4 +88,18 @@ explore: reported_posts {
 
 explore: daily_uniques_eventaction_track {}
 
-explore: barcode_scanner_report {}
+explore: barcode_scanner_report {
+  persist_for: "72 hours"
+}
+explore: connect_daily_counts {
+  persist_for: "48 hours"
+
+}
+
+explore: groups_kpis {
+  persist_for: "96 hours"
+}
+
+explore: groups_kpi_weekly {
+persist_for: "96 hours"
+}

@@ -49,6 +49,17 @@ explore: ga_sessions_base {
     sql: LEFT JOIN UNNEST([${hits.transaction}]) as hits_transaction ;;
     relationship: one_to_one
   }
+  join: hits_product {
+    view_label: "Session: Hits: Product"
+    sql: LEFT JOIN UNNEST(${hits.product}) as hits_product ;;
+    relationship: one_to_many
+  }
+
+#  join: hits_product_customdimensions {
+#    sql: LEFT JOIN UNNEST(${hits_product.customDimensions}) as hits_product_customdimensions ;;
+#    relationship: one_to_one
+#  }
+
   join: hits_latency {
     view_label: "Session: Hits: Latency Tracking"
     sql: LEFT JOIN UNNEST([${hits.latencyTracking}]) as hits_latency ;;
@@ -146,6 +157,20 @@ view: ga_sessions_base {
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
   }
+
+  dimension: market {
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
+       WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
+  }
+
+  dimension: signupVersion {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index = 54) ;;
+  }
+
+  dimension: pricingEngine {
+    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index = 57) ;;
+  }
+
   dimension: application_type {
     sql: (SELECT value FROM unnest(${TABLE}.customDimensions) WHERE index=1) ;;
   }
@@ -274,6 +299,7 @@ view: ga_sessions_base {
       REGEXP_CONTAINS(${first_pagename.contentGroup3}, 'visi:(gb|us):article-italian-restaurant-italian-food-guide');;
   }
 
+
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -351,6 +377,7 @@ view: ga_sessions_base {
     type: string
     sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=12);;
   }
+
   dimension: hits {hidden:yes}
   dimension: hits_eventInfo {hidden:yes}
 
@@ -487,17 +514,26 @@ view: totals_base {
   }
   measure: screenViews_total {
     label: "Screen Views Total"
-    type: sum
+    type: count_distinct
+    sql_distinct_key: concat(${ga_sessions.id}, ${hits.id});;
     sql: ${TABLE}.screenViews ;;
   }
   measure: timeOnScreen_total{
     label: "Time On Screen Total"
     type: sum
+    sql_distinct_key: concat(${hits.id},${hits_appInfo.screenName});;
     sql: ${TABLE}.timeOnScreen ;;
+  }
+
+  measure: average_timeOnScreen {
+    label: "Average Time on Screen"
+    type: number
+    sql: 1.0 * (${timeOnScreen_total}/${uniqueScreenViews_total} );;
   }
   measure: uniqueScreenViews_total {
     label: "Unique Screen Views Total"
-    type: sum
+    type: count_distinct
+  #  sql_distinct_key:${hits.id};;
     sql: ${TABLE}.uniqueScreenViews ;;
   }
   dimension: timeOnScreen_total_unique{
@@ -632,6 +668,7 @@ view: hits_base {
   dimension: experiment {hidden: yes}
   dimension: contentGroup {hidden: yes}
   dimension: latencyTracking {hidden: yes}
+  dimension: product {hidden:yes}
 
   set: detail {
     fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits_page.pagePath, hits.pageTitle]
@@ -651,6 +688,25 @@ view: hits_contentGroup_base {
   dimension: contentGroup4 {}
   dimension: contentGroup5 {}
 }
+view: hits_product_base {
+  extension: required
+  dimension: productSKU {}
+  dimension: v2ProductName { hidden:yes}
+  dimension: customDimensions {hidden:yes}
+  dimension: csp {
+   sql: (SELECT value FROM UNNEST(${hits_product.customDimensions}) WHERE index=50) ;;
+
+  }
+}
+#view: hits_product_customdimensions_base {
+#  extension: required
+#  dimension: index {type:number}
+#  dimension: value {}
+#  dimension: csp {
+#    type: string
+#    sql: case WHEN ${index} = 50 THEN ${value} ELSE NULL END;;
+#  }
+#}
 view: hits_page_base {
   extension: required
   dimension: pagePath {
@@ -868,6 +924,18 @@ view: hits_customDimensions_base {
     type: string
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
   }
+
+  dimension: group_id {
+    type: string
+    sql: CASE WHEN ${index} = 85 THEN ${value} ELSE NULL END ;;
+  }
+
+  measure: groups_users {
+    type: count_distinct
+    sql: (CASE WHEN length(${group_id})>5 then ${memberID} end) ;;
+
+  }
+
   dimension: value {}
  # dimension: application_type {
  #   type: string
@@ -915,9 +983,7 @@ view: hits_eventInfo_base {
 
 view: customDimensions_base  {
   extension: required
-  dimension: site_region {
-    sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
-  }
+
  # dimension: application_type {
    # sql: (select value from UNNEST(${TABLE}.customDimensions) Where index=1) ;;
   #}

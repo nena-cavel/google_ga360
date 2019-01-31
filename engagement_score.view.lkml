@@ -1,10 +1,17 @@
 view: engagement_score {
   derived_table: {
-    sql: SELECT
+    persist_for: "72 hours"
+    sql: SELECT DISTINCT
 subquery.test_date as session_date,
 session_calendar.Year AS session_fiscal_year,
 session_calendar.WeekOfYear AS session_fiscal_week,
+region,
 subquery.operating_system as operating_system,
+COUNT(DISTINCT visitidcalc)*
+(AVG(subquery.view_profile)+AVG(subquery.view_comments*2)+AVG(subquery.view_hashtag)
++AVG(subquery.see_more_posts*0.1)+AVG(subquery.comments*4)+AVG(subquery.follow*2)
++AVG(subquery.likes*2)) as eng_count,
+COUNT(DISTINCT visitidcalc) as session_count,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
 AVG(subquery.view_hashtag) as hashtag_views,
@@ -18,6 +25,7 @@ FROM
 SELECT
 visitidcalc,
 CAST(test.start_time AS date) as test_date,
+region,
 test.operating_system as operating_system,
 SUM(CASE WHEN (test.screen_name = 'connect_stream_trending' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_stream,
 SUM(CASE WHEN (test.screen_name = 'connect_profile' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_profile,
@@ -31,7 +39,8 @@ FROM
  (
  SELECT DISTINCT
   (fullVisitorId) AS uuid,
-  (CASE WHEN cd.index=1 THEN cd.value ELSE NULL END) AS operating_system,
+  (CASE WHEN cd.index=53 then cd.value else null end) as region,
+  device.operatingSystem  AS operating_system,
   concat(cast(visitId as string),fullVisitorID) as visitidcalc,
   (timestamp_seconds(visitStartTime)) as start_time,
   (TIMESTAMP_MILLIS(1000 * (visitStartTime + totals.timeOnSite ))) AS session_end,
@@ -42,23 +51,23 @@ FROM
   FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
 
 
-  WHERE SUFFIX Between '20180801'AND '20181231'
+  WHERE SUFFIX Between '20180101'AND '20191231'
   and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
-  GROUP BY 1,2,3,4,5,6,7,8
+  and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
+  GROUP BY 1,2,3,4,5,6,7,8,9
   ) test
 
-  GROUP BY 1,2,3
+  GROUP BY 1,2,3,4
   ) subquery
 
-  LEFT JOIN `wwi-data-playground-3.BQDW.DimDate` session_calendar
+  LEFT JOIN `wwi-datalake-1.CIE_star_schema.DimDate` session_calendar
   ON session_calendar.Date = subquery.test_date
 
-  GROUP BY 1, 2, 3, 4
-;;
+  where subquery.operating_system NOT LIKE 'BlackBerry'
+GROUP BY 1, 2, 3, 4, 5 ;;
 
-    sql_trigger_value: SELECT CURDATE() ;; # regenerate and persist once a day
   }
 
   dimension_group: session_date {
@@ -68,7 +77,18 @@ FROM
     sql: timestamp(${TABLE}.session_date);;
     }
 
-  dimension: operating_system {
+
+  dimension: region {
+    type: string
+    sql: ${TABLE}.region ;;
+  }
+
+  dimension: region_group {
+    type: string
+    sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
+  }
+
+    dimension: operating_system {
       type: string
       sql: ${TABLE}.operating_system;;
     }
@@ -88,7 +108,15 @@ FROM
   measure: profile_views {
     type: sum
     sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_1
   }
+
+  measure: med_profile_views {
+    type: median
+    sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_1
+  }
+
 
   dimension: profile_views_dim {
     type:  number
@@ -98,6 +126,7 @@ FROM
   measure: comment_views {
     type: sum
     sql: ${TABLE}.comment_views ;;
+    value_format_name: decimal_1
   }
 
   dimension: comment_views_dim {
@@ -107,36 +136,83 @@ FROM
   measure: hashtag_views {
     type: sum
     sql: ${TABLE}.hashtag_views ;;
+    value_format_name: decimal_1
   }
 
   measure: see_more_of_posts {
     type: sum
     sql: ${TABLE}.see_more_of_posts ;;
+    value_format_name: decimal_1
   }
 
   measure: comments {
     type: sum
     sql: ${TABLE}.comments ;;
+    value_format_name: decimal_1
   }
+
+  measure: med_comments {
+    type: median
+    sql: ${TABLE}.comments ;;
+    value_format_name: decimal_1
+  }
+
+measure: total_eng_score {
+  type: sum
+  sql: ${TABLE}.eng_count ;;
+}
+
+measure: total_session_count {
+  type: sum
+  sql: ${TABLE}.session_count ;;
+}
+
+
   measure: follows {
     type: sum
     sql: ${TABLE}.follows ;;
+    value_format_name: decimal_1
+  }
+
+  measure: med_follows {
+    type: median
+    sql: ${TABLE}.follows ;;
+    value_format_name: decimal_1
   }
 
   measure: likes {
     type: sum
     sql: ${TABLE}.likes ;;
+    value_format_name: decimal_1
   }
+
+  measure: med_likes {
+    type: median
+    sql: ${TABLE}.likes ;;
+    value_format_name: decimal_1
+  }
+
 measure: eng_score {
   type:  average
   precision: 1
   sql: ${TABLE}.engagement_score ;;
+  value_format_name: decimal_1
 }
+
+  measure: eng_score_median {
+    type:  median
+    precision: 1
+    sql: ${TABLE}.engagement_score ;;
+    value_format_name: decimal_1
+  }
+
+
 
   measure: eng_score_sum {
     type:  sum
     precision: 1
     sql: ${TABLE}.engagement_score ;;
+    value_format_name: decimal_1
   }
 
 }

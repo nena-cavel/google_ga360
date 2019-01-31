@@ -1,25 +1,10 @@
-view: post_love_score_daily {
+view: post_love_daily {
   derived_table: {
     sql:
-sELECT distinct
+    SELECT DISTINCT
 
-date_post_created,
+date,
 post_type,
-(CASE WHEN region = 'fr-CH'
-  THEN 'ch'
-  WHEN region ='de-CH' then 'ch'
-  wheN region = 'nl-BE' THEN 'be'
-  WHEN region ='sv-SE' THEN 'se'
-  WHEN region ='de-DE' then 'de'
-  WHEN region = 'en-GB' then 'gb'
-  WHEN region ='en-US' then 'us'
-  WHEN region = 'fr-FR' then 'fr'
-  WHEN region = 'nl-NL' then 'nl'
-  WHEN region = 'fr-CA' then 'ca'
-  WHEN region = 'fr-BE' THEN 'be'
-  WHEN region = 'en-AU' THEN 'au'
-  WHEN region = 'en-CA' then 'ca'
-  END) as region,
 post_id,
 
 (SUM(
@@ -47,8 +32,7 @@ FROM
 -- note that right now there can be multiple posts with the same uuid (create and update?) which will double up entries. This is probably not desirable? Example shown in comment at bottom
 
   SELECT DISTINCT
-  EXTRACT(date FROM payload_post.created_at) as date_post_created,
-  payload_post.locale as region,
+  EXTRACT(DATE FROM payload_post.created_at) as month_post_created,
   payload_post.subclass as post_type,
   cp.payload_post.uuid AS post_id,
   engagements.engagement_type,
@@ -80,7 +64,7 @@ FROM
 
    ON cp.payload_post.uuid = engagements.uuid
 
-  WHERE payload_post.created_at BETWEEN timestamp('2018-01-01 00:00:01') and timestamp('2018-12-31 23:59:59')
+  WHERE payload_post.created_at BETWEEN timestamp('2018-09-01 00:00:01') and timestamp('2018-12-31 23:59:59')
   AND headers_action = 'Create'
 
 -- for testing
@@ -90,36 +74,27 @@ FROM
 --LIMIT 1000
 
   ) post_engagements
-#INNER JOIN
-#unnest(GENERATE_DATE_ARRAY('2018-07-01', '2018-12-31', INTERVAL 1 MONTH)) as date
-#ON month_post_created = extract(month from date)
-WHERE region is not null
-GROUP BY 1,2,3,4
+INNER JOIN
+unnest(GENERATE_DATE_ARRAY('2018-01-01', '2018-12-31', INTERVAL 1 DAY)) as date
+ON month_post_created = date
+GROUP BY 1,2,3
 
 order by 3 desc
-;;
-}
-  dimension_group: date {
-    timeframes: [date,month,week,month_name,month_num]
+    ;;
+
+
+  }
+  dimension_group: daily_date {
+    timeframes: [date,raw]
     datatype: datetime
     type: time
     convert_tz: no
-    sql: timestamp(${TABLE}.date_post_created) ;;
+    sql: timestamp(${TABLE}.date) ;;
   }
 
   dimension: post_type {
     type:  string
     sql: ${TABLE}.post_type ;;
-  }
-
-  dimension: region {
-    type: string
-    sql: ${TABLE}.region ;;
-  }
-
-  dimension: region_group {
-    type: string
-    sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
   }
 
   measure: likes {
@@ -132,45 +107,6 @@ order by 3 desc
     sql: ${TABLE}.total_likes ;;
   }
 
-  measure: median_likes {
-    type: median
-    sql: ${TABLE}.total_likes ;;
-  }
-  measure: median_comments {
-    type: median
-    sql: ${TABLE}.total_comments ;;
-  }
-  measure: 75_likes {
-    type: percentile
-    percentile: 75
-    sql: ${TABLE}.total_likes ;;
-  }
-  measure: 75_comments {
-    type: percentile
-    percentile: 75
-    sql: ${TABLE}.total_comments ;;
-  }
-
-  measure: 25_likes {
-    type: percentile
-    percentile: 25
-    sql: ${TABLE}.total_likes ;;
-  }
-  measure: 25_comments {
-    type: percentile
-    percentile: 25
-    sql: ${TABLE}.total_comments ;;
-  }
-  measure: 90_likes {
-    type: percentile
-    percentile: 90
-    sql: ${TABLE}.total_likes ;;
-  }
-  measure: 90_comments {
-    type: percentile
-    percentile: 90
-    sql: ${TABLE}.total_comments ;;
-  }
   measure: comments {
     type: sum
     sql: ${TABLE}.total_comments ;;
@@ -198,4 +134,5 @@ order by 3 desc
     type: sum
     sql: ${TABLE}.number_of_posts ;;
   }
+
 }
