@@ -3,6 +3,8 @@ view: engagement_score {
     persist_for: "72 hours"
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
+session_calendar.Year AS session_fiscal_year,
+session_calendar.WeekOfYear AS session_fiscal_week,
 region,
 subquery.operating_system as operating_system,
 COUNT(DISTINCT visitidcalc)*
@@ -59,8 +61,13 @@ FROM
 
   GROUP BY 1,2,3,4
   ) subquery
+
+  LEFT JOIN `wwi-datalake-1.CIE_star_schema.DimDate` session_calendar
+  ON session_calendar.Date = subquery.test_date
+
   where subquery.operating_system NOT LIKE 'BlackBerry'
-GROUP BY 1,2,3 ;;
+GROUP BY 1, 2, 3, 4, 5 ;;
+
   }
 
   dimension_group: session_date {
@@ -69,6 +76,7 @@ GROUP BY 1,2,3 ;;
     convert_tz: no
     sql: timestamp(${TABLE}.session_date);;
     }
+
 
   dimension: region {
     type: string
@@ -84,6 +92,18 @@ GROUP BY 1,2,3 ;;
       type: string
       sql: ${TABLE}.operating_system;;
     }
+
+  dimension: fiscal_week {
+      type: number
+      description: "The fiscal week that the session took place on"
+      sql: ${TABLE}.session_fiscal_week ;;
+    }
+
+  dimension: fiscal_year {
+    type: number
+    description: "The fiscal year that the session took place on"
+    sql: ${TABLE}.session_fiscal_year ;;
+  }
 
   measure: profile_views {
     type: sum
