@@ -66,7 +66,7 @@ FROM
 
    ON cp.payload_post.uuid = engagements.uuid
 
-  WHERE payload_post.created_at BETWEEN timestamp('2018-01-01 00:00:01') and timestamp('2018-12-31 23:59:59')
+  WHERE payload_post.created_at BETWEEN timestamp('2018-01-01 00:00:01') and timestamp('2019-12-31 23:59:59')
   AND headers_action = 'Create'
 
 -- for testing
@@ -77,7 +77,7 @@ FROM
 
   ) post_engagements
 INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-01-01', '2018-12-31', INTERVAL 1 MONTH)) as date
+unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
 ON month_post_created = extract(month from date)
 GROUP BY 1,2,3
 
