@@ -3,8 +3,6 @@ view: engagement_score {
     persist_for: "72 hours"
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
-session_calendar.Year AS session_fiscal_year,
-session_calendar.WeekOfYear AS session_fiscal_week,
 region,
 subquery.operating_system as operating_system,
 COUNT(DISTINCT visitidcalc)*
@@ -49,8 +47,6 @@ FROM
   h.type AS hit_type,
    COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_screenviews
   FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
-
-
   WHERE SUFFIX Between '20180101'AND '20191231'
   and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
@@ -58,15 +54,10 @@ FROM
   and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
   GROUP BY 1,2,3,4,5,6,7,8,9
   ) test
-
   GROUP BY 1,2,3,4
   ) subquery
-
-  LEFT JOIN `wwi-datalake-1.CIE_star_schema.DimDate` session_calendar
-  ON session_calendar.Date = subquery.test_date
-
   where subquery.operating_system NOT LIKE 'BlackBerry'
-GROUP BY 1, 2, 3, 4, 5 ;;
+GROUP BY 1, 2, 3 ;;
 
   }
 
@@ -92,18 +83,6 @@ GROUP BY 1, 2, 3, 4, 5 ;;
       type: string
       sql: ${TABLE}.operating_system;;
     }
-
-  dimension: fiscal_week {
-      type: number
-      description: "The fiscal week that the session took place on"
-      sql: ${TABLE}.session_fiscal_week ;;
-    }
-
-  dimension: fiscal_year {
-    type: number
-    description: "The fiscal year that the session took place on"
-    sql: ${TABLE}.session_fiscal_year ;;
-  }
 
   measure: profile_views {
     type: sum
