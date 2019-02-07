@@ -551,6 +551,7 @@ view: trafficSource_base {
 #   dimension: adwords {}
   dimension: referralPath {label: "Referral Path"}
   dimension: campaign {}
+  dimension: campaignCode {}
   dimension: source {}
   dimension: medium {}
   dimension: keyword {}
