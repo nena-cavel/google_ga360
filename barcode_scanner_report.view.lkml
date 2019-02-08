@@ -1,5 +1,6 @@
 view: barcode_scanner_report {
   derived_table: {
+    persist_for: "72 hours"
     sql:SELECT DISTINCT
 date as gen_date,
 (CASE WHEN cd.index=53 then cd.value END) AS region,
@@ -9,7 +10,8 @@ CONCAT(fullvisitorid, CAST(visitId AS STRING), CAST(h.hitnumber AS STRING)) as t
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 7 day)) as date
-ON EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
+ON (EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
+  AND EXTRACT( year FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(year from date) )
 WHERE SUFFIX Between '20180101'AND '20191231'
 AND REGEXP_CONTAINS(h.eventinfo.eventaction, 'barcodescanner_fooddatabase|barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_foodsnondatabase')
 AND (CASE WHEN cd.index=53 then cd.value END) is not null
@@ -51,5 +53,6 @@ dimension: scan_name_group {
 measure: total_events {
   type: count_distinct
   sql: ${TABLE}.total_events ;;
+  value_format: "0.000,,\" M\""
 }
 }
