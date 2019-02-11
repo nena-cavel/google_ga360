@@ -495,6 +495,7 @@ view: totals_base {
   }
   measure: transactions_count {
     type: sum
+    sql_distinct_key: ${hits_item.transactionId} ;;
     sql: ${TABLE}.transactions ;;
   }
   dimension: transactions {
@@ -693,6 +694,13 @@ view: hits_product_base {
   extension: required
   dimension: productSKU {}
   dimension: v2ProductName { hidden:yes}
+  dimension: Product {
+    label: "Product Name"
+    sql:
+    Case WHEN ${v2ProductName} = 'Franchise Meetings' THEN ${v2ProductName}
+     WHEN REGEXP_Contains(LOWER(${v2ProductName}), 'meetings') THEN 'Studio'
+    WHEN regexp_contains(lower(${v2ProductName}), 'online') THEN 'Digital' ELSE Null END ;;
+  }
   dimension: customDimensions {hidden:yes}
   dimension: csp {
    sql: (SELECT value FROM UNNEST(${hits_product.customDimensions}) WHERE index=50) ;;
