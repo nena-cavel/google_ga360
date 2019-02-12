@@ -494,8 +494,8 @@ view: totals_base {
     value_format_name: percent_2
   }
   measure: transactions_count {
-    type: sum
-    sql_distinct_key: ${hits_item.transactionId} ;;
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
     sql: ${TABLE}.transactions ;;
   }
   dimension: transactions {
@@ -693,13 +693,14 @@ view: hits_contentGroup_base {
 view: hits_product_base {
   extension: required
   dimension: productSKU {}
-  dimension: v2ProductName { hidden:yes}
+  dimension: v2ProductName {}
   dimension: Product {
     label: "Product Name"
     sql:
     Case WHEN ${v2ProductName} = 'Franchise Meetings' THEN ${v2ProductName}
      WHEN REGEXP_Contains(LOWER(${v2ProductName}), 'meetings') THEN 'Studio'
-    WHEN regexp_contains(lower(${v2ProductName}), 'online') THEN 'Digital' ELSE Null END ;;
+    WHEN regexp_contains(lower(${v2ProductName}), 'online') THEN 'Digital'
+    WHEN regexp_contains(lower(${v2ProductName}), 'coaching') THEN 'Coaching' ELSE Null END ;;
   }
   dimension: customDimensions {hidden:yes}
   dimension: csp {
@@ -932,6 +933,11 @@ view: hits_customDimensions_base {
   dimension: memberID {
     type: string
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
+  }
+
+  dimension: productOwned {
+    type: string
+    sql: CASE WHEN ${index} = 10 THEN ${value} ELSE NULL END ;;
   }
 
   dimension: group_id {
