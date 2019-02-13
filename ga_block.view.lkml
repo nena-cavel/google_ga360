@@ -159,6 +159,7 @@ view: ga_sessions_base {
   }
 
   dimension: market {
+    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
     sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
@@ -616,7 +617,10 @@ view: device_base {
   dimension: mobileDeviceMarketingName {label: "Mobile Device Marketing Name"}
   dimension: mobileDeviceModel {label: "Mobile Device Model"}
   dimension: mobileDeviceInputSelector {label: "Mobile Device Input Selector"}
-  dimension: deviceCategory {label: "Device Category"}
+  dimension: deviceCategory {
+    label: "Device Category"
+    suggestions: ["mobile","tablet","desktop"]
+    }
 }
 
 view: hits_base {
