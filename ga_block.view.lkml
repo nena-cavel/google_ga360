@@ -600,7 +600,9 @@ view: device_base {
 
   dimension: browser {}
   dimension: browserVersion {label:"Browser Version"}
-  dimension: operatingSystem {label: "Operating System"}
+  dimension: operatingSystem {
+    label: "Operating System"
+    suggestions: ["iOS","Windows","Android","Macintosh","Linux","Chrome OS"]}
   dimension: operatingSystemVersion {label: "Operating System Version"}
   dimension: isMobile {label: "Is Mobile"
     type: yesno}
