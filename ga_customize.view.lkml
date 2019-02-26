@@ -15,6 +15,14 @@ explore: ga_sessions_block {
 
 view: ga_sessions {
   extends: [ga_sessions_base]
+  measure:  unique_prospects{
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
 
@@ -85,6 +93,11 @@ view: trafficSource {
 
 view: device {
   extends: [device_base]
+  dimension: is_google_analytics {
+    label: "Is Google Analytics"
+    type: yesno
+    sql: ${browser} = 'GoogleAnalytics' ;;
+  }
 }
 
 view: hits {
@@ -93,6 +106,11 @@ view: hits {
 
 view: hits_page {
   extends: [hits_page_base]
+  dimension: is_weightwatchers {
+    label: "Is weightwatchers.com"
+    type: yesno
+    sql: ${pagePath} = 'weightwatchers.com/' ;;
+  }
 }
 
 # -- Ecommerce Fields
@@ -120,6 +138,11 @@ view: hits_publisher {
 
 view: hits_contentGroup {
   extends: [hits_contentGroup_base]
+  dimension: is_sus1 {
+    label: "Is SUS1"
+    type: yesno
+    sql: ${contentGroup3} like 'sign:__:plan';;
+  }
 }
 #  We only want some of the interaction fields.
 
