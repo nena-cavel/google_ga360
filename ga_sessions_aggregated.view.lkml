@@ -25,18 +25,18 @@ view: ga_sessions_weekly {
       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
-#         value: "60 weeks ago for 60 weeks"
-        value: "1 weeks ago for 1 weeks"
+        value: "60 weeks ago for 60 weeks"
+#         value: "1 weeks ago for 1 weeks"
       }
       filters: {
         field: ga_sessions.visitStart_week
-#         value: "60 weeks ago for 60 weeks"
-          value: "1 weeks ago for 1 weeks"
+        value: "60 weeks ago for 60 weeks"
+#           value: "1 weeks ago for 1 weeks"
       }
       filters: {
         field: funnel_growth_dashboard.partition_date
-#         value: "60 weeks ago for 60 weeks"
-        value: "1 weeks ago for 1 weeks"
+        value: "60 weeks ago for 60 weeks"
+#         value: "1 weeks ago for 1 weeks"
       }
 
     }
