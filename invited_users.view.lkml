@@ -16,6 +16,7 @@ view: invited_users {
     type: count_distinct
     sql: ${fullvisitorid} ;;
     drill_fields: [detail*]
+
   }
 
   dimension: date {
@@ -49,3 +50,14 @@ view: invited_users {
     fields: [date, fullvisitorid]
   }
 }
+
+# view: invited_users_left {
+#   extends: [invited_users]
+#   sql_table_name: ${invited_users.SQL_TABLE_NAME} ;;
+#   dimension: iaf {hidden:yes}
+#   dimension: two_days_later {hidden: yes}
+#   dimension: id {hidden: yes}
+#   dimension: fullvisitorid {hidden: yes}
+#   measure: unique_visitors {hidden: yes}
+# }
+# explore: invited_users_left {}

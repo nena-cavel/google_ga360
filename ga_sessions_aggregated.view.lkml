@@ -14,6 +14,7 @@ view: ga_sessions_weekly {
       column: market {}
       column: is_google_analytics { field: device.is_google_analytics }
       column: is_weightwatchers { field: first_page.is_weightwatchers }
+      column: is_sus1 { field: hits_contentGroup.is_sus1 }
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
       column: unique_visitors {}
@@ -25,17 +26,17 @@ view: ga_sessions_weekly {
       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
-        value: "60 weeks ago for 60 weeks"
+        value: "70 weeks ago for 70 weeks"
 #         value: "1 weeks ago for 1 weeks"
       }
       filters: {
         field: ga_sessions.visitStart_week
-        value: "60 weeks ago for 60 weeks"
+        value: "70 weeks ago for 70 weeks"
 #           value: "1 weeks ago for 1 weeks"
       }
       filters: {
         field: funnel_growth_dashboard.partition_date
-        value: "60 weeks ago for 60 weeks"
+        value: "70 weeks ago for 70 weeks"
 #         value: "1 weeks ago for 1 weeks"
       }
 
@@ -59,6 +60,11 @@ view: ga_sessions_weekly {
   dimension: is_weightwatchers {
     view_label: "Session:First Page Visited"
     label: "Is weightwatchers.com"
+    type: yesno
+  }
+  dimension: is_sus1 {
+    view_label: "Session"
+    label: "Is SUS1 (Yes / No)"
     type: yesno
   }
   dimension: deviceCategory {

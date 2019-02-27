@@ -16,12 +16,21 @@ explore: ga_sessions {
   }
  join: invited_users {
    from: invited_users
-   type: inner
+   type: left_outer
    relationship: one_to_one
    sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
  }
+# join: invited_users_left {
+#   from: invited_users
+#   type: left_outer
+#   relationship: one_to_one
+#   sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
+#       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
+#       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
+#
+# }
   join: b2b_signup_funnel {
     from: b2b_signup_funnel
     type: inner
