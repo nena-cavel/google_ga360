@@ -14,7 +14,7 @@ view: ga_sessions_weekly {
       column: market {}
       column: is_google_analytics { field: device.is_google_analytics }
       column: is_weightwatchers { field: first_page.is_weightwatchers }
-      column: is_sus1 { field: hits_contentGroup.is_sus1 }
+      column: sus1_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
       column: unique_visitors {}
@@ -62,11 +62,7 @@ view: ga_sessions_weekly {
     label: "Is weightwatchers.com"
     type: yesno
   }
-  dimension: is_sus1 {
-    view_label: "Session"
-    label: "Is SUS1 (Yes / No)"
-    type: yesno
-  }
+
   dimension: deviceCategory {
     view_label: "Session"
     label: "Device Category"
@@ -79,6 +75,11 @@ view: ga_sessions_weekly {
   measure: unique_visitors {
     view_label: "Session"
     label: "Unique Visitors"
+    type: sum
+  }
+  measure: sus1_visitors {
+    view_label: "Session"
+    label: "SUS1 Visitors"
     type: sum
   }
   measure: count_sessions_event1 {
