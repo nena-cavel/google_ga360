@@ -15,6 +15,7 @@ view: ga_sessions_weekly {
       column: is_google_analytics { field: device.is_google_analytics }
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
+      column: homepage_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
       column: unique_visitors {}
@@ -80,6 +81,11 @@ view: ga_sessions_weekly {
   measure: sus1_visitors {
     view_label: "Session"
     label: "SUS1 Visitors"
+    type: sum
+  }
+  measure: homepage_visitors {
+    view_label: "Session"
+    label: "Homepage Visitors"
     type: sum
   }
   measure: count_sessions_event1 {
