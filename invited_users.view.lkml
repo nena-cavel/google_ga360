@@ -45,19 +45,14 @@ view: invited_users {
   type: string
   sql: DATETIME_ADD(${iaf}, INTERVAL 2 DAY);;
  }
+  parameter: left_join {
+    hidden: yes
+    type: string
+    allowed_value: { value: "Yes" }
+    allowed_value: { value: "No" }
+  }
 
   set: detail {
     fields: [date, fullvisitorid]
   }
 }
-
-# view: invited_users_left {
-#   extends: [invited_users]
-#   sql_table_name: ${invited_users.SQL_TABLE_NAME} ;;
-#   dimension: iaf {hidden:yes}
-#   dimension: two_days_later {hidden: yes}
-#   dimension: id {hidden: yes}
-#   dimension: fullvisitorid {hidden: yes}
-#   measure: unique_visitors {hidden: yes}
-# }
-# explore: invited_users_left {}
