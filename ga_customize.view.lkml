@@ -154,6 +154,16 @@ view: hits_eventInfo {
     sql: ${eventAction} = "play" ;;
     type: yesno
   }
+  dimension: card_name {
+    sql: case when ${eventAction} = 'food_card_mindset' then 'Head Space'
+              when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
+              when ${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
+                       'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals') then 'Recipe Tenure'
+              -- Continue with the rest of the cards
+              else 'Other' end
+              ;;
+    suggestions: ["Head Space", "Aaptiv", "Recipe Tenure"]
+  }
 }
 
 view: hits_product {
