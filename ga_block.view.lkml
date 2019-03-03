@@ -516,9 +516,8 @@ view: totals_base {
   }
   measure: screenViews_total {
     label: "Screen Views Total"
-    type: count_distinct
+    type: count
     sql_distinct_key: concat(${ga_sessions.id}, ${hits.id});;
-    sql: ${TABLE}.screenViews ;;
   }
   measure: timeOnScreen_total{
     label: "Time On Screen Total"
@@ -635,6 +634,7 @@ view: hits_base {
     type: number
   }
   dimension: type {}
+  dimension: isexit { type:yesno}
   dimension: time {}
   dimension_group: hit {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -1011,4 +1011,8 @@ view: customDimensions_base  {
 
 
 
+}
+
+datagroup: daily_cache {
+  sql_trigger: select extract(day FROM current_date) ;;
 }

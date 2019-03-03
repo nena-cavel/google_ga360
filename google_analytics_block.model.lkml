@@ -14,14 +14,22 @@ explore: ga_sessions {
     relationship:  one_to_one
     sql_on: ${ga_sessions.funnelid}=${funnel_growth_dashboard.id} ;;
   }
- join: invited_users {
-   from: invited_users
-   type: left_outer
-   relationship: one_to_one
-   sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
+  join: invited_users {
+    from: invited_users
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
- }
+# The following toggle allows you to change the join type from Left to inner.
+# Setting  ${invited_users.fullvisitorid} to not null makes the join an inner join.
+# Setting 1=1 removes the filter and changes the join type to left outer.
+      sql_where: {% if invited_users.left_join._parameter_value == "'Yes'" %}
+                            1=1
+                        {% else %}
+          ${invited_users.fullvisitorid} is not null
+                        {% endif %};;
+    }
 # join: invited_users_left {
 #   from: invited_users
 #   type: left_outer
@@ -31,80 +39,80 @@ explore: ga_sessions {
 #       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
 #
 # }
-  join: b2b_signup_funnel {
-    from: b2b_signup_funnel
-    type: inner
-    relationship:  one_to_one
-    sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
-  }
-}
-
-
-explore: dau_mau_derived {
-persist_for: "72 hours"
-}
-
-explore: connect_penetration {
-  persist_for: "72 hours"
-}
-
-explore: engagement_score{
-  persist_for: "100 hours"
-  join: post_love_score_daily {
-    type: inner
-    relationship: one_to_one
-    sql_on: ${engagement_score.region}=${post_love_score_daily.region}
-      AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
-      and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
+    join: b2b_signup_funnel {
+      from: b2b_signup_funnel
+      type: inner
+      relationship:  one_to_one
+      sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
+    }
   }
 
 
-}
+  explore: dau_mau_derived {
+    persist_for: "72 hours"
+  }
 
-explore: poster_love {
-  persist_for: "72 hours"
-}
+  explore: connect_penetration {
+    persist_for: "72 hours"
+  }
 
-explore:rewards_prize_views_20180910 {
-  persist_for: "24 hours"
-}
-
-explore: rewards_onboarding_fullscreen_views {
-  persist_for: "24 hours"
-}
-
-explore: rewards_tracking_on_7 {
-  persist_for: "24 hours"
-}
-
-explore: post_love_score_daily {
-  persist_for: "48 hours"
-}
-
-explore: groups_launch {
-  persist_for: "48 hours"
-
-}
-
-explore: reported_posts {
-  persist_for: "48 hours"
-}
+  explore: engagement_score{
+    persist_for: "100 hours"
+    join: post_love_score_daily {
+      type: inner
+      relationship: one_to_one
+      sql_on: ${engagement_score.region}=${post_love_score_daily.region}
+              AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
+              and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
+    }
 
 
-explore: daily_uniques_eventaction_track {}
+  }
 
-explore: barcode_scanner_report {
-  persist_for: "72 hours"
-}
-explore: connect_daily_counts {
-  persist_for: "48 hours"
+  explore: poster_love {
+    persist_for: "72 hours"
+  }
 
-}
+  explore:rewards_prize_views_20180910 {
+    persist_for: "24 hours"
+  }
 
-explore: groups_kpis {
-  persist_for: "96 hours"
-}
+  explore: rewards_onboarding_fullscreen_views {
+    persist_for: "24 hours"
+  }
 
-explore: groups_kpi_weekly {
-persist_for: "96 hours"
-}
+  explore: rewards_tracking_on_7 {
+    persist_for: "24 hours"
+  }
+
+  explore: post_love_score_daily {
+    persist_for: "48 hours"
+  }
+
+  explore: groups_launch {
+    persist_for: "48 hours"
+
+  }
+
+  explore: reported_posts {
+    persist_for: "48 hours"
+  }
+
+
+  explore: daily_uniques_eventaction_track {}
+
+  explore: barcode_scanner_report {
+    persist_for: "72 hours"
+  }
+  explore: connect_daily_counts {
+    persist_for: "48 hours"
+
+  }
+
+  explore: groups_kpis {
+    persist_for: "96 hours"
+  }
+
+  explore: groups_kpi_weekly {
+    persist_for: "96 hours"
+  }
