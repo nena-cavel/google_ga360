@@ -23,6 +23,18 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+  measure:  unique_funnel_prospects{
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
+    filters: {
+      field: funnelProspect
+      value: "yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
   measure: sus1_visitors {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -31,13 +43,25 @@ view: ga_sessions {
       value: "yes"
     }
   }
-    measure: homepage_visitors {
-      type: count_distinct
-      sql: ${fullVisitorId} ;;
-      filters: {
-        field: hits_contentGroup.is_homepage
-        value: "yes"
-      }
+  measure: homepage_visitors {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_contentGroup.is_homepage
+      value: "yes"
+    }
+  }
+  measure: homepage_prospect_visitors {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_contentGroup.is_homepage
+      value: "yes"
+    }
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
   }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.

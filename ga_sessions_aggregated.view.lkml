@@ -16,9 +16,12 @@ view: ga_sessions_weekly {
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
       column: homepage_visitors {}
+      column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
+      column: unique_funnel_prospects {}
       column: unique_visitors {}
+      column: transactions_count { field: totals.transactions_count }
       column: count_sessions_event1 { field: funnel_growth_dashboard.count_sessions_event1_prospects }
       column: count_sessions_event12 { field: funnel_growth_dashboard.count_sessions_event12_prospects }
       column: count_sessions_event123 { field: funnel_growth_dashboard.count_sessions_event123_prospects }
@@ -63,14 +66,23 @@ view: ga_sessions_weekly {
     label: "Is weightwatchers.com"
     type: yesno
   }
-
   dimension: deviceCategory {
     view_label: "Session"
     label: "Device Category"
   }
+  measure: transactions_count {
+    view_label: "Session"
+    label: "Session Transactions Count"
+    type: sum
+  }
   measure: unique_prospects {
     view_label: "Session"
     label: "Unique Prospects"
+    type: sum
+  }
+  measure: unique_funnel_prospects {
+    view_label: "Session"
+    label: "Unique Funnel Prospects"
     type: sum
   }
   measure: unique_visitors {
@@ -86,6 +98,11 @@ view: ga_sessions_weekly {
   measure: homepage_visitors {
     view_label: "Session"
     label: "Homepage Visitors"
+    type: sum
+  }
+  measure: homepage_prospect_visitors {
+    view_label: "Session"
+    label: "Homepage Prspect Visitors"
     type: sum
   }
   measure: count_sessions_event1 {
