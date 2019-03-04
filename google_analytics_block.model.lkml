@@ -6,6 +6,18 @@ week_start_day: sunday
 # include all the dashboards
 include: "*.dashboard"
 
+#### DATAGROUPS
+
+datagroup: weekly_cache {
+  sql_trigger: select EXTRACT(ISOWEEK FROM CURRENT_DATE('America/New_York')) ;;
+}
+
+datagroup: daily_sessions_cache {
+  sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
+}
+
+#### EXPLORES
+
 explore: ga_sessions {
   extends: [ga_sessions_block]
   join: funnel_growth_dashboard {
@@ -66,7 +78,6 @@ explore: ga_sessions {
               and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
     }
 
-
   }
 
   explore: poster_love {
@@ -116,3 +127,8 @@ explore: ga_sessions {
   explore: groups_kpi_weekly {
     persist_for: "96 hours"
   }
+
+explore: ga_sessions_weekly {
+  persist_with: weekly_cache
+  description: "Aggregates key GA metrics to the weekly level"
+}

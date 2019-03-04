@@ -1,10 +1,4 @@
-datagroup: weekly_cache {
-  sql_trigger: select EXTRACT(ISOWEEK FROM CURRENT_DATE('America/New_York')) ;;
-}
 
-datagroup: daily_sessions_cache {
-  sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
-}
 view: ga_sessions_weekly {
   derived_table: {
     datagroup_trigger: weekly_cache
@@ -253,7 +247,5 @@ view: ga_sessions_daily {
     type: sum
   }
 }
-explore: ga_sessions_weekly {
-  persist_with: weekly_cache
-}
-explore: ga_sessions_daily {}
+
+# explore: ga_sessions_daily {}
