@@ -2,7 +2,7 @@ datagroup: weekly_cache {
   sql_trigger: select EXTRACT(ISOWEEK FROM CURRENT_DATE('America/New_York')) ;;
 }
 
-datagroup: daily_cache {
+datagroup: daily_sessions_cache {
   sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
 }
 view: ga_sessions_weekly {
@@ -148,7 +148,7 @@ view: ga_sessions_weekly {
 
 view: ga_sessions_daily {
   derived_table: {
-    datagroup_trigger: daily_cache
+    datagroup_trigger: daily_sessions_cache
     explore_source: ga_sessions {
       timezone: "America/New_York"
       column: visitStart_date {}
