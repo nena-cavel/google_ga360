@@ -917,6 +917,12 @@ view: hits_appInfo_base {
   dimension: appVersion {}
   dimension: appId {}
   dimension: screenName {}
+  dimension: gxp_screens {
+    hidden: yes
+    suggestions: ["gxp_welcome","gxp_overview","gxp_food","gxp_activity","gxp_connect","gxp_rewards"]
+    sql: ${screenName}
+    ;;
+  }
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
