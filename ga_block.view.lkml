@@ -1013,6 +1013,6 @@ view: customDimensions_base  {
 
 }
 
-datagroup: daily_cache {
-  sql_trigger: select extract(day FROM current_date) ;;
-}
+# datagroup: daily_cache {
+#   sql_trigger: select extract(day FROM current_date) ;;
+# }
