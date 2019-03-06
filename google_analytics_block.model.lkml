@@ -77,7 +77,6 @@ explore: ga_sessions {
               AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
               and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
     }
-
   }
 
   explore: poster_love {
@@ -96,7 +95,6 @@ explore: ga_sessions {
   explore: reported_posts {
     persist_for: "48 hours"
   }
-
 
   explore: daily_uniques_eventaction_track {
     hidden: yes
