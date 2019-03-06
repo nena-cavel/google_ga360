@@ -77,23 +77,10 @@ explore: ga_sessions {
               AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
               and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
     }
-
   }
 
   explore: poster_love {
     persist_for: "72 hours"
-  }
-
-  explore:rewards_prize_views_20180910 {
-    persist_for: "24 hours"
-  }
-
-  explore: rewards_onboarding_fullscreen_views {
-    persist_for: "24 hours"
-  }
-
-  explore: rewards_tracking_on_7 {
-    persist_for: "24 hours"
   }
 
   explore: post_love_score_daily {
@@ -109,8 +96,13 @@ explore: ga_sessions {
     persist_for: "48 hours"
   }
 
+  explore: daily_uniques_eventaction_track {
+    hidden: yes
+  }
 
-  explore: daily_uniques_eventaction_track {}
+  explore: rewards_prize_views_20180910 {
+    persist_for: "24 hours"
+  }
 
   explore: barcode_scanner_report {
     persist_for: "72 hours"
