@@ -100,6 +100,10 @@ explore: ga_sessions {
     hidden: yes
   }
 
+  explore: rewards_prize_views_20180910 {
+    persist_for: "24 hours"
+  }
+
   explore: barcode_scanner_report {
     persist_for: "72 hours"
   }
