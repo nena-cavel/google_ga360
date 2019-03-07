@@ -159,6 +159,7 @@ view: ga_sessions_base {
   }
 
   dimension: market {
+    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
     sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
@@ -494,7 +495,8 @@ view: totals_base {
     value_format_name: percent_2
   }
   measure: transactions_count {
-    type: sum
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
     sql: ${TABLE}.transactions ;;
   }
   dimension: transactions {
@@ -514,9 +516,8 @@ view: totals_base {
   }
   measure: screenViews_total {
     label: "Screen Views Total"
-    type: count_distinct
+    type: count
     sql_distinct_key: concat(${ga_sessions.id}, ${hits.id});;
-    sql: ${TABLE}.screenViews ;;
   }
   measure: timeOnScreen_total{
     label: "Time On Screen Total"
@@ -598,7 +599,9 @@ view: device_base {
 
   dimension: browser {}
   dimension: browserVersion {label:"Browser Version"}
-  dimension: operatingSystem {label: "Operating System"}
+  dimension: operatingSystem {
+    label: "Operating System"
+    suggestions: ["iOS","Windows","Android","Macintosh","Linux","Chrome OS"]}
   dimension: operatingSystemVersion {label: "Operating System Version"}
   dimension: isMobile {label: "Is Mobile"
     type: yesno}
@@ -615,7 +618,10 @@ view: device_base {
   dimension: mobileDeviceMarketingName {label: "Mobile Device Marketing Name"}
   dimension: mobileDeviceModel {label: "Mobile Device Model"}
   dimension: mobileDeviceInputSelector {label: "Mobile Device Input Selector"}
-  dimension: deviceCategory {label: "Device Category"}
+  dimension: deviceCategory {
+    label: "Device Category"
+    suggestions: ["mobile","tablet","desktop"]
+    }
 }
 
 view: hits_base {
@@ -628,6 +634,7 @@ view: hits_base {
     type: number
   }
   dimension: type {}
+  dimension: isexit { type:yesno}
   dimension: time {}
   dimension_group: hit {
     timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
@@ -692,7 +699,15 @@ view: hits_contentGroup_base {
 view: hits_product_base {
   extension: required
   dimension: productSKU {}
-  dimension: v2ProductName { hidden:yes}
+  dimension: v2ProductName {}
+  dimension: Product {
+    label: "Product Name"
+    sql:
+    Case WHEN ${v2ProductName} = 'Franchise Meetings' THEN ${v2ProductName}
+     WHEN REGEXP_Contains(LOWER(${v2ProductName}), 'meetings') THEN 'Studio'
+    WHEN regexp_contains(lower(${v2ProductName}), 'online') THEN 'Digital'
+    WHEN regexp_contains(lower(${v2ProductName}), 'coaching') THEN 'Coaching' ELSE Null END ;;
+  }
   dimension: customDimensions {hidden:yes}
   dimension: csp {
    sql: (SELECT value FROM UNNEST(${hits_product.customDimensions}) WHERE index=50) ;;
@@ -902,6 +917,12 @@ view: hits_appInfo_base {
   dimension: appVersion {}
   dimension: appId {}
   dimension: screenName {}
+  dimension: gxp_screens {
+    hidden: yes
+    suggestions: ["gxp_welcome","gxp_overview","gxp_food","gxp_activity","gxp_connect","gxp_rewards"]
+    sql: ${screenName}
+    ;;
+  }
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
@@ -924,6 +945,11 @@ view: hits_customDimensions_base {
   dimension: memberID {
     type: string
     sql:CASE WHEN ${index} = 12 THEN ${value} ELSE NULL END;;
+  }
+
+  dimension: productOwned {
+    type: string
+    sql: CASE WHEN ${index} = 10 THEN ${value} ELSE NULL END ;;
   }
 
   dimension: group_id {
@@ -992,3 +1018,7 @@ view: customDimensions_base  {
 
 
 }
+
+# datagroup: daily_cache {
+#   sql_trigger: select extract(day FROM current_date) ;;
+# }

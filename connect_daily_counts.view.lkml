@@ -3,6 +3,8 @@ view: connect_daily_counts {
     persist_for: "48 hours"
     sql: SELECT DISTINCT
 (EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))) as generated_date,
+d.FiscalWeekOfYear AS fiscal_week,
+d.FiscalYear as fiscal_year,
 (CASE WHEN cd.index=53 then cd.value else null end) as region,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_trending" AND h.type = 'APPVIEW') then fullvisitorid END)) AS connect_traffic,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_new" AND h.type = 'APPVIEW') then fullvisitorid END)) AS following_traffic,
@@ -21,10 +23,18 @@ COUNT(DISTINCT (CASE WHEN (h.type = 'EVENT' AND h.eventinfo.eventaction = 'conne
 COUNT(CASE WHEN (h.appinfo.screenname = 'connect_load_more_trending' AND h.type='APPVIEW' ) THEN h.appinfo.screenname end) as post_loads,
 COUNT(DISTINCT (CASE WHEN regexp_contains(h.appinfo.screenName, 'food_dashboard') then fullvisitorID end)) AS all_users
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` , unnest(customdimensions) as cd, unnest(hits) as h
+
+JOIN  `wwi-datalake-1.CIE_star_schema.DimDate` d -- to derive fiscal week and year
+ON d.Date = EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))
+
+
 WHERE SUFFIX Between '20181001'AND '20191230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
-group by 1 ,2 ;;
-  }dimension_group: date {
+group by 1 ,2, 3, 4 ;;
+  }
+
+
+  dimension_group: date {
     timeframes: [date,raw]
     datatype: datetime
     type: time
@@ -111,6 +121,19 @@ dimension: region_group {
   type: string
   sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
 }
+
+
+  dimension: fiscal_year {
+    type: number
+    description: "The fiscal year the action happened in"
+    sql:  ${TABLE}.fiscal_year;;
+  }
+
+  dimension: fiscal_week {
+    type: number
+    description: "The fiscal week the action happened in"
+    sql:  ${TABLE}.fiscal_week;;
+  }
 
 
 measure: member_blocks {

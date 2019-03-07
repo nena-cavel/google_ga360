@@ -9,18 +9,66 @@ explore: ga_sessions_block {
       field: ga_sessions.partition_date
       value: "7 days ago for 7 days"
       ## Partition Date should always be set to a recent date to avoid runaway queries
-   }
+    }
   }
 }
 
 view: ga_sessions {
   extends: [ga_sessions_base]
+  measure:  unique_prospects{
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+  measure:  unique_funnel_prospects{
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
+    filters: {
+      field: funnelProspect
+      value: "yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+  measure: sus1_visitors {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_contentGroup.is_sus1
+      value: "yes"
+    }
+  }
+  measure: homepage_visitors {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_contentGroup.is_homepage
+      value: "yes"
+    }
+  }
+  measure: homepage_prospect_visitors {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_contentGroup.is_homepage
+      value: "yes"
+    }
+    filters: {
+      field: Prospect
+      value: "yes"
+    }
+  }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
 
 
   # SCENARIO 1: Only one property
-sql_table_name: (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i') ;;
+  sql_table_name: (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i') ;;
 
 
   # SCENARIO 2: Multiple properties. The property will dynamically look at the selected dataset using a filter.
@@ -85,6 +133,11 @@ view: trafficSource {
 
 view: device {
   extends: [device_base]
+  dimension: is_google_analytics {
+    label: "Is Google Analytics"
+    type: yesno
+    sql: ${browser} = 'GoogleAnalytics' ;;
+  }
 }
 
 view: hits {
@@ -93,6 +146,11 @@ view: hits {
 
 view: hits_page {
   extends: [hits_page_base]
+  dimension: is_weightwatchers {
+    label: "Is weightwatchers.com"
+    type: yesno
+    sql: ${pagePath} = 'weightwatchers.com/' ;;
+  }
 }
 
 # -- Ecommerce Fields
@@ -120,6 +178,16 @@ view: hits_publisher {
 
 view: hits_contentGroup {
   extends: [hits_contentGroup_base]
+  dimension: is_sus1 {
+    label: "Is SUS1"
+    type: yesno
+    sql: ${contentGroup3} like 'sign:__:plan';;
+  }
+  dimension: is_homepage {
+    label: "Is Homepage"
+    type: yesno
+    sql: ${contentGroup3} like 'visi:__:home';;
+  }
 }
 #  We only want some of the interaction fields.
 
@@ -165,10 +233,10 @@ view: hits_product {
 #  extends: [hits_product_customdimensions_base]
 #}
 view: hits_customDimensions {
- extends: [hits_customDimensions_base]
- # dimension: group_id {
+  extends: [hits_customDimensions_base]
+  # dimension: group_id {
   #  sql: (SELECT value FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`.hits.customDimensions WHERE index=85) ;;
- # }
+  # }
 
 }
 
