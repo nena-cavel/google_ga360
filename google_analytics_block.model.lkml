@@ -103,3 +103,12 @@ explore: groups_kpis {
 explore: groups_kpi_weekly {
 persist_for: "96 hours"
 }
+
+explore: new_autobanned_words {
+  join: new_autobanned_comments {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${new_autobanned_words.week_raw}=${new_autobanned_comments.week_raw}
+    AND ${new_autobanned_words.word}=${new_autobanned_comments.word};;
+  }
+}
