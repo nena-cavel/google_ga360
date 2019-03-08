@@ -21,7 +21,7 @@ view: ga_sessions_weekly {
       column: count_sessions_event123 { field: funnel_growth_dashboard.count_sessions_event123_prospects }
       column: count_sessions_event1234 { field: funnel_growth_dashboard.count_sessions_event1234_prospects }
       column: count_sessions_event12345 { field: funnel_growth_dashboard.count_sessions_event12345_prospects }
-#       column: unique_invited_visitors { field: invited_users.unique_visitors }
+      column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
         value: "70 weeks ago for 70 weeks"
@@ -37,11 +37,11 @@ view: ga_sessions_weekly {
         value: "70 weeks ago for 70 weeks"
 #         value: "1 weeks ago for 1 weeks"
       }
-#       filters: {
-#         # This filter enables us to force a left join on the invited_users view.
-#         field: invited_users.left_join
-#         value: "Yes"
-#       }
+      filters: {
+        # This filter enables us to force a left join on the invited_users view.
+        field: invited_users.left_join
+        value: "Yes"
+      }
 
     }
   }
