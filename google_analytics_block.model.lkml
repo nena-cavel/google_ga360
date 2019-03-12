@@ -104,6 +104,8 @@ explore: ga_sessions {
     persist_for: "24 hours"
   }
 
+  explore: rewards_screen_views {}
+
   explore: barcode_scanner_report {
     persist_for: "72 hours"
   }
