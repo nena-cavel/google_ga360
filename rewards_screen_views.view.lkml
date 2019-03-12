@@ -20,8 +20,8 @@ view: rewards_screen_views {
 #       }
 #     }
 #   }
-#
-#   dimension_group: visitStart_date {
+#  CAN THIS BE A DIMENSION_GROUP? CAN IT HAVE THE LIST OF TIMEFRAMES IF IT'S NOT A GROUP?
+#   dimension: visitStart_date {
 #     label: "Session Visit Start Date"
 #     type: date
 #     timeframes: [
@@ -50,6 +50,7 @@ view: rewards_screen_views {
 #     label: "Session: Hits: App Info Screenname"
 #   }
 #
+#  PARTS BELOW HERE I MADE UP. NO IDEA WHETHER THEY WORK, BECAUSE THE TIME VARIABLE F*CKED UP THE EFFORT
 #   measure: unique_rewards_visitors {
 #     label: "Unique Rewards Visitors"
 #     type: count_distinct
