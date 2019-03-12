@@ -100,7 +100,7 @@ explore: ga_sessions {
     hidden: yes
   }
 
-  explore: rewards_prize_views_20180910 {
+  explore: rewards_prize_views {
     persist_for: "24 hours"
   }
 
