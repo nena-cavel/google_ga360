@@ -36,4 +36,24 @@ view: rewards_screen_views {
   dimension: screenName {
     label: "Session: Hits: App Info Screenname"
   }
+
+  measure: unique_rewards_visitors {
+    label: "Unique Rewards Visitors"
+    type: count_distinct
+    sql: ${memberID} ;;
+  }
+
+  measure: unique_dashboard_visitors {
+    label: "Unique Dashboard Visitors"
+    type: count_distinct
+    sql: case when ${screenName}='rewards_wins_dashboard' then ${memberID} else null end ;;
+  }
 }
+
+
+
+
+# max(case when hits_appInfo.screenName = 'rewards_wins_dashboard' then 1 else 0 end) as visited_dashboard,
+#               max(case when hits_appInfo.screenName = 'rewards_browse_rewards' then 1 else 0 end) as browsed_rewards,
+#               max(case when hits_appInfo.screenName like 'rewards_%_en_us' then 1 else 0 end) as viewed_detail,
+#               max(case when hits_eventInfo.eventCategory='rewards' and hits_eventInfo.eventLabel like 'redeem%' then 1 else 0 end) as prize_redemption
