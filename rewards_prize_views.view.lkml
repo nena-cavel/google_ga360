@@ -1,4 +1,4 @@
-view: rewards_prize_views_20180910 {
+view: rewards_prize_views {
   derived_table: {
     persist_for: "24 hours"
     sql:

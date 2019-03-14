@@ -1,5 +1,6 @@
 
 view: ga_sessions_weekly {
+  view_label: "Weekly Sessions Summary"
   derived_table: {
     datagroup_trigger: weekly_cache
     explore_source: ga_sessions {
@@ -35,8 +36,13 @@ view: ga_sessions_weekly {
       filters: {
         field: funnel_growth_dashboard.partition_date
         value: "70 weeks ago for 70 weeks"
-#         value: "1 weeks ago for 1 weeks"
+        # value: "1 weeks ago for 1 weeks"
       }
+#       filters: {
+#         field: invited_users.partition_date
+#         value: "70 weeks ago for 70 weeks"
+#         # value: "1 weeks ago for 1 weeks"
+#       }
 #       filters: {
 #         # This filter enables us to force a left join on the invited_users view.
 #         field: invited_users.left_join
@@ -134,6 +140,79 @@ view: ga_sessions_weekly {
     type: sum
   }
   measure: unique_invited_visitors {
+    type: sum
+    view_label: "Invited Visitors"
+  }
+}
+
+view: ga_iaf_weekly {
+  view_label: "Weekly Invite A Friend Summary"
+  derived_table: {
+    datagroup_trigger: weekly_cache
+    explore_source: ga_sessions {
+      timezone: "America/New_York"
+      column: visitStart_week {}
+      column: market {}
+      column: is_google_analytics { field: device.is_google_analytics }
+      column: is_weightwatchers { field: first_page.is_weightwatchers }
+      column: homepage_prospect_visitors {}
+      column: deviceCategory { field: device.deviceCategory }
+      column: unique_visitors {}
+      column: transactions_count { field: totals.transactions_count }
+      column: unique_invited_visitors { field: invited_users.unique_visitors }
+      column: unique_funnel_prospects {field:invited_users.unique_funnel_prospects}
+      filters: {
+        field: ga_sessions.partition_date
+        value: "70 weeks ago for 70 weeks"
+#         value: "1 weeks ago for 1 weeks"
+      }
+      filters: {
+        field: ga_sessions.visitStart_week
+        value: "70 weeks ago for 70 weeks"
+#           value: "1 weeks ago for 1 weeks"
+      }
+      filters: {
+        field: invited_users.partition_date
+        value: "70 weeks ago for 70 weeks"
+        # value: "1 weeks ago for 1 weeks"
+      }
+
+    }
+  }
+  dimension: visitStart_week {
+    view_label: "Session"
+    label: "Visit Start Week"
+    type: date_week
+    convert_tz: no
+  }
+  dimension: market {
+    view_label: "Session"
+    label: "Market"
+  }
+  dimension: is_google_analytics {
+    view_label: "Session"
+    label: "Device Is Google Analytics"
+    type: yesno
+  }
+  dimension: is_weightwatchers {
+    view_label: "Session:First Page Visited"
+    label: "Is weightwatchers.com"
+    type: yesno
+  }
+  dimension: deviceCategory {
+    view_label: "Session"
+    label: "Device Category"
+  }
+  measure: transactions_count {
+    view_label: "Session"
+    label: "Session Transactions Count"
+    type: sum
+  }
+  measure: unique_invited_visitors {
+    type: sum
+    view_label: "Invited Visitors"
+  }
+  measure: unique_funnel_prospects {
     type: sum
     view_label: "Invited Visitors"
   }
