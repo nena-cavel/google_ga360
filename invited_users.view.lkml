@@ -20,7 +20,14 @@ view: invited_users {
     drill_fields: [detail*]
 
   }
-
+  measure:  unique_funnel_prospects{
+    filters: {
+      field: ga_sessions.funnelProspect
+      value: "yes"
+    }
+    type: count_distinct
+    sql: ${fullvisitorid} ;;
+  }
   dimension: date {
     type: date_time
     sql: ${TABLE}.date ;;

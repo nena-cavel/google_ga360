@@ -28,19 +28,11 @@ explore: ga_sessions {
   }
   join: invited_users {
     from: invited_users
-    type: left_outer
+    type: inner
     relationship: one_to_one
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
-# The following toggle allows you to change the join type from Left to inner.
-# Setting  ${invited_users.fullvisitorid} to not null makes the join an inner join.
-# Setting 1=1 removes the filter and changes the join type to left outer.
-      sql_where: {% if invited_users.left_join._parameter_value == "'Yes'" %}
-                            1=1
-                        {% else %}
-          ${invited_users.fullvisitorid} is not null
-                        {% endif %};;
     }
 # join: invited_users_left {
 #   from: invited_users
@@ -125,6 +117,9 @@ explore: ga_sessions {
 explore: ga_sessions_weekly {
   persist_with: weekly_cache
   description: "Aggregates key GA metrics to the weekly level"
+}
+explore: ga_iaf_weekly {
+  persist_with: weekly_cache
 }
 
 explore: new_autobanned_words {
