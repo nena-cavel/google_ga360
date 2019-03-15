@@ -1,5 +1,6 @@
 view: rewards_screen_views {
     derived_table: {
+      sql_trigger_value: select extract(year from current_date()) ;;
       explore_source: ga_sessions {
         column: visitStart_date {}
         column: memberID {}
