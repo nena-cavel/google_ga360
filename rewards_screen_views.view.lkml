@@ -26,20 +26,20 @@ view: rewards_screen_views {
     #   type: date
     # }
 
-  dimension_group: visitStart_date {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    # sql: ${TABLE}.thedate ;;
-  }
+    dimension_group: visitStart_date {
+      type: time
+      timeframes: [
+        raw,
+        date,
+        week,
+        month,
+        quarter,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      # sql: ${TABLE}.thedate ;;
+    }
 
 
     dimension: memberID {

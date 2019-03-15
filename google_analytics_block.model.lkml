@@ -97,6 +97,7 @@ explore: ga_sessions {
   }
 
   explore: rewards_screen_views {
+    persist_for: "1680 hours"
     #ran midaft 20190315
   }
 
