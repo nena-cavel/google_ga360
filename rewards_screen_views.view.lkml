@@ -21,10 +21,27 @@ view: rewards_screen_views {
         }
       }
     }
-    dimension: visitStart_date {
-      label: "Session Visit Start Date"
-      type: date
-    }
+    # dimension: visitStart_date {
+    #   label: "Session Visit Start Date"
+    #   type: date
+    # }
+
+  dimension_group: visitStart_date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    # sql: ${TABLE}.thedate ;;
+  }
+
+
     dimension: memberID {
       label: "Session Memberid"
     }
