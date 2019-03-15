@@ -130,3 +130,12 @@ explore: new_autobanned_words {
     AND ${new_autobanned_words.word}=${new_autobanned_comments.word};;
   }
 }
+
+explore: reported_posts_new {
+  join: reported_comments_new {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${reported_posts_new.week_raw}=${reported_comments_new.week_raw}
+    AND ${reported_posts_new.market}=${reported_comments_new.market};;
+  }
+}
