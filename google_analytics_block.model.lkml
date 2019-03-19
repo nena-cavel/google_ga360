@@ -33,6 +33,7 @@ explore: ga_sessions {
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
+
     }
 # join: invited_users_left {
 #   from: invited_users
@@ -116,7 +117,10 @@ explore: dau_mau_derived {
     persist_for: "24 hours"
   }
 
-  explore: rewards_screen_views {}
+  explore: rewards_screen_views {
+    persist_for: "1680 hours"
+    #ran midaft 20190315
+  }
 
   explore: barcode_scanner_report {
     persist_for: "72 hours"

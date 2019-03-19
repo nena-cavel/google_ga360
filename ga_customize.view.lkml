@@ -67,6 +67,7 @@ view: ga_sessions {
       value: "yes"
     }
   }
+
 dimension: uuid_dimension {
   type: string
   sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=12) ;;
@@ -76,6 +77,45 @@ measure: unique_visitors_uuid {
   type: count_distinct
   sql: ${uuid_dimension} ;;
 }
+
+
+  ##measures for iaf derived table
+  measure: invite_friend_button {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.invite_friend
+      value: "yes"
+    }
+  }
+
+  measure: iaf_profile_button {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.iaf_profile
+      value: "yes"
+    }
+  }
+
+  measure: iaf_my_day_button {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.iaf_my_day
+      value: "yes"
+    }
+  }
+
+  measure: my_day_users {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.my_day
+      value: "yes"
+    }
+  }
+
 
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
@@ -197,6 +237,7 @@ view: hits_contentGroup {
     type: yesno
     sql: ${contentGroup3} like 'sign:__:plan';;
   }
+
   dimension: is_homepage {
     label: "Is Homepage"
     type: yesno
@@ -228,6 +269,10 @@ view: hits_social {
 
 view: hits_appInfo {
   extends: [hits_appInfo_base]
+  dimension: my_day {
+    sql: ${screenName} = 'food_dashboard' ;;
+    type: yesno
+  }
 }
 
 view: hits_eventInfo {
@@ -235,6 +280,21 @@ view: hits_eventInfo {
   dimension: play {
     sql: ${eventAction} = "play" ;;
     type: yesno
+  }
+
+  ##events related to iaf
+  dimension: iaf_my_day {
+    sql: ${eventAction} = 'iaf_my_day' ;;
+    type: yesno
+
+  }
+  dimension: iaf_profile {
+    sql: ${eventAction} = 'iaf_profile' ;;
+    type: yesno
+  }
+  dimension: invite_friend {
+    sql: ${eventAction} = 'iaf_invite_friends_button' ;;
+    type:  yesno
   }
 }
 
