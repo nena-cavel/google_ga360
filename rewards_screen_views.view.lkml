@@ -66,13 +66,19 @@ view: rewards_screen_views {
     dimension: prize_language {
       suggestions: ["English", "French", "German"]
       type:  string
-      sql: if(regexp_contains(temptext, '(.+)_[a-z][a-z]_[a-z][a-z]'),
+      sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
                 case when substr(${TABLE}.market, -5, 2) = 'en' then 'English'
                      when substr(${TABLE}.market, -5, 2) = 'fr' then 'French'
                      when substr(${TABLE}.market, -5, 2) = 'de' then 'German'
                      else null end,
                     null) ;;
     }
+
+  dimension: prize_string {
+    type:  string
+    sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
+            substr(${TABLE}.screenName, 8, len(${TABLE}.screenName)-14), null) ;;
+  }
 
     measure: count {
       label: "Session: Hits Count"
