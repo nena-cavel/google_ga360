@@ -33,6 +33,7 @@ explore: ga_sessions {
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
+
     }
 # join: invited_users_left {
 #   from: invited_users
