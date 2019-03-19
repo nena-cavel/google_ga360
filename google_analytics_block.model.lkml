@@ -28,7 +28,7 @@ explore: ga_sessions {
   }
   join: invited_users {
     from: invited_users
-    type: left_outer
+    type: inner
     relationship: one_to_one
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
@@ -36,11 +36,11 @@ explore: ga_sessions {
 # The following toggle allows you to change the join type from Left to inner.
 # Setting  ${invited_users.fullvisitorid} to not null makes the join an inner join.
 # Setting 1=1 removes the filter and changes the join type to left outer.
-      sql_where: {% if invited_users.left_join._parameter_value == "'Yes'" %}
-                            1=1
-                        {% else %}
-          ${invited_users.fullvisitorid} is not null
-                        {% endif %};;
+      #sql_where: {% if invited_users.left_join._parameter_value == "'Yes'" %}
+       #                     1=1
+      #                  {% else %}
+      #    ${invited_users.fullvisitorid} is not null
+      #                  {% endif %};;
     }
 # join: invited_users_left {
 #   from: invited_users

@@ -160,7 +160,7 @@ view: ga_sessions_base {
 
   dimension: market {
     suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
-    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br|gb') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
 
