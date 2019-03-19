@@ -51,10 +51,30 @@ explore: ga_sessions {
     }
   }
 
-
-  explore: dau_mau_derived {
-    persist_for: "72 hours"
+explore: dau_mau_derived {
+  label: "DAU and MAU Site Metrics"
+  from: dau_mau_derived_daily
+  persist_with: monthly_cache
+  join: dau_mau_derived_monthly {
+    from: dau_mau_derived
+    type: inner
+    relationship: many_to_one
+    sql_on: ${dau_mau_derived.site_region}=${dau_mau_derived_monthly.site_region}
+        AND ${dau_mau_derived.application_type}= ${dau_mau_derived_monthly.application_type}
+        AND ${dau_mau_derived.visitStartday_month} = ${dau_mau_derived_monthly.visitStartmonth_month};;
   }
+}
+
+#   explore: dau_mau_derived {
+#     persist_for: "72 hours"
+#     join: dau_mau_derived_daily {
+#       type: inner
+#       relationship: one_to_many
+#       sql_on: ${dau_mau_derived.site_region}=${dau_mau_derived_daily.site_region}
+#       AND ${dau_mau_derived.application_type}= ${dau_mau_derived_daily.application_type}
+#       and ${dau_mau_derived.visitStartmonth_month} = ${dau_mau_derived_daily.visitStartday_month};;
+#     }
+#   }
 
   explore: connect_penetration {
     persist_for: "72 hours"

@@ -1,5 +1,9 @@
 include: "ga_block.view.lkml"
 
+datagroup: monthly_cache {
+  sql_trigger: select EXTRACT(MONTH FROM CURRENT_DATE('America/New_York')) ;;
+}
+
 explore: ga_sessions_block {
   extends: [ga_sessions_base]
   extension: required
@@ -63,6 +67,16 @@ view: ga_sessions {
       value: "yes"
     }
   }
+dimension: uuid_dimension {
+  type: string
+  sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=12) ;;
+}
+
+measure: unique_visitors_uuid {
+  type: count_distinct
+  sql: ${uuid_dimension} ;;
+}
+
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
 
@@ -247,4 +261,6 @@ view: hits_customVariables {
 
 view: customDimensions {
   extends: [customDimensions_base]
+
+
 }
