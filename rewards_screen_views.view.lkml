@@ -65,7 +65,7 @@ view: rewards_screen_views {
 
     measure: unique_member_count {
       type: count_distinct
-      sql: ${TABLE}.member ;;
+      sql: ${TABLE}.memberID ;;
     }
 
     dimension: prize_language {
@@ -82,7 +82,9 @@ view: rewards_screen_views {
   dimension: prize_string {
     type:  string
     sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
-            substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14), null) ;;
+            -- substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14), null)
+            replace(replace(substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14),"-"," "),".",""), r"[^[:alnum:][:space:]]", ''),
+            null) ;;
   }
 
     measure: count {
