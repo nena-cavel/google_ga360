@@ -33,14 +33,7 @@ explore: ga_sessions {
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
-# The following toggle allows you to change the join type from Left to inner.
-# Setting  ${invited_users.fullvisitorid} to not null makes the join an inner join.
-# Setting 1=1 removes the filter and changes the join type to left outer.
-      #sql_where: {% if invited_users.left_join._parameter_value == "'Yes'" %}
-       #                     1=1
-      #                  {% else %}
-      #    ${invited_users.fullvisitorid} is not null
-      #                  {% endif %};;
+
     }
 # join: invited_users_left {
 #   from: invited_users
@@ -104,7 +97,10 @@ explore: ga_sessions {
     persist_for: "24 hours"
   }
 
-  explore: rewards_screen_views {}
+  explore: rewards_screen_views {
+    persist_for: "1680 hours"
+    #ran midaft 20190315
+  }
 
   explore: barcode_scanner_report {
     persist_for: "72 hours"
@@ -126,6 +122,9 @@ explore: ga_sessions_weekly {
   persist_with: weekly_cache
   description: "Aggregates key GA metrics to the weekly level"
 }
+explore: ga_iaf_weekly {
+  persist_with: weekly_cache
+}
 
 explore: new_autobanned_words {
   join: new_autobanned_comments {
@@ -133,5 +132,14 @@ explore: new_autobanned_words {
     relationship: one_to_one
     sql_on: ${new_autobanned_words.week_raw}=${new_autobanned_comments.week_raw}
     AND ${new_autobanned_words.word}=${new_autobanned_comments.word};;
+  }
+}
+
+explore: reported_posts_new {
+  join: reported_comments_new {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${reported_posts_new.week_raw}=${reported_comments_new.week_raw}
+    AND ${reported_posts_new.market}=${reported_comments_new.market};;
   }
 }
