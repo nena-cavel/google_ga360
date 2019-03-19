@@ -42,7 +42,6 @@ view: rewards_screen_views {
       # sql: ${TABLE}.thedate ;;
     }
 
-
     dimension: memberID {
       label: "Session Memberid"
     }
@@ -52,6 +51,27 @@ view: rewards_screen_views {
     dimension: market {
       label: "Session Market"
     }
+
+    dimension: country {
+      type:  string
+      sql: case when substr(${TABLE}.market) = 'US' then "United States"
+                when substr(${TABLE}.market) = 'DE' then "Germany"
+                when substr(${TABLE}.market) = 'CA' then "Canada"
+                when substr(${TABLE}.market) = 'FR' then "France"
+                when substr(${TABLE}.market) = 'null' then "United Kingdom"
+                else null end ;;
+    }
+
+    dimension: prize_language {
+      type:  string
+      sql: if(regexp_contains(temptext, '(.+)_[a-z][a-z]_[a-z][a-z]'),
+                case when substr(${TABLE}.market, -5, 2) = 'en' then 'English'
+                     when substr(${TABLE}.market, -5, 2) = 'fr' then 'French'
+                     when substr(${TABLE}.market, -5, 2) = 'de' then 'German'
+                     else null end,
+                    null) ;;
+    }
+
     measure: count {
       label: "Session: Hits Count"
       type: count
