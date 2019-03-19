@@ -59,7 +59,7 @@ view: rewards_screen_views {
                 when ${TABLE}.market = 'DE' then "Germany"
                 when ${TABLE}.market = 'CA' then "Canada"
                 when ${TABLE}.market = 'FR' then "France"
-                when ${TABLE}.market = 'null' then "United Kingdom"
+                when ${TABLE}.market = 'null' then "United Kingdom" -- UPDATE THIS ONCE JOSH UPDATES THE LOOKML
                 else null end ;;
     }
 
