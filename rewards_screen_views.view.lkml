@@ -53,6 +53,7 @@ view: rewards_screen_views {
     }
 
     dimension: country {
+      suggestions: ["United States","Germany","France","United Kingdom","Canada"]
       type:  string
       sql: case when substr(${TABLE}.market) = 'US' then "United States"
                 when substr(${TABLE}.market) = 'DE' then "Germany"
@@ -63,6 +64,7 @@ view: rewards_screen_views {
     }
 
     dimension: prize_language {
+      suggestions: ["English", "French", "German"]
       type:  string
       sql: if(regexp_contains(temptext, '(.+)_[a-z][a-z]_[a-z][a-z]'),
                 case when substr(${TABLE}.market, -5, 2) = 'en' then 'English'
