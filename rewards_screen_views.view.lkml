@@ -55,11 +55,11 @@ view: rewards_screen_views {
     dimension: country {
       suggestions: ["United States","Germany","France","United Kingdom","Canada"]
       type:  string
-      sql: case when substr(${TABLE}.market) = 'US' then "United States"
-                when substr(${TABLE}.market) = 'DE' then "Germany"
-                when substr(${TABLE}.market) = 'CA' then "Canada"
-                when substr(${TABLE}.market) = 'FR' then "France"
-                when substr(${TABLE}.market) = 'null' then "United Kingdom"
+      sql: case when ${TABLE}.market = 'US' then "United States"
+                when ${TABLE}.market = 'DE' then "Germany"
+                when ${TABLE}.market = 'CA' then "Canada"
+                when ${TABLE}.market = 'FR' then "France"
+                when ${TABLE}.market = 'null' then "United Kingdom"
                 else null end ;;
     }
 
