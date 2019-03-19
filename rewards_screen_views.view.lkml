@@ -63,6 +63,11 @@ view: rewards_screen_views {
                 else null end ;;
     }
 
+    measure: unique_member_count {
+      type: count_distinct
+      sql: ${TABLE}.member ;;
+    }
+
     dimension: prize_language {
       suggestions: ["English", "French", "German"]
       type:  string
