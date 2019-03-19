@@ -67,9 +67,9 @@ view: rewards_screen_views {
       suggestions: ["English", "French", "German"]
       type:  string
       sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
-                case when substr(${TABLE}.market, -5, 2) = 'en' then 'English'
-                     when substr(${TABLE}.market, -5, 2) = 'fr' then 'French'
-                     when substr(${TABLE}.market, -5, 2) = 'de' then 'German'
+                case when substr(${TABLE}.screenName, -5, 2) = 'en' then 'English'
+                     when substr(${TABLE}.screenName, -5, 2) = 'fr' then 'French'
+                     when substr(${TABLE}.screenName, -5, 2) = 'de' then 'German'
                      else null end,
                     null) ;;
     }
