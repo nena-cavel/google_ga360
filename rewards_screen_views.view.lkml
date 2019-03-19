@@ -77,7 +77,7 @@ view: rewards_screen_views {
   dimension: prize_string {
     type:  string
     sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
-            substr(${TABLE}.screenName, 8, length(${TABLE}.screenName)-14), null) ;;
+            substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14), null) ;;
   }
 
     measure: count {
