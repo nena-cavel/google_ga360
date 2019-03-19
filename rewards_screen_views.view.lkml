@@ -53,13 +53,14 @@ view: rewards_screen_views {
     }
 
     dimension: country {
-      suggestions: ["United States","Germany","France","United Kingdom","Canada"]
+      suggestions: ["US","UK","CA","FR","DE"]
       type:  string
-      sql: case when ${TABLE}.market = 'US' then "United States"
-                when ${TABLE}.market = 'DE' then "Germany"
-                when ${TABLE}.market = 'CA' then "Canada"
-                when ${TABLE}.market = 'FR' then "France"
-                when ${TABLE}.market = 'null' then "United Kingdom" -- UPDATE THIS ONCE JOSH UPDATES THE LOOKML
+      sql: case when ${TABLE}.market = 'US' then "US"
+                when ${TABLE}.market = 'DE' then "DE"
+                when ${TABLE}.market = 'CA' then "CA"
+                when ${TABLE}.market = 'FR' then "FR"
+                -- UPDATE THIS ONCE YOU UPDATE YOUR PULL OF REWARDS SCREEN VIEW DATA
+                when ${TABLE}.market in ('null','GB') then "UK"
                 else null end ;;
     }
 
@@ -83,7 +84,9 @@ view: rewards_screen_views {
     type:  string
     sql: if(regexp_contains(${TABLE}.screenName, '(.+)_[a-z][a-z]_[a-z][a-z]'),
             -- substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14), null)
-            replace(replace(substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14),"-"," "),".",""), r"[^[:alnum:][:space:]]", ''),
+             REGEXP_REPLACE(
+                      replace(replace(substr(${TABLE}.screenName, 9, length(${TABLE}.screenName)-14),"-"," "),".","")
+                      , r"[^[:alnum:][:space:]]", ' '),
             null) ;;
   }
 
