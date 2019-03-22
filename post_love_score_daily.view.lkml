@@ -55,7 +55,7 @@ FROM
   engagements.engagement_id,
   TIMESTAMP_DIFF(engagements.created_at, cp.payload_post.created_at, SECOND)/3600 as hours_after_posting_engagement
 
-  FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Post` cp
+  FROM `wwi-datalake-1.wwi_events_pond.connect_Post` cp
 
   -- left join to a table consisting of all possible likes and comments (perhaps a post has none of either?)
 
@@ -66,7 +66,7 @@ FROM
     'like' AS engagement_type,
     cl.payload_like.id AS engagement_id
 
-    FROM  `wwi-data-playground-3.wwi_processed_data_std_views.connect_Like` cl
+    FROM  `wwi-datalake-1.wwi_events_pond.connect_Like` cl
 
     UNION ALL
 
@@ -74,13 +74,13 @@ FROM
     cc.payload_comment.created_at AS created_at,
     'comment' AS engagement_type,
     cc.payload_comment.id AS engagement_id
-    FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Comment` cc
+    FROM `wwi-datalake-1.wwi_events_pond.connect_Comment` cc
 
    ) engagements
 
    ON cp.payload_post.uuid = engagements.uuid
 
-  WHERE payload_post.created_at BETWEEN timestamp('2018-01-01 00:00:01') and timestamp('2018-12-31 23:59:59')
+  WHERE payload_post.created_at BETWEEN timestamp('2019-03-01 00:00:01') and timestamp('2019-08-31 23:59:59')
   AND headers_action = 'Create'
 
 -- for testing

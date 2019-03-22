@@ -10,6 +10,7 @@ view: dau_mau_derived {
       column: unique_visitors {}
       column: visitStart_month {}
       column: application_type {}
+      column: connect_users {}
       #column: unique_visitors_uuid {}
       filters: {
         field: ga_sessions.partition_date
@@ -212,7 +213,10 @@ view: dau_mau_derived_daily {
     view_label: "DAU and MAU Site Metrics"
     value_format_name: "decimal_0"
   }
-
+measure: unique_connect_users {
+  type: sum
+  sql: ${TABLE}.connect_users ;;
+}
 
 
 }

@@ -55,6 +55,15 @@ view: ga_sessions {
       value: "yes"
     }
   }
+
+  measure: connect_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_user
+      value: "yes"
+    }
+  }
   measure: homepage_prospect_visitors {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -77,6 +86,8 @@ measure: unique_visitors_uuid {
   type: count_distinct
   sql: ${uuid_dimension} ;;
 }
+
+
 
 
   ##measures for iaf derived table
@@ -115,6 +126,8 @@ measure: unique_visitors_uuid {
       value: "yes"
     }
   }
+
+
 
 
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
@@ -271,6 +284,10 @@ view: hits_appInfo {
   extends: [hits_appInfo_base]
   dimension: my_day {
     sql: ${screenName} = 'food_dashboard' ;;
+    type: yesno
+  }
+  dimension: connect_user {
+    sql: ${screenName} = 'connect_stream_trending' ;;
     type: yesno
   }
 }
