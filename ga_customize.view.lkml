@@ -11,6 +11,12 @@ explore: ga_sessions_block {
       ## Partition Date should always be set to a recent date to avoid runaway queries
     }
   }
+  join: customDimensions {
+    view_label: "Session: Custom Dimensions"
+    sql: LEFT JOIN UNNEST(${customDimensions}) as customDimensions ;;
+    relationship: one_to_many
+  }
+
 }
 
 view: ga_sessions {
@@ -247,4 +253,6 @@ view: hits_customVariables {
 
 view: customDimensions {
   extends: [customDimensions_base]
+  dimension: index {type:number}
+  dimension: value {}
 }

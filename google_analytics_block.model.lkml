@@ -19,6 +19,7 @@ datagroup: daily_sessions_cache {
 #### EXPLORES
 
 explore: ga_sessions {
+  persist_with: daily_sessions_cache
   extends: [ga_sessions_block]
   join: funnel_growth_dashboard {
     from: funnel_growth_dashboard
