@@ -16,6 +16,10 @@ datagroup: daily_sessions_cache {
   sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
 }
 
+datagroup: static_pdt {
+  sql_trigger:  select 1 ;;
+}
+
 #### EXPLORES
 
 explore: ga_sessions {
