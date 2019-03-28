@@ -16,9 +16,14 @@ datagroup: daily_sessions_cache {
   sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
 }
 
+datagroup: static_pdt {
+  sql_trigger:  select 1 ;;
+}
+
 #### EXPLORES
 
 explore: ga_sessions {
+  persist_with: daily_sessions_cache
   extends: [ga_sessions_block]
   join: funnel_growth_dashboard {
     from: funnel_growth_dashboard
@@ -120,6 +125,20 @@ explore: dau_mau_derived {
   explore: rewards_screen_views {
     persist_for: "1680 hours"
     #ran midaft 20190315
+  }
+
+  explore: rewards_event_category {
+    hidden: yes
+    persist_for: "72 hours"
+  }
+
+  explore: rewards_event_category_base {
+    persist_for: "24 hours"
+  }
+
+  explore: rewards_event_category_update {
+    hidden: yes
+    persist_for: "24 hours"
   }
 
   explore: barcode_scanner_report {
