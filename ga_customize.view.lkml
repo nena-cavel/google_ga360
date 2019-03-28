@@ -60,7 +60,7 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
     filters: {
-      field: hits_appInfo.connect_user
+      field: hits_appInfo.connect_users_dimension
       value: "yes"
     }
   }

@@ -241,6 +241,7 @@ view: ga_sessions_base {
          ;;
   }
 
+
   dimension: iaf {
     type:  yesno
     sql:
@@ -926,6 +927,10 @@ view: hits_appInfo_base {
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
+  dimension: connect_users_dimension {
+    type: yesno
+    sql:${screenName}='connect_stream_trending'  ;;
+  }
 }
 
 view: contentInfo_base {
