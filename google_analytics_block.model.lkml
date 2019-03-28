@@ -123,6 +123,10 @@ explore: dau_mau_derived {
     #ran midaft 20190315
   }
 
+  explore: rewards_event_category {
+    persist_for: "72 hours"
+  }
+
   explore: barcode_scanner_report {
     persist_for: "72 hours"
   }
