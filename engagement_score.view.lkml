@@ -49,7 +49,7 @@ FROM
   h.type AS hit_type,
    COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_screenviews
   FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
-  WHERE SUFFIX Between '20180101'AND '20191231'
+  WHERE SUFFIX Between '20181001'AND '20190831'
   and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
@@ -85,6 +85,22 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     type: string
     sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
   }
+
+dimension: region_name {
+  type: string
+  sql: (case when ${TABLE}.region = 'us' then 'United States'
+             when ${TABLE}.region = 'de' then 'Germany'
+            when ${TABLE}.region = 'fr' then 'France'
+            when ${TABLE}.region = 'gb' then 'United Kingdom'
+            when ${TABLE}.region = 'se' THEN 'Sweden'
+            when ${TABLE}.region = 'ch' then 'Switzerland'
+            when ${TABLE}.region = 'nl' then 'Netherlands'
+            when ${TABLE}.region = 'br' then 'Brazil'
+            when ${TABLE}.region = 'au' then 'ANZ'
+            WHEN ${TABLE}.region = 'nz' then 'ANZ'
+            when ${TABLE}.region = 'be' then 'Belgium'
+  END) ;;
+}
 
     dimension: operating_system {
       type: string

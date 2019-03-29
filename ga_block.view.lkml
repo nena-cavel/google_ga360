@@ -160,7 +160,7 @@ view: ga_sessions_base {
 
   dimension: market {
     suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
-    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br|gb') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
 
@@ -240,6 +240,7 @@ view: ga_sessions_base {
         (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL)
          ;;
   }
+
 
   dimension: iaf {
     type:  yesno
@@ -926,6 +927,10 @@ view: hits_appInfo_base {
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
+  dimension: connect_users_dimension {
+    type: yesno
+    sql:${screenName}='connect_stream_trending'  ;;
+  }
 }
 
 view: contentInfo_base {

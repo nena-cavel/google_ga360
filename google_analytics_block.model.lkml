@@ -16,6 +16,10 @@ datagroup: daily_sessions_cache {
   sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
 }
 
+datagroup: static_pdt {
+  sql_trigger:  select 1 ;;
+}
+
 #### EXPLORES
 
 explore: ga_sessions {
@@ -34,6 +38,7 @@ explore: ga_sessions {
     sql_on: ${invited_users.fullvisitorid}=${ga_sessions.fullVisitorId}
       AND ${invited_users.two_days_later} >= cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME)
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
+
     }
 # join: invited_users_left {
 #   from: invited_users
@@ -52,10 +57,30 @@ explore: ga_sessions {
     }
   }
 
-
-  explore: dau_mau_derived {
-    persist_for: "72 hours"
+explore: dau_mau_derived {
+  label: "DAU and MAU Site Metrics"
+  from: dau_mau_derived_daily
+  persist_with: monthly_cache
+  join: dau_mau_derived_monthly {
+    from: dau_mau_derived
+    type: inner
+    relationship: many_to_one
+    sql_on: ${dau_mau_derived.site_region}=${dau_mau_derived_monthly.site_region}
+        AND ${dau_mau_derived.application_type}= ${dau_mau_derived_monthly.application_type}
+        AND ${dau_mau_derived.visitStartday_month} = ${dau_mau_derived_monthly.visitStartmonth_month};;
   }
+}
+
+#   explore: dau_mau_derived {
+#     persist_for: "72 hours"
+#     join: dau_mau_derived_daily {
+#       type: inner
+#       relationship: one_to_many
+#       sql_on: ${dau_mau_derived.site_region}=${dau_mau_derived_daily.site_region}
+#       AND ${dau_mau_derived.application_type}= ${dau_mau_derived_daily.application_type}
+#       and ${dau_mau_derived.visitStartmonth_month} = ${dau_mau_derived_daily.visitStartday_month};;
+#     }
+#   }
 
   explore: connect_penetration {
     persist_for: "72 hours"
@@ -100,6 +125,20 @@ explore: ga_sessions {
   explore: rewards_screen_views {
     persist_for: "1680 hours"
     #ran midaft 20190315
+  }
+
+  explore: rewards_event_category {
+    hidden: yes
+    persist_for: "72 hours"
+  }
+
+  explore: rewards_event_category_base {
+    persist_for: "24 hours"
+  }
+
+  explore: rewards_event_category_update {
+    hidden: yes
+    persist_for: "24 hours"
   }
 
   explore: barcode_scanner_report {
