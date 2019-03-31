@@ -1,6 +1,6 @@
 view: rewards_event_category_update {
   derived_table: {
-    sql_trigger_value: select 2 ;; # TEMPORARILY ONLY WANT THIS TO FIRE ONCE
+    sql_trigger_value: select 3 ;; # TEMPORARILY ONLY WANT THIS TO FIRE ONCE
     create_process: {
 #       sql_step: insert into ${rewards_event_category_base.SQL_TABLE_NAME}
 #
