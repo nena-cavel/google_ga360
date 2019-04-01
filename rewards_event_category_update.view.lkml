@@ -1,6 +1,6 @@
 view: rewards_event_category_update {
   derived_table: {
-    sql_trigger_value: select 3 ;; # TEMPORARILY ONLY WANT THIS TO FIRE ONCE
+    sql_trigger_value: select timestamp_sub(current_timestamp(), interval 10 hour ;; # TEMPORARILY ONLY WANT THIS TO FIRE ONCE
     create_process: {
 #       sql_step: insert into ${rewards_event_category_base.SQL_TABLE_NAME}
 #
@@ -48,7 +48,16 @@ view: rewards_event_category_update {
         LEFT JOIN UNNEST([hits.appInfo]) as hits_appInfo
         LEFT JOIN UNNEST([hits.eventInfo]) as hits_eventInfo
 
-        WHERE ((((CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY)), 'America/New_York'))) AND (CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY)), 'America/New_York')))))) AND (((((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY))) AND ((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) < ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY)))))) AND (hits_eventInfo.eventCategory = 'rewards')
+        WHERE ((((CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) >=
+              ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -5 DAY)), 'America/New_York')))
+          AND (CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) <
+              ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY)), 'America/New_York'))))))
+          AND (((((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) >=
+              ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -5 DAY)))
+          AND ((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) <
+              ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY))))))
+
+              AND (hits_eventInfo.eventCategory = 'rewards')
         GROUP BY 1,2,3,4,5)
 
       select * from rewards_event_category_update recu
