@@ -9,7 +9,7 @@ include: "*.dashboard"
 #### DATAGROUPS
 
 datagroup: weekly_cache {
-  sql_trigger: select EXTRACT(ISOWEEK FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select EXTRACT(WEEK FROM CURRENT_DATE('America/New_York')) ;;
 }
 
 datagroup: daily_sessions_cache {
