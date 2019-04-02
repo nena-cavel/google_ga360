@@ -23,11 +23,11 @@ view: rewards_event_category_update {
         LEFT JOIN UNNEST([hits.eventInfo]) as hits_eventInfo
 
         WHERE ((((CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) >=
-              ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -5 DAY)), 'America/New_York')))
+              ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -3 DAY)), 'America/New_York')))
           AND (CAST(CONCAT(SUBSTR(ga_sessions.suffix,0,4),'-',SUBSTR(ga_sessions.suffix,5,2),'-',SUBSTR(ga_sessions.suffix,7,2)) AS TIMESTAMP) ) <
               ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY)), 'America/New_York'))))))
           AND (((((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) >=
-              ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -5 DAY)))
+              ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -3 DAY)))
           AND ((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(ga_sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) <
               ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 2 DAY))))))
 
@@ -58,5 +58,24 @@ view: rewards_event_category_update {
       dimension: screenName {
         label: "Session: Hits: App Info Screenname"
       }
+
+  ##### HERE ARE THE SOURCE, VARS & FILTERS YOU WOULD USE TO REPRODUCE REWARDS EVENT CATEGORY
+  # explore_source: ga_sessions {
+  #   column: visitStart_date {}
+  #   column: id {}
+  #   column: memberID {}
+  #   column: eventLabel { field: hits_eventInfo.eventLabel }
+  #   column: screenName { field: hits_appInfo.screenName }
+  #   filters: {
+  #     field: ga_sessions.partition_date
+  #     value: "7 days ago for 7 days"
+  #   }
+  #   filters: {
+  #     field: hits_eventInfo.eventCategory
+  #     value: "rewards"
+  #   }
+  #   filters: {
+  #     field: ga_sessions.visitStart_date
+  #     value: "7 days"
 
     }
