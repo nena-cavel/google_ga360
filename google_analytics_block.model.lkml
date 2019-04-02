@@ -127,11 +127,6 @@ explore: dau_mau_derived {
     #ran midaft 20190315
   }
 
-  explore: rewards_event_category {
-    hidden: yes
-    persist_for: "72 hours"
-  }
-
   explore: rewards_event_category_base {
     persist_for: "24 hours"
   }
