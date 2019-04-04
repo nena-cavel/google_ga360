@@ -10,7 +10,12 @@ view: dau_mau_derived {
       column: unique_visitors {}
       column: visitStart_month {}
       column: application_type {}
+      ### Step 3: Nena's filtered measure template
       column: connect_users {}
+      column: groups_users {}
+      column: connect_likers {}
+      column: connect_commenters {}
+      column: connect_posters {}
       #column: unique_visitors_uuid {}
       filters: {
         field: ga_sessions.partition_date
@@ -107,6 +112,24 @@ view: dau_mau_derived {
   type: count_distinct
   sql: ${dayofmonth_date};;
   }
+### Step 4: Nena's filtered measure template
+  measure: connect_users {
+    type: sum
+  }
+  measure: groups_users {
+    type: sum
+  }
+
+  measure: connect_likers {
+    type: sum
+  }
+
+  measure: connect_commenters {
+    type: sum
+  }
+measure: connect_posters {
+  type: sum
+}
 
 
 }
@@ -213,10 +236,6 @@ view: dau_mau_derived_daily {
     view_label: "DAU and MAU Site Metrics"
     value_format_name: "decimal_0"
   }
-measure: unique_connect_users {
-  type: sum
-  sql: ${TABLE}.connect_users ;;
-}
 
 
 }

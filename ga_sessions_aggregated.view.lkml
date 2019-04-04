@@ -12,6 +12,7 @@ view: ga_sessions_weekly {
       column: sus1_visitors {}
       column: homepage_visitors {}
       column: connect_users {}
+      column: groups_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
@@ -77,7 +78,13 @@ view: ga_sessions_weekly {
     label: "Device Category"
   }
 
-  measure: connect_users {}
+  measure: connect_users {
+    type: sum
+  }
+
+  measure: groups_users {
+    type: sum
+  }
   measure: transactions_count {
     view_label: "Session"
     label: "Session Transactions Count"

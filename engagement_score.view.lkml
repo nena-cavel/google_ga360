@@ -12,6 +12,10 @@ COUNT(DISTINCT visitidcalc)*
 +AVG(subquery.see_more_posts*0.1)+AVG(subquery.comments*4)+AVG(subquery.follow*2)
 +AVG(subquery.likes*2)) as eng_count,
 COUNT(DISTINCT visitidcalc) as session_count,
+count(distinct case when subquery.comments>0 then subquery.visitidcalc end) as comments_sessions,
+count(distinct case when subquery.likes>0 then subquery.visitidcalc end) as likes_sessions,
+count(distinct case when subquery.view_profile>0 then subquery.visitidcalc end) as view_profile_sessions,
+count(distinct case when subquery.follow>0 then subquery.visitidcalc end) as follow_sessions,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
 AVG(subquery.view_hashtag) as hashtag_views,
@@ -119,6 +123,12 @@ dimension: region_name {
     value_format_name: decimal_1
   }
 
+  measure: avg_profile_views {
+    type: average
+    sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_2
+  }
+
 
   dimension: profile_views_dim {
     type:  number
@@ -129,6 +139,12 @@ dimension: region_name {
     type: sum
     sql: ${TABLE}.comment_views ;;
     value_format_name: decimal_1
+  }
+
+  measure: avg_comment_views {
+    type: average
+    sql: ${TABLE}.comment_views ;;
+    value_format_name: decimal_2
   }
 
   dimension: comment_views_dim {
@@ -155,6 +171,12 @@ dimension: region_name {
     value_format_name: decimal_1
   }
 
+  measure: avg_hashtag_views {
+    type: average
+    sql: ${TABLE}.hashtag_views ;;
+    value_format_name: decimal_2
+  }
+
   measure: see_more_of_posts {
     type: sum
     sql: ${TABLE}.see_more_of_posts ;;
@@ -167,10 +189,36 @@ dimension: region_name {
     value_format_name: decimal_1
   }
 
+  measure: comments_sessions {
+    type: sum
+    sql: ${TABLE}.comments_sessions;;
+  }
+
+  measure: likes_sessions  {
+    type: sum
+    sql: ${TABLE}.likes_sessions ;;
+  }
+
+  measure: view_profile_sessions {
+    type: sum
+    sql: ${TABLE}.view_profile_sessions ;;
+  }
+
+  measure: follow_sessions {
+    type: sum
+    sql: ${TABLE}.follow_sessions ;;
+  }
+
   measure: med_comments {
     type: median
     sql: ${TABLE}.comments ;;
     value_format_name: decimal_1
+  }
+
+  measure: avg_comments {
+    type: average
+    sql: ${TABLE}.comments ;;
+    value_format_name: decimal_2
   }
 
 measure: total_eng_score {
@@ -196,6 +244,12 @@ measure: total_session_count {
     value_format_name: decimal_1
   }
 
+  measure: avg_follows {
+    type: average
+    sql: ${TABLE}.follows ;;
+    value_format_name: decimal_2
+  }
+
   measure: likes {
     type: sum
     sql: ${TABLE}.likes ;;
@@ -208,11 +262,17 @@ measure: total_session_count {
     value_format_name: decimal_1
   }
 
+  measure: avg_likes {
+    type: average
+    sql: ${TABLE}.likes ;;
+    value_format_name: decimal_2
+  }
+
 measure: eng_score {
   type:  average
   precision: 1
   sql: ${TABLE}.engagement_score ;;
-  value_format_name: decimal_1
+  value_format_name: decimal_2
 }
 
   measure: eng_score_median {
