@@ -9,26 +9,26 @@ derived_table: {
           , hits_appInfo.screenName
           ,CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
                 WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
-                WHEN  REGEXP_CONTAINS(hits_appInfo.screenName , 'food_browse_recipes_*') THEN 3
-           END AS page_sequence
+                WHEN  hits_appInfo.screenName like 'food_browse_recipes_%' THEN 3 END
+            AS page_sequence
           , LAG(
-                CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
-                  WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
-                  WHEN  REGEXP_CONTAINS(hits_appInfo.screenName , 'food_browse_recipes_*') THEN 3 END
+           CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
+                WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
+                WHEN  hits_appInfo.screenName like 'food_browse_recipes_%' THEN 3 END
               )
-              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.time) AS previous_page_sequence
+              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.hitNumber) AS previous_page_sequence
          , LAG(
                 CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
-                  WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
-                  WHEN  REGEXP_CONTAINS(hits_appInfo.screenName , 'food_browse_recipes_*') THEN 3 END, 2
+                WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
+                WHEN  hits_appInfo.screenName like 'food_browse_recipes_%' THEN 3 END, 2
               )
-              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.time) AS previous_page_sequence_2
+              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.hitNumber) AS previous_page_sequence_2
          , LAG(
-                CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
-                  WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
-                  WHEN  REGEXP_CONTAINS(hits_appInfo.screenName , 'food_browse_recipes_*') THEN 3 END, 3
+               CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
+                WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
+                WHEN  hits_appInfo.screenName like 'food_browse_recipes_%' THEN 3 END, 3
               )
-              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.time) AS previous_page_sequence_3
+              OVER (PARTITION BY sessions.fullVisitorId ORDER BY hits.hitNumber) AS previous_page_sequence_3
          FROM (SELECT * FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions` WHERE SUBSTR(suffix,0,1) != 'i')  AS
          sessions
           LEFT JOIN UNNEST(sessions.hits) as hits
@@ -36,6 +36,9 @@ derived_table: {
           LEFT JOIN UNNEST([hits.contentGroup]) as hits_contentGroup
 
         WHERE ((((CAST(CONCAT(SUBSTR(sessions.suffix,0,4),'-',SUBSTR(sessions.suffix,5,2),'-',SUBSTR(sessions.suffix,7,2)) AS TIMESTAMP) ) >= ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -3 DAY)), 'America/New_York'))) AND (CAST(CONCAT(SUBSTR(sessions.suffix,0,4),'-',SUBSTR(sessions.suffix,5,2),'-',SUBSTR(sessions.suffix,7,2)) AS TIMESTAMP) ) < ((TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -3 DAY), INTERVAL 3 DAY)), 'America/New_York'))))))--       AND (hits_appInfo.screenName = 'food_dashboard')
+        AND (((((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) >= ((TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY))) AND ((TIMESTAMP((CAST(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', TIMESTAMP_SECONDS(sessions.visitStarttime) , 'America/New_York')) AS DATE)))) ) < ((TIMESTAMP_ADD(TIMESTAMP_ADD(TIMESTAMP_TRUNC(TIMESTAMP(FORMAT_TIMESTAMP('%F %T', CURRENT_TIMESTAMP(), 'America/New_York')), DAY), INTERVAL -2 DAY), INTERVAL 3 DAY))))))
+
+
 -- AND
 -- CASE WHEN hits_appInfo.screenName = 'food_dashboard' THEN 1
 --                WHEN hits_appInfo.screenName = 'food_browse_recipes' THEN 2
