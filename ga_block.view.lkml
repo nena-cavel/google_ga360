@@ -1,5 +1,5 @@
 explore: ga_sessions_base {
-  persist_for: "1 hour"
+#   persist_for: "1 hour"
   extension: required
   view_name: ga_sessions
   view_label: "Session"
@@ -156,11 +156,12 @@ view: ga_sessions_base {
   }
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
+    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
   }
 
   dimension: market {
     suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
-    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br') THEN UPPER(${site_region})
+    sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br|gb') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
   }
 
@@ -240,6 +241,7 @@ view: ga_sessions_base {
         (REGEXP_CONTAINS(${hits_contentGroup.contentGroup3},r'(^logi:logout|^logi:..:recovery|^logi:..:password|^cmx|^trac:|^coac:|^well:|^conn:|sign:..:login|sign:..:activation|subc:)') IS FALSE AND ${totals.transactions} IS NULL)
          ;;
   }
+
 
   dimension: iaf {
     type:  yesno
@@ -917,9 +919,19 @@ view: hits_appInfo_base {
   dimension: appVersion {}
   dimension: appId {}
   dimension: screenName {}
+  dimension: gxp_screens {
+    hidden: yes
+    suggestions: ["gxp_welcome","gxp_overview","gxp_food","gxp_activity","gxp_connect","gxp_rewards"]
+    sql: ${screenName}
+    ;;
+  }
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
+  dimension: connect_users_dimension {
+    type: yesno
+    sql:${screenName}='connect_stream_trending'  ;;
+  }
 }
 
 view: contentInfo_base {
@@ -1013,6 +1025,6 @@ view: customDimensions_base  {
 
 }
 
-datagroup: daily_cache {
-  sql_trigger: select extract(day FROM current_date) ;;
-}
+# datagroup: daily_cache {
+#   sql_trigger: select extract(day FROM current_date) ;;
+# }
