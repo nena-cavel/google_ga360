@@ -3,7 +3,7 @@ view: reported_posts {
     persist_for: "72 hours"
     sql:
     SELECT DISTINCT
-date as month,
+date as week,
 subquery.locale as locale,
 COUNT(DISTINCT(CASE WHEN ( subquery.row_rank =1 and subquery.flagged_count=0 AND subquery.is_invisible is true and subquery.flagged IS TRUE) THEN subquery.post_id END)) AS auto_nomanageraction,
 COUNT(DISTINCT(CASE WHEN (subquery.row_rank =1 and  subquery.flagged_count=0 AND subquery.is_invisible is true and subquery.flagged IS FALSE) THEN subquery.post_id END)) AS auto_banned ,
@@ -93,6 +93,7 @@ ON (subquery.locale = auto.locale
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
 ON EXTRACT (Month FROM subquery.date_created) = extract(month from date)
+AND EXTRACT (Year FROM subquery.date_created) = extract(Year from date)
 GROUP BY 1,2;;
   }
 
@@ -122,13 +123,13 @@ dimension: market_name {
   END) ;;
 }
 
-dimension_group: month  {
-  timeframes: [month_num, month,raw,date]
+dimension_group: week  {
+  timeframes: [week, week_of_year, raw,date]
 type:  time
 datatype: datetime
 drill_fields: [market]
 convert_tz: no
-sql: timestamp(${TABLE}.month) ;;
+sql: timestamp(${TABLE}.week) ;;
 }
 
 measure: auto_nomanageraction {

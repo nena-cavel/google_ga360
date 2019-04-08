@@ -1,7 +1,7 @@
-view: rewards_prize_views_20180910 {
+view: rewards_prize_views {
   derived_table: {
-  persist_for: "24 hours"
-  sql:
+    persist_for: "24 hours"
+    sql:
     select
     replace(replace(substr(screenname,8,
                 length(screenname)-13),'__',' '),'_',' ') as Reward,# count(1) as total_screen_views,
@@ -71,5 +71,4 @@ view: rewards_prize_views_20180910 {
     type: count
     drill_fields: []
   }
-
 }

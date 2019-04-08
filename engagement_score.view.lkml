@@ -12,6 +12,10 @@ COUNT(DISTINCT visitidcalc)*
 +AVG(subquery.see_more_posts*0.1)+AVG(subquery.comments*4)+AVG(subquery.follow*2)
 +AVG(subquery.likes*2)) as eng_count,
 COUNT(DISTINCT visitidcalc) as session_count,
+count(distinct case when subquery.comments>0 then subquery.visitidcalc end) as comments_sessions,
+count(distinct case when subquery.likes>0 then subquery.visitidcalc end) as likes_sessions,
+count(distinct case when subquery.view_profile>0 then subquery.visitidcalc end) as view_profile_sessions,
+count(distinct case when subquery.follow>0 then subquery.visitidcalc end) as follow_sessions,
 AVG(subquery.view_profile) AS profile_views,
 AVG(subquery.view_comments*2) as comment_views,
 AVG(subquery.view_hashtag) as hashtag_views,
@@ -49,7 +53,7 @@ FROM
   h.type AS hit_type,
    COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_screenviews
   FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
-  WHERE SUFFIX Between '20180101'AND '20191231'
+  WHERE SUFFIX Between '20181001'AND '20190831'
   and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
@@ -86,6 +90,22 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
   }
 
+dimension: region_name {
+  type: string
+  sql: (case when ${TABLE}.region = 'us' then 'United States'
+             when ${TABLE}.region = 'de' then 'Germany'
+            when ${TABLE}.region = 'fr' then 'France'
+            when ${TABLE}.region = 'gb' then 'United Kingdom'
+            when ${TABLE}.region = 'se' THEN 'Sweden'
+            when ${TABLE}.region = 'ch' then 'Switzerland'
+            when ${TABLE}.region = 'nl' then 'Netherlands'
+            when ${TABLE}.region = 'br' then 'Brazil'
+            when ${TABLE}.region = 'au' then 'ANZ'
+            WHEN ${TABLE}.region = 'nz' then 'ANZ'
+            when ${TABLE}.region = 'be' then 'Belgium'
+  END) ;;
+}
+
     dimension: operating_system {
       type: string
       sql: ${TABLE}.operating_system;;
@@ -103,6 +123,12 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     value_format_name: decimal_1
   }
 
+  measure: avg_profile_views {
+    type: average
+    sql: ${TABLE}.profile_views ;;
+    value_format_name: decimal_2
+  }
+
 
   dimension: profile_views_dim {
     type:  number
@@ -113,6 +139,12 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     type: sum
     sql: ${TABLE}.comment_views ;;
     value_format_name: decimal_1
+  }
+
+  measure: avg_comment_views {
+    type: average
+    sql: ${TABLE}.comment_views ;;
+    value_format_name: decimal_2
   }
 
   dimension: comment_views_dim {
@@ -139,6 +171,12 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     value_format_name: decimal_1
   }
 
+  measure: avg_hashtag_views {
+    type: average
+    sql: ${TABLE}.hashtag_views ;;
+    value_format_name: decimal_2
+  }
+
   measure: see_more_of_posts {
     type: sum
     sql: ${TABLE}.see_more_of_posts ;;
@@ -151,10 +189,36 @@ GROUP BY 1, 2, 3, 4, 5 ;;
     value_format_name: decimal_1
   }
 
+  measure: comments_sessions {
+    type: sum
+    sql: ${TABLE}.comments_sessions;;
+  }
+
+  measure: likes_sessions  {
+    type: sum
+    sql: ${TABLE}.likes_sessions ;;
+  }
+
+  measure: view_profile_sessions {
+    type: sum
+    sql: ${TABLE}.view_profile_sessions ;;
+  }
+
+  measure: follow_sessions {
+    type: sum
+    sql: ${TABLE}.follow_sessions ;;
+  }
+
   measure: med_comments {
     type: median
     sql: ${TABLE}.comments ;;
     value_format_name: decimal_1
+  }
+
+  measure: avg_comments {
+    type: average
+    sql: ${TABLE}.comments ;;
+    value_format_name: decimal_2
   }
 
 measure: total_eng_score {
@@ -180,6 +244,12 @@ measure: total_session_count {
     value_format_name: decimal_1
   }
 
+  measure: avg_follows {
+    type: average
+    sql: ${TABLE}.follows ;;
+    value_format_name: decimal_2
+  }
+
   measure: likes {
     type: sum
     sql: ${TABLE}.likes ;;
@@ -192,11 +262,17 @@ measure: total_session_count {
     value_format_name: decimal_1
   }
 
+  measure: avg_likes {
+    type: average
+    sql: ${TABLE}.likes ;;
+    value_format_name: decimal_2
+  }
+
 measure: eng_score {
   type:  average
   precision: 1
   sql: ${TABLE}.engagement_score ;;
-  value_format_name: decimal_1
+  value_format_name: decimal_2
 }
 
   measure: eng_score_median {
