@@ -385,6 +385,10 @@ dimension: connect_posters {
               when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
               when ${hits_appInfo.screenName} = 'food_browse_Restaurants' then 'Restaurants'
               when ${hits_appInfo.screenName} = 'food_rollovercard' then 'Rollover Card'
+
+              when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
+              when ${eventAction} = 'onb_skip_tutorials' then 'Onboarding - Skip Tutorial'
+              when ${eventAction} = 'onb_start_tutorial1' then 'Onboarding - Start Tutorial'
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
