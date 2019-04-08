@@ -376,14 +376,19 @@ dimension: connect_posters {
     type:  yesno
   }
   dimension: card_name {
-    sql: case when ${eventAction} = 'food_card_mindset' then 'Head Space'
+    sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
               when ${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals') then 'Recipe Tenure'
+               when ${eventAction} = 'food_browse_Recipes' then 'Discover Recipes'
+               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect'
+              when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
+              when ${hits_appInfo.screenName} = 'food_browse_Restaurants' then 'Restaurants'
+              when ${hits_appInfo.screenName} = 'food_rollovercard' then 'Rollover Card'
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Head Space", "Aaptiv", "Recipe Tenure"]
+    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card"]
   }
 }
 
