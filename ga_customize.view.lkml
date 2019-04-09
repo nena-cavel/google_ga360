@@ -65,6 +65,33 @@ view: ga_sessions {
     }
   }
 
+  measure: connect_new_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_new_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_follow_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_follow_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_profile_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
   measure: groups_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -329,7 +356,23 @@ view: hits_appInfo {
     sql: ${screenName} = 'connect_stream_trending' ;;
     type: yesno
   }
+
+  dimension: connect_new_tab {
+    sql: ${screenName} = 'connect_stream_new';;
+    type: yesno
+  }
+
+  dimension: connect_follow_tab {
+    sql: ${screenName} = 'connect_stream_following';;
+    type: yesno
+  }
+
+  dimension: connect_profile_views {
+    type: yesno
+    sql: ${screenName} = 'connect_profile' ;;
+  }
 }
+
 
 view: hits_eventInfo {
   extends: [hits_eventInfo_base]
