@@ -29,9 +29,26 @@ dimension: region {
   sql: ${TABLE}.region ;;
 }
 
+  dimension: market_name {
+    type: string
+    sql: (case when ${TABLE}.region ='us' then 'United States'
+                WHEN ${TABLE}.region ='de' then 'Germany'
+                WHEN ${TABLE}.region ='gb' then 'UK'
+                WHEN ${TABLE}.region = 'ca' then 'Canada'
+                WHEN ${TABLE}.region ='fr' then 'France'
+                WHEN ${TABLE}.region ='nl' then 'Netherlands'
+                when ${TABLE}.region ='be' then 'Belgium'
+                WHEN ${TABLE}.region ='ch' then 'Switzerland'
+                when ${TABLE}.region ='au' then 'ANZ'
+                WHEN ${TABLE}.region ='nz' then 'ANZ'
+                WHEN ${TABLE}.region ='se' then 'Sweden'
+                when ${TABLE}.region ='br' then 'Brazil'
+    END) ;;
+  }
+
 dimension: operating_system {
   type: string
-  sql: ${TABLE}.operating_system ;;
+  sql: ${TABLE}.os ;;
 }
 
 dimension: scan_name {
