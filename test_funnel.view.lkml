@@ -3,7 +3,7 @@ include: "ga_block.view.lkml"
 view: test_funnel {
 derived_table: {
   sql: SELECT
-            CONCAT(CAST(sessions.fullVisitorId AS STRING), '|', COALESCE(CAST(sessions.date AS STRING),'')) as id
+            CONCAT(CAST(fullVisitorId AS STRING), '|', COALESCE(CAST(visitId AS STRING),'')) as id
           , sessions.fullVisitorId as full_visitor_id
           , sessions.suffix as suffix
           , hits_appInfo.screenName
