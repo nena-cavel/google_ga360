@@ -20,11 +20,13 @@ explore: ga_sessions_block {
 
 view: ga_sessions {
   filter: consolidated_date_filter {
+    default_value: "7 days ago for 7 days"
     description: "This filter applies to both session start time and partition date."
     type: date_time
-    sql: dateadd({% date_start consolidated_date_filter %}, -1, day) <= ${partition_date}
-          AND {% date_end consolidated_date_filter %} > dateadd(${partition_date}, 1, day)
-          AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
+    sql: date_add(date({% date_start consolidated_date_filter %}), interval -1 day ) < ${partition_date::date}
+     AND date_add(date({% date_end consolidated_date_filter %}), interval 1 day) > ${partition_date::date}
+     AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
+
   }
   extends: [ga_sessions_base]
   measure:  unique_prospects{
