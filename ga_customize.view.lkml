@@ -8,16 +8,24 @@ explore: ga_sessions_block {
   extends: [ga_sessions_base]
   extension: required
 
-  always_filter: {
+  conditionally_filter:{
     filters: {
       field: ga_sessions.partition_date
       value: "7 days ago for 7 days"
       ## Partition Date should always be set to a recent date to avoid runaway queries
     }
+    unless: ["ga_sessions.consolidated_date_filter"]
   }
 }
 
 view: ga_sessions {
+  filter: consolidated_date_filter {
+    description: "This filter applies to both session start time and partition date."
+    type: date_time
+    sql: dateadd({% date_start consolidated_date_filter %}, -1, day) <= ${partition_date}
+          AND {% date_end consolidated_date_filter %} > dateadd(${partition_date}, 1, day)
+          AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
+  }
   extends: [ga_sessions_base]
   measure:  unique_prospects{
     filters: {
