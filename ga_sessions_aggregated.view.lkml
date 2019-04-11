@@ -11,6 +11,8 @@ view: ga_sessions_weekly {
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
       column: homepage_visitors {}
+      column: connect_users {}
+      column: groups_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
@@ -74,6 +76,14 @@ view: ga_sessions_weekly {
   dimension: deviceCategory {
     view_label: "Session"
     label: "Device Category"
+  }
+
+  measure: connect_users {
+    type: sum
+  }
+
+  measure: groups_users {
+    type: sum
   }
   measure: transactions_count {
     view_label: "Session"

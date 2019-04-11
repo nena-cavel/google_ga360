@@ -55,6 +55,79 @@ view: ga_sessions {
       value: "yes"
     }
   }
+#### Step 2: Nena's template for filtered measures
+  measure: connect_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_users_dimension
+      value: "yes"
+    }
+  }
+
+  measure: connect_new_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_new_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_follow_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_follow_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_profile_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
+  measure: groups_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.groups_users
+      value: "yes"
+    }
+  }
+
+  measure: connect_likers {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.connect_likers
+      value: "yes"
+    }
+  }
+
+  measure: connect_commenters {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+        field: hits_eventInfo.connect_commenters
+        value: "yes"
+    }
+  }
+
+  measure: connect_posters {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+        field: hits_eventInfo.connect_posters
+        value: "yes"
+    }
+  }
+
   measure: homepage_prospect_visitors {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -135,6 +208,8 @@ measure: unique_visitors_uuid {
 }
 
 
+
+
   ##measures for iaf derived table
   measure: invite_friend_button {
     type: count_distinct
@@ -171,6 +246,8 @@ measure: unique_visitors_uuid {
       value: "yes"
     }
   }
+
+
 
   measure: iaf_screen_users {
     type: count_distinct
@@ -348,11 +425,36 @@ view: hits_appInfo {
     sql: ${screenName} = 'food_dashboard' ;;
     type: yesno
   }
+
   dimension: iaf_screen {
     sql: ${screenName} = 'Invite_a_friend' ;;
     type: yesno
+    }
+
+
+### Step1: Nena's template for filtered measures
+  dimension: connect_user {
+    sql: ${screenName} = 'connect_stream_trending' ;;
+    type: yesno
+  }
+
+  dimension: connect_new_tab {
+    sql: ${screenName} = 'connect_stream_new';;
+    type: yesno
+  }
+
+  dimension: connect_follow_tab {
+    sql: ${screenName} = 'connect_stream_following';;
+    type: yesno
+  }
+
+  dimension: connect_profile_views {
+    type: yesno
+    sql: ${screenName} = 'connect_profile' ;;
+
   }
 }
+
 
 view: hits_eventInfo {
   extends: [hits_eventInfo_base]
@@ -360,6 +462,29 @@ view: hits_eventInfo {
     sql: ${eventAction} = "play" ;;
     type: yesno
   }
+
+  dimension: connect_likers {
+    sql: regexp_contains(${eventAction}, '^connect_post_like$|^connect_comment_like$|^connect_reply_like$|^connect_post_like_tap$') ;;
+    type: yesno
+  }
+
+dimension: connect_commenters {
+  sql: (${eventAction} =  'connect_comment'
+      or ${eventAction} = 'connect_reply_to_member') ;;
+  type: yesno
+}
+
+dimension: connect_posters {
+  sql: ${eventAction}= 'connect_post';;
+  type: yesno
+}
+
+  dimension: groups_users {
+    sql: regexp_contains(${eventAction},'^connect_groups_landing$|^connect_groups_join_first_group$|^connect_groups_join_public_group$') ;;
+    type: yesno
+  }
+
+
 
   ##events related to iaf
   dimension: iaf_my_day {

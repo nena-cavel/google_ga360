@@ -1,5 +1,5 @@
 explore: ga_sessions_base {
-  persist_for: "1 hour"
+#   persist_for: "1 hour"
   extension: required
   view_name: ga_sessions
   view_label: "Session"
@@ -156,6 +156,7 @@ view: ga_sessions_base {
   }
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
+    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
   }
 
   dimension: market {
@@ -241,6 +242,7 @@ view: ga_sessions_base {
          ;;
   }
 
+
   dimension: iaf {
     type:  yesno
     sql:
@@ -303,7 +305,7 @@ view: ga_sessions_base {
 
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
-    timeframes: [date,day_of_week,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
+    timeframes: [date,day_of_week,fiscal_quarter_of_year,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
     label: "Visit Start"
     type: time
     sql: (TIMESTAMP(${visitStartSeconds})) ;;
@@ -926,6 +928,10 @@ view: hits_appInfo_base {
   dimension: landingScreenName {}
   dimension: exitScreenName {}
   dimension: screenDepth {}
+  dimension: connect_users_dimension {
+    type: yesno
+    sql:${screenName}='connect_stream_trending'  ;;
+  }
 }
 
 view: contentInfo_base {

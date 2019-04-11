@@ -9,16 +9,21 @@ include: "*.dashboard"
 #### DATAGROUPS
 
 datagroup: weekly_cache {
-  sql_trigger: select EXTRACT(ISOWEEK FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select EXTRACT(WEEK FROM CURRENT_DATE('America/New_York')) ;;
 }
 
 datagroup: daily_sessions_cache {
   sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
 }
 
+datagroup: static_pdt {
+  sql_trigger:  select 1 ;;
+}
+
 #### EXPLORES
 
 explore: ga_sessions {
+  persist_with: daily_sessions_cache
   extends: [ga_sessions_block]
   join: funnel_growth_dashboard {
     from: funnel_growth_dashboard
@@ -115,11 +120,6 @@ explore: dau_mau_derived {
 
   explore: rewards_prize_views {
     persist_for: "24 hours"
-  }
-
-  explore: rewards_screen_views {
-    persist_for: "1680 hours"
-    #ran midaft 20190315
   }
 
   explore: barcode_scanner_report {
