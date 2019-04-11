@@ -1,6 +1,7 @@
 view: engagement_score {
   derived_table: {
-    persist_for: "72 hours"
+   # persist_for: "24 hours"
+    datagroup_trigger: daily_sessions_cache
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
 d.FiscalWeekOfYear AS fiscal_week,

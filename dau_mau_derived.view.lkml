@@ -74,7 +74,7 @@ view: dau_mau_derived {
     label: "Session Visit Start Date"
   }
   dimension_group: visitStartmonth {
-      timeframes: [month,year,month_name,month_num,date, day_of_month]
+      timeframes: [month,year,month_name,week, month_num,date, day_of_month]
       label: "Visit Start Month"
       type: time
       sql: visitStart_month ;;

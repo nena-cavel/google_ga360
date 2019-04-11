@@ -382,7 +382,7 @@ view: hits_eventInfo {
   }
 
   dimension: connect_likers {
-    sql: regexp_contains(${eventAction}, '^connect_post_like$|^connect_comment_like$|^connect_reply_like$|^connect_post_like_tap$') ;;
+    sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
     type: yesno
   }
 
@@ -398,7 +398,7 @@ dimension: connect_posters {
 }
 
   dimension: groups_users {
-    sql: regexp_contains(${eventAction},'^connect_groups_landing$|^connect_groups_join_first_group$|^connect_groups_join_public_group$') ;;
+    sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
     type: yesno
   }
 
