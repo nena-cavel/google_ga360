@@ -20,7 +20,7 @@ view: dau_mau_derived {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "12 months ago for 12 months"
+        value: "19 months ago for 19 months"
       }
       filters: {
         field: hits_appInfo.screenName
@@ -150,7 +150,7 @@ view: dau_mau_derived_daily {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "12 months ago for 12 months"
+        value: "19 months ago for 19 months"
       }
       filters: {
         field: hits_appInfo.screenName

@@ -1,7 +1,7 @@
 include: "ga_block.view.lkml"
 
 datagroup: monthly_cache {
-  sql_trigger: select EXTRACT(MONTH FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select EXTRACT(month FROM CURRENT_DATE('America/New_York')) ;;
 }
 
 explore: ga_sessions_block {
