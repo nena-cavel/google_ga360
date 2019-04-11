@@ -9,7 +9,7 @@ view: invited_users {
       LEFT JOIN UNNEST([first_hit.contentGroup]) as first_pagename
 
 
-      WHERE (first_hit.hitNumber = 1) AND (first_pagename.contentGroup3 = 'visi:us:invited')
+      WHERE (first_hit.hitNumber = 1) AND (regexp_contains(first_pagename.contentGroup3,  '(^visi:.*:invited$)|(^visi:(au|nz|ca):invite-a-friend$)|(^visi:fr:parrainage$)|(^visi:br:convide-um-amigo$)'))
       GROUP BY 1,2,3
        ;;
   }
