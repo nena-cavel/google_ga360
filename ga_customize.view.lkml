@@ -67,6 +67,62 @@ view: ga_sessions {
       value: "yes"
     }
   }
+## measures for iaf_ desktop
+  measure: my_day_users_desktop {
+    type:  count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_contentGroup.is_myDay
+      value: "yes"
+    }
+  }
+
+  measure: iaf_page_desktop_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_contentGroup.is_iafDesktop
+      value: "yes"
+    }
+  }
+
+  measure: iaf_myDay_users_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_eventInfo.iaf_myDay_desktop
+      value: "yes"
+    }
+  }
+
+  measure: iaf_sendEmail_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field:  hits_eventInfo.iaf_sendEmail_desktop
+      value: "yes"
+    }
+    }
+
+
+  measure: iaf_copyLink_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field:  hits_eventInfo.iaf_copyLink_desktop
+      value: "yes"
+    }
+  }
+
+  measure: desktop_invites {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_eventInfo.invite_desktop
+      value: "yes"
+    }
+  }
+
 
 dimension: uuid_dimension {
   type: string
@@ -116,7 +172,14 @@ measure: unique_visitors_uuid {
     }
   }
 
-
+  measure: iaf_screen_users {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.iaf_screen
+      value: "yes"
+    }
+  }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
 
@@ -243,6 +306,18 @@ view: hits_contentGroup {
     type: yesno
     sql: ${contentGroup3} like 'visi:__:home';;
   }
+
+  dimension: is_myDay {
+    label: " Is My Day"
+    type: yesno
+    sql: regexp_Contains(${contentGroup3},'^trac:..:nui:my-day:food$') ;;
+  }
+
+  dimension: is_iafDesktop {
+    label: " Is My Day"
+    type: yesno
+    sql: regexp_Contains(${contentGroup3},'^trac:..:nui:invite-a-friend$') ;;
+  }
 }
 #  We only want some of the interaction fields.
 
@@ -273,6 +348,10 @@ view: hits_appInfo {
     sql: ${screenName} = 'food_dashboard' ;;
     type: yesno
   }
+  dimension: iaf_screen {
+    sql: ${screenName} = 'Invite_a_friend' ;;
+    type: yesno
+  }
 }
 
 view: hits_eventInfo {
@@ -284,7 +363,7 @@ view: hits_eventInfo {
 
   ##events related to iaf
   dimension: iaf_my_day {
-    sql: ${eventAction} = 'iaf_my_day' ;;
+    sql: ${eventAction} = 'iaf_my_day_card' ;;
     type: yesno
 
   }
@@ -296,6 +375,27 @@ view: hits_eventInfo {
     sql: ${eventAction} = 'iaf_invite_friends_button' ;;
     type:  yesno
   }
+  dimension: iaf_myDay_desktop {
+    sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
+    type:  yesno
+  }
+
+  dimension: iaf_sendEmail_desktop {
+    sql: ${eventAction} = 'send_email' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+  dimension: iaf_copyLink_desktop {
+    sql: ${eventAction} = 'copy_link' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+  dimension: invite_desktop {
+    sql: ${eventCategory} = 'invite_a_friend' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+
 }
 
 view: hits_product {
