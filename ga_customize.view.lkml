@@ -534,13 +534,13 @@ dimension: connect_posters {
               ) then 'Article Tenure'
 
               when ${hits_appInfo.screenName} in ('food_browse_recipes_Popular', 'food_browse_recipes_Low_SmartPoints_Mains', 'food_browse_recipes_Low_SmartPoints_Sides', 'food_browse_recipes_Zero_SmartPoints_Toppings___Dips', 'food_browse_recipes_No_Cook', 'food_browse_recipes_Quick___Easy', 'food_browse_recipes_Chicken_Every_Way',
-              'food_browse_recipes_Cooking_for_One') then ' Default Collections - Discover Recipes'
+              'food_browse_recipes_Cooking_for_One') then 'Default Collections - Discover Recipes'
 
 
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial" ]
+    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes" ]
   }
 
   dimension: iaf_myDay_desktop {
