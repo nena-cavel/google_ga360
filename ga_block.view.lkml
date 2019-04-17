@@ -224,7 +224,7 @@ view: ga_sessions_base {
   dimension: funnelProspect {
   type:  yesno
   sql: (
-          ((${totals.transactions} is not null AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) )
+          ((${totals.transactions} is not null ) )
         OR
           ((${memberID} is NULL AND ${totals.transactions} IS NULL)
             AND
