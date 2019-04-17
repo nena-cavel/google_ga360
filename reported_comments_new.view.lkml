@@ -22,7 +22,7 @@ payload_comment.uuid AS comment_id,
 payload_comment.flagged AS flagged,
 payload_comment.flags_count AS flagged_count,
 payload_comment.invisible AS is_invisible,
-extract(date from payload_comment.created_at) as date_created,
+extract(date from payload_comment.updated_at) as ref_date_updated,
 payload_comment.updated_at  AS date_updated,
 ROW_NUMBER() OVER(PARTITION BY payload_comment.uuid  order by payload_comment.updated_at desc ) as row_rank
 FROM `wwi-datalake-1.wwi_events_pond.connect_Comment`
@@ -32,8 +32,8 @@ WHERE payload_comment.updated_at  > TIMESTAMP('2018-01-01 00:00:01')
 ) subquery
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-01-07', '2019-12-31', INTERVAL 1 week)) as week_date
-ON (EXTRACT(week from date_created) = extract(week from week_date)
-    AND EXTRACT(year from date_created) = extract(year from week_date))
+ON (EXTRACT(week from ref_date_updated) = extract(week from week_date)
+    AND EXTRACT(year from ref_date_updated) = extract(year from week_date))
 group by 1,2 ;;
 }
   dimension: market {

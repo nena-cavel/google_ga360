@@ -20,7 +20,7 @@ view: dau_mau_derived {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "12 months ago for 12 months"
+        value: "16 months ago for 13 months"
       }
       filters: {
         field: hits_appInfo.screenName
@@ -74,7 +74,7 @@ view: dau_mau_derived {
     label: "Session Visit Start Date"
   }
   dimension_group: visitStartmonth {
-      timeframes: [month,year,month_name,month_num,date, day_of_month]
+      timeframes: [month,year,month_name,week, month_num,date, day_of_month]
       label: "Visit Start Month"
       type: time
       sql: visitStart_month ;;
@@ -150,7 +150,7 @@ view: dau_mau_derived_daily {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "12 months ago for 12 months"
+        value: "16 months ago for 13 months"
       }
       filters: {
         field: hits_appInfo.screenName

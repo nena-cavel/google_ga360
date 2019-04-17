@@ -1,7 +1,7 @@
 include: "ga_block.view.lkml"
 
 datagroup: monthly_cache {
-  sql_trigger: select EXTRACT(MONTH FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select EXTRACT(month FROM CURRENT_DATE('America/New_York')) ;;
 }
 
 explore: ga_sessions_block {
@@ -65,6 +65,33 @@ view: ga_sessions {
     }
   }
 
+  measure: connect_new_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_new_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_follow_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_follow_tab
+      value: "yes"
+    }
+  }
+
+  measure: connect_profile_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
   measure: groups_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -113,6 +140,62 @@ view: ga_sessions {
       value: "yes"
     }
   }
+## measures for iaf_ desktop
+  measure: my_day_users_desktop {
+    type:  count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_contentGroup.is_myDay
+      value: "yes"
+    }
+  }
+
+  measure: iaf_page_desktop_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_contentGroup.is_iafDesktop
+      value: "yes"
+    }
+  }
+
+  measure: iaf_myDay_users_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_eventInfo.iaf_myDay_desktop
+      value: "yes"
+    }
+  }
+
+  measure: iaf_sendEmail_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field:  hits_eventInfo.iaf_sendEmail_desktop
+      value: "yes"
+    }
+    }
+
+
+  measure: iaf_copyLink_desktop {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field:  hits_eventInfo.iaf_copyLink_desktop
+      value: "yes"
+    }
+  }
+
+  measure: desktop_invites {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field:  hits_eventInfo.invite_desktop
+      value: "yes"
+    }
+  }
+
 
 dimension: uuid_dimension {
   type: string
@@ -166,7 +249,14 @@ measure: unique_visitors_uuid {
 
 
 
-
+  measure: iaf_screen_users {
+    type: count_distinct
+    sql:  ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.iaf_screen
+      value: "yes"
+    }
+  }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly. There are several
   # variations of sql_table_name patterns depending on the number of Properties (i.e. websites) being used.
 
@@ -293,6 +383,18 @@ view: hits_contentGroup {
     type: yesno
     sql: ${contentGroup3} like 'visi:__:home';;
   }
+
+  dimension: is_myDay {
+    label: " Is My Day"
+    type: yesno
+    sql: regexp_Contains(${contentGroup3},'^trac:..:nui:my-day:food$') ;;
+  }
+
+  dimension: is_iafDesktop {
+    label: " Is My Day"
+    type: yesno
+    sql: regexp_Contains(${contentGroup3},'^trac:..:nui:invite-a-friend$') ;;
+  }
 }
 #  We only want some of the interaction fields.
 
@@ -324,12 +426,35 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: iaf_screen {
+    sql: ${screenName} = 'Invite_a_friend' ;;
+    type: yesno
+    }
+
+
 ### Step1: Nena's template for filtered measures
   dimension: connect_user {
     sql: ${screenName} = 'connect_stream_trending' ;;
     type: yesno
   }
+
+  dimension: connect_new_tab {
+    sql: ${screenName} = 'connect_stream_new';;
+    type: yesno
+  }
+
+  dimension: connect_follow_tab {
+    sql: ${screenName} = 'connect_stream_following';;
+    type: yesno
+  }
+
+  dimension: connect_profile_views {
+    type: yesno
+    sql: ${screenName} = 'connect_profile' ;;
+
+  }
 }
+
 
 view: hits_eventInfo {
   extends: [hits_eventInfo_base]
@@ -339,7 +464,7 @@ view: hits_eventInfo {
   }
 
   dimension: connect_likers {
-    sql: regexp_contains(${eventAction}, '^connect_post_like$|^connect_comment_like$|^connect_reply_like$|^connect_post_like_tap$') ;;
+    sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
     type: yesno
   }
 
@@ -355,7 +480,7 @@ dimension: connect_posters {
 }
 
   dimension: groups_users {
-    sql: regexp_contains(${eventAction},'^connect_groups_landing$|^connect_groups_join_first_group$|^connect_groups_join_public_group$') ;;
+    sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
     type: yesno
   }
 
@@ -363,7 +488,7 @@ dimension: connect_posters {
 
   ##events related to iaf
   dimension: iaf_my_day {
-    sql: ${eventAction} = 'iaf_my_day' ;;
+    sql: ${eventAction} = 'iaf_my_day_card' ;;
     type: yesno
 
   }
@@ -375,6 +500,7 @@ dimension: connect_posters {
     sql: ${eventAction} = 'iaf_invite_friends_button' ;;
     type:  yesno
   }
+
   dimension: card_name {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
@@ -416,6 +542,28 @@ dimension: connect_posters {
               ;;
     suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial" ]
   }
+
+  dimension: iaf_myDay_desktop {
+    sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
+    type:  yesno
+  }
+
+  dimension: iaf_sendEmail_desktop {
+    sql: ${eventAction} = 'send_email' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+  dimension: iaf_copyLink_desktop {
+    sql: ${eventAction} = 'copy_link' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+  dimension: invite_desktop {
+    sql: ${eventCategory} = 'invite_a_friend' AND ${eventLabel} = 'member_invite' ;;
+    type:  yesno
+  }
+
+
 }
 
 view: hits_product {
