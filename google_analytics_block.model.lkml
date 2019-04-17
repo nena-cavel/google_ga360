@@ -71,6 +71,12 @@ explore: dau_mau_derived {
   }
 }
 
+explore: kpi_funnel_static {
+  #join: dau_mau_derived {
+  #  sql_on: ${kpi_funnel_static.thedate_date}=${dau_mau_derived.visitStartmonth_date} ;;
+ # }
+}
+
 #   explore: dau_mau_derived {
 #     persist_for: "72 hours"
 #     join: dau_mau_derived_daily {

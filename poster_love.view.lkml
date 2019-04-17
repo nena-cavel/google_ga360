@@ -6,6 +6,7 @@ view: poster_love {
 SELECT
 
 date,
+region,
 post_type,
 post_id,
 
@@ -36,12 +37,13 @@ FROM
   SELECT DISTINCT
   EXTRACT(MONTH FROM payload_post.created_at) as month_post_created,
   payload_post.subclass as post_type,
+  payload_post.locale as region,
   cp.payload_post.uuid AS post_id,
   engagements.engagement_type,
   engagements.engagement_id,
   TIMESTAMP_DIFF(engagements.created_at, cp.payload_post.created_at, SECOND)/3600 as hours_after_posting_engagement
 
-  FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Post` cp
+  FROM `wwi-datalake-1.wwi_events_pond.connect_Post` cp
 
   -- left join to a table consisting of all possible likes and comments (perhaps a post has none of either?)
 
@@ -52,7 +54,7 @@ FROM
     'like' AS engagement_type,
     cl.payload_like.id AS engagement_id
 
-    FROM  `wwi-data-playground-3.wwi_processed_data_std_views.connect_Like` cl
+    FROM  `wwi-datalake-1.wwi_events_pond.connect_Like` cl
 
     UNION ALL
 
@@ -60,7 +62,7 @@ FROM
     cc.payload_comment.created_at AS created_at,
     'comment' AS engagement_type,
     cc.payload_comment.id AS engagement_id
-    FROM `wwi-data-playground-3.wwi_processed_data_std_views.connect_Comment` cc
+    FROM `wwi-datalake-1.wwi_events_pond.connect_Comment` cc
 
    ) engagements
 
@@ -79,9 +81,9 @@ FROM
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
 ON month_post_created = extract(month from date)
-GROUP BY 1,2,3
+GROUP BY 1,2,3,4
 
-order by 3 desc
+order by 4 desc
 ;;
   }
   dimension_group: date {
@@ -95,6 +97,31 @@ order by 3 desc
   dimension: post_type {
     type:  string
     sql: ${TABLE}.post_type ;;
+  }
+
+  dimension: region {
+    type: string
+    sql: ${TABLE}.region ;;
+  }
+
+  dimension: market_name {
+    type: string
+    sql: (case when ${TABLE}.region ='en-US' then 'United States'
+                WHEN ${TABLE}.region ='de-DE' then 'Germany'
+                WHEN ${TABLE}.region ='en-GB' then 'UK'
+                WHEN ${TABLE}.region = 'en-CA' then 'Canada'
+                WHEN ${TABLE}.region = 'fr-CA' then 'Canada'
+                WHEN ${TABLE}.region ='fr-FR' then 'France'
+                WHEN ${TABLE}.region ='nl-NL' then 'Netherlands'
+                when ${TABLE}.region ='nl-BE' then 'Belgium'
+                when ${TABLE}.region = 'fr-BE' then 'Belgium'
+                WHEN ${TABLE}.region ='de-CH' then 'Switzerland'
+                when ${TABLE}.region = 'fr-CH' then 'Switzerland'
+                when ${TABLE}.region ='en-AU' then 'ANZ'
+                WHEN ${TABLE}.region ='nz' then 'ANZ'
+                WHEN ${TABLE}.region ='sv-SE' then 'Sweden'
+                when ${TABLE}.region ='pt-BR' then 'Brazil'
+    END) ;;
   }
 
   measure: likes {

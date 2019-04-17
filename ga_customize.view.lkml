@@ -1,7 +1,7 @@
 include: "ga_block.view.lkml"
 
 datagroup: monthly_cache {
-  sql_trigger: select EXTRACT(MONTH FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select EXTRACT(month FROM CURRENT_DATE('America/New_York')) ;;
 }
 
 explore: ga_sessions_block {
@@ -464,7 +464,7 @@ view: hits_eventInfo {
   }
 
   dimension: connect_likers {
-    sql: regexp_contains(${eventAction}, '^connect_post_like$|^connect_comment_like$|^connect_reply_like$|^connect_post_like_tap$') ;;
+    sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
     type: yesno
   }
 
@@ -480,7 +480,7 @@ dimension: connect_posters {
 }
 
   dimension: groups_users {
-    sql: regexp_contains(${eventAction},'^connect_groups_landing$|^connect_groups_join_first_group$|^connect_groups_join_public_group$') ;;
+    sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
     type: yesno
   }
 
