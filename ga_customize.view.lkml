@@ -520,6 +520,21 @@ dimension: connect_posters {
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
                       'food_card_recipes_Family_friendly' ) then 'Recipe Tenure'
+  when ${hits_appInfo.screenName} not in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
+                       'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
+                      'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
+                      'food_card_recipes_Family_friendly' ) then 'Recipe Date'
+
+when ${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
+              'food_card_article_Tips_for_dining_out', 'food_card_article_Ideas_for_Smart_Snacking', 'food_card_article_How_do_I_estimate_portions_', 'food_card_article_Tips_for_syncing_your_fitness_device', 'food_card_article_Why_does_fruit_count_in_a_smoothie_', 'food_card_article_The_importance_of_practicing_awareness',
+              'food_card_article_How_to_avoid_emotional_eating', 'food_card_article_The_importance_of_non_weight_goals', 'food_card_article_Keep_going_strong_with_WellnessWins_', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints_', 'food_card_article_Ideas_for_smart_snacking',
+              'food_card_article_Tips_for_syncing_your_fitness_device_', 'food_card_article_The_importance_of_practicing_awareness_', 'food_card_article_Du_weißt_nicht__was_du_essen_sollst_', 'food_card_article_Du_wei_t_nicht__was_du_essen_sollst_', 'food_card_article_Du_weisst_nicht__was_du_essen_sollst_',
+              'food_card_article_Dein_Einmaleins_im_Supermarkt', 'food_card_article_Muss_ich_meine_wöchentlichen_SmartPoints_nutzen_', 'food_card_article_Muss_ich_meine_w_chentlichen_SmartPoints_nutzen_', 'food_card_article_Wiegen_ist_wichtig__aber_nicht_alles', 'food_card_article_Wiegen_ist_wichtig__aber_nicht_alles_',
+              'food_card_article_Alles_im__Gr_nen_Bereich_', 'food_card_article_Alles_im__Grünen_Bereich_', 'food_card_article_zero_Points__Lebensmitteln', 'food_card_article_Zero_Points_Lebensmittel', 'food_card_article_Einladungen_und_Restaurants', 'food_card_article_Warum_du_nicht_nur_zero_Points_Lebensmittel_essen_solltest',
+              'food_card_article_Warum_du_nicht_nur_zero_Points__Lebensmittel_essen_solltest', 'food_card_article_Portionsgrößen_schätzen', 'food_card_article_Portionsgr__en_sch_tzen', 'food_card_article_Portionen_richtig_schätzen', 'food_card_article_Portionen_richtig_schätzen_', 'food_card_article_Portionen_richtig_sch_tzen',
+              'food_card_article_Portionen_richtig_sch_tzen_', 'food_card_article_Portionsgrössen_schätzen', 'food_card_article_Essen_auf_Partys_und_Veranstaltungen', 'food_card_article_Im_Urlaub_und_auf_Reisen', 'food_card_article_Bewusst__und_nicht_aus_Langeweile_essen', 'food_card_article_Bewusst_und_nicht_aus_Langeweile_essen',
+              'food_card_article_Snacks_für_unterwegs', 'food_card_article_Snacks_f_r_unterwegs', 'food_card_article_Snacks_für_Unterwegs'
+              ) then 'Article Date'
 
 
                when ${hits_appInfo.screenName} in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
@@ -540,7 +555,7 @@ dimension: connect_posters {
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other" ]
+    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date" ]
   }
 
   dimension: iaf_myDay_desktop {
