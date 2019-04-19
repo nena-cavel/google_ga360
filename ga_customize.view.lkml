@@ -561,7 +561,7 @@ dimension: my_day_cards {
 
 }
 
-dimension: recipe_and_articles {
+dimension: recipe_and_articles_cards {
 
   sql:  case when ${card_name} in ("Recipe Tenure",  "Recipe Date", "All Recipes", "Article Tenure", "Article Date","All Articles")  then ${card_name}
   else null end;;
