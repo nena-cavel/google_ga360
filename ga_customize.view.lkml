@@ -561,6 +561,13 @@ dimension: my_day_cards {
 
 }
 
+dimension: recipe_and_articles {
+
+  sql:  case when ${card_name} in ("Recipe Tenure",  "Recipe Date", "All Recipes", "Article Tenure", "Article Date","All Articles")  then ${card_name}
+  else null end;;
+  type:  string
+}
+
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
     type:  yesno
