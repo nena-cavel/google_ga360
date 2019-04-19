@@ -514,8 +514,6 @@ dimension: connect_posters {
               when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
               when ${eventAction} = 'onb_skip_tutorials' then 'Onboarding - Skip Tutorial'
               when ${eventAction} = 'onb_start_tutorial1' then 'Onboarding - Start Tutorial'
-              when ${hits_appInfo.screenName} like ('food_card_recipes_%') then 'All Recipes'
-              when ${hits_appInfo.screenName} like ('food_card_article_%') then 'All Articles'
               when ${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
@@ -546,6 +544,8 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               ) then 'Article Tenure'
               when ${hits_appInfo.screenName} in ('food_browse_recipes_Popular', 'food_browse_recipes_Low_SmartPoints_Mains', 'food_browse_recipes_Low_SmartPoints_Sides', 'food_browse_recipes_Zero_SmartPoints_Toppings___Dips', 'food_browse_recipes_No_Cook', 'food_browse_recipes_Quick___Easy', 'food_browse_recipes_Chicken_Every_Way',
               'food_browse_recipes_Cooking_for_One') then 'Default Collections - Discover Recipes'
+              when ${hits_appInfo.screenName} like ('food_card_recipes_%') then 'All Recipes'
+              when ${hits_appInfo.screenName} like ('food_card_article_%') then 'All Articles'
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
