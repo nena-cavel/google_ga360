@@ -54,6 +54,7 @@ dimension: region_group {
     sql: (case when ${TABLE}.region = 'us' then 'United States'
              when ${TABLE}.region = 'de' then 'Germany'
             when ${TABLE}.region = 'fr' then 'France'
+            when ${TABLE}.region = 'ca' then 'Canada'
             when ${TABLE}.region = 'gb' then 'United Kingdom'
             when ${TABLE}.region = 'se' THEN 'Sweden'
             when ${TABLE}.region = 'ch' then 'Switzerland'

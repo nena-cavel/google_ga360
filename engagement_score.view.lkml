@@ -1,6 +1,7 @@
 view: engagement_score {
   derived_table: {
-    persist_for: "72 hours"
+   # persist_for: "24 hours"
+    datagroup_trigger: daily_sessions_cache
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
 d.FiscalWeekOfYear AS fiscal_week,
@@ -94,6 +95,7 @@ dimension: region_name {
   type: string
   sql: (case when ${TABLE}.region = 'us' then 'United States'
              when ${TABLE}.region = 'de' then 'Germany'
+            when ${TABLE}.region = 'ca' then 'Canada'
             when ${TABLE}.region = 'fr' then 'France'
             when ${TABLE}.region = 'gb' then 'United Kingdom'
             when ${TABLE}.region = 'se' THEN 'Sweden'

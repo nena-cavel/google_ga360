@@ -65,26 +65,7 @@ view: funnel_growth_dashboard {
          GROUP BY 1,2,3
           ;;
   }
-  filter: page_1 {
-    type: string
-    suggest_dimension: hits_page.pageTitle
-    suggest_explore: ga_sessions
-  }
-  filter: page_2 {
-    type: string
-    suggest_dimension: hits_page.pageTitle
-    suggest_explore: ga_sessions
-  }
-  filter: page_3 {
-    type: string
-    suggest_dimension: hits_page.pageTitle
-    suggest_explore: ga_sessions
-  }
-  filter: page_4 {
-    type: string
-    suggest_dimension: hits_page.pageTitle
-    suggest_explore: ga_sessions
-  }
+
   filter: event_time {
     type: date_time
   }
@@ -196,36 +177,7 @@ view: funnel_growth_dashboard {
     sql: ${TABLE}.event_5_last ;;
   }
 
-  dimension: event1_before_event2 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_1 < ${TABLE}.event_2_last ;;
-  }
-  dimension: event1_before_event3 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_1 < ${TABLE}.event_3_last ;;
-  }
-  dimension: event1_before_event4 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_1 < ${TABLE}.event_4_last ;;
-  }
-  dimension: event2_before_event3 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_2_first < ${TABLE}.event_3_last ;;
-  }
-  dimension: event2_before_event4 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_2_first < ${TABLE}.event_4_last ;;
-  }
-  dimension: event3_before_event4 {
-    type: yesno
-    hidden: yes
-    sql: ${TABLE}.event_3_first < ${TABLE}.event_4_last ;;
-  }
+
   dimension: reached_event_1 {
     hidden:no
     type: yesno
