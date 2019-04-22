@@ -571,6 +571,14 @@ dimension: my_day_cards {
 
 }
 
+  dimension: my_day_cards_yesno {
+    sql:  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+
+         ;;
+    type: yesno
+
+  }
+
 dimension: recipe_and_articles_cards {
 
   sql:  case when ${card_name} in ("Recipe Tenure",  "Recipe Date", "All Recipes", "Article Tenure", "Article Date","All Articles")  then ${card_name}
