@@ -831,6 +831,14 @@ dimension: recipe_and_articles_cards {
   type:  string
 }
 
+  dimension: recipe_and_articles_cards_yesno {
+
+    sql:  ${card_name} in ("Recipe Tenure",  "Recipe Date", "All Recipes", "Article Tenure", "Article Date","All Articles")
+     ;;
+    type:  yesno
+  }
+
+
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
     type:  yesno
