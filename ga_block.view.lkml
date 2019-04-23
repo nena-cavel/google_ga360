@@ -224,7 +224,7 @@ view: ga_sessions_base {
   dimension: funnelProspect {
   type:  yesno
   sql: (
-          ((${totals.transactions} is not null AND REGEXP_CONTAINS(${hits_eventInfo.eventAction},'signup') ) )
+          ((${totals.transactions} is not null ) )
         OR
           ((${memberID} is NULL AND ${totals.transactions} IS NULL)
             AND
@@ -305,7 +305,7 @@ view: ga_sessions_base {
 
   ## referencing partition_date for demo purposes only. Switch this dimension to reference visistStartSeconds
   dimension_group: visitStart {
-    timeframes: [date,day_of_week,fiscal_quarter_of_year,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
+    timeframes: [raw, date,day_of_week,fiscal_quarter_of_year,fiscal_quarter,week,month,year,month_name,month_num,week_of_year]
     label: "Visit Start"
     type: time
     sql: (TIMESTAMP(${visitStartSeconds})) ;;
