@@ -169,3 +169,5 @@ explore: reported_posts_new {
     AND ${reported_posts_new.market}=${reported_comments_new.market};;
   }
 }
+
+explore: ga_daily_counts {}

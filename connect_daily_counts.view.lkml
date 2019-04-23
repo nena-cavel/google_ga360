@@ -123,6 +123,23 @@ dimension: region_group {
   sql: CASE WHEN ${TABLE}.region = 'us' THEN 'United States' ELSE 'International' END ;;
 }
 
+  dimension: region_name {
+    type: string
+    sql: (case when ${TABLE}.region = 'us' then 'United States'
+             when ${TABLE}.region = 'de' then 'Germany'
+            when ${TABLE}.region = 'fr' then 'France'
+            when ${TABLE}.region = 'ca' then 'Canada'
+            when ${TABLE}.region = 'gb' then 'United Kingdom'
+            when ${TABLE}.region = 'se' THEN 'Sweden'
+            when ${TABLE}.region = 'ch' then 'Switzerland'
+            when ${TABLE}.region = 'nl' then 'Netherlands'
+            when ${TABLE}.region = 'br' then 'Brazil'
+            when ${TABLE}.region = 'au' then 'ANZ'
+            WHEN ${TABLE}.region = 'nz' then 'ANZ'
+            when ${TABLE}.region = 'be' then 'Belgium'
+  END) ;;
+  }
+
 
   dimension: fiscal_year {
     type: number
