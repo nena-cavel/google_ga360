@@ -8,16 +8,26 @@ explore: ga_sessions_block {
   extends: [ga_sessions_base]
   extension: required
 
-  always_filter: {
+  conditionally_filter:{
     filters: {
       field: ga_sessions.partition_date
       value: "7 days ago for 7 days"
       ## Partition Date should always be set to a recent date to avoid runaway queries
     }
+    unless: ["ga_sessions.consolidated_date_filter"]
   }
 }
 
 view: ga_sessions {
+  filter: consolidated_date_filter {
+    default_value: "7 days ago for 7 days"
+    description: "This filter applies to both session start time and partition date."
+    type: date_time
+    sql: date_add(date({% date_start consolidated_date_filter %}), interval -1 day ) < ${partition_date::date}
+     AND date_add(date({% date_end consolidated_date_filter %}), interval 1 day) > ${partition_date::date}
+     AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
+
+  }
   extends: [ga_sessions_base]
   measure:  unique_prospects{
     filters: {
@@ -560,6 +570,14 @@ dimension: my_day_cards {
   type: string
 
 }
+
+  dimension: my_day_cards_yesno {
+    sql:  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+
+         ;;
+    type: yesno
+
+  }
 
 dimension: recipe_and_articles_cards {
 
