@@ -58,7 +58,7 @@ view: kpi_funnel_static {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.thedate ;;
+    sql: cast(${TABLE}.thedate as date) ;;
   }
 
   dimension: uuid {

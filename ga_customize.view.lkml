@@ -75,6 +75,45 @@ view: ga_sessions {
     }
   }
 
+  measure: connect_visits {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_appInfo.connect_users_dimension
+      value: "yes"
+    }
+  }
+
+measure:  profile_follows {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId});;
+  filters: {
+    field: hits_eventInfo.profile_followers
+    value: "yes"
+    }
+  }
+
+  #dimension: product_owned_group {
+ #   type: string
+  #  sql: case when  (case when customDimensions.index=10 then customDimensions.value end) = "[ONLINE]"
+  #            then "Digital"
+   #           WHEN (case when customDimensions.index=10 then customDimensions.value end) = "[MONTHLY_PASS, ETOOLS]"
+   #           THEN "Studio"
+   #           WHEN (case when customDimensions.index=10 then customDimensions.value end) = "[ETOOLS, MONTHLY_PASS]"
+   #           THEN "Studio"
+   #           ELSE null
+   #           end;;
+ # }
+
+  measure: profile_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.profile_user
+      value: "yes"
+    }
+  }
+
   measure: connect_new_tab_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -102,6 +141,43 @@ view: ga_sessions {
     }
   }
 
+  measure: notifications_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.notifications_page
+      value: "yes"
+    }
+  }
+
+  measure: journey_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.journey_tab
+      value: "yes"
+    }
+  }
+
+  measure: weigh_tracking_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+  }
+
+
+  measure: connect_profile_views {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId});;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
   measure: groups_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -120,12 +196,103 @@ view: ga_sessions {
     }
   }
 
+
   measure: connect_commenters {
     type: count_distinct
     sql: ${fullVisitorId} ;;
     filters: {
         field: hits_eventInfo.connect_commenters
         value: "yes"
+    }
+  }
+
+  measure: notifs_new_follower_clicks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.notifs_new_follower
+      value: "yes"
+    }
+  }
+
+  measure: notifs_new_comment_clicks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.notifs_new_comment
+      value: "yes"
+    }
+  }
+
+  measure: notifs_new_like_clicks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.notifs_new_like
+      value: "yes"
+    }
+  }
+
+  measure: all_notifs_clicks {
+    type: count_distinct
+    sql:concat(cast(${visitId} as string),${fullVisitorId})  ;;
+    filters: {
+      field: hits_eventInfo.all_notifs
+      value: "yes"
+    }
+  }
+
+  measure: coach_tab_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.coach_tab
+      value: "yes"
+    }
+  }
+
+measure: get_help_users {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_appInfo.get_help
+    value: "yes"
+  }
+}
+
+measure: chat_now_users {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_appInfo.chat_now
+    value: "yes"
+  }
+}
+
+  measure: plus_symbol_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.plus_symbol
+      value: "yes"
+    }
+  }
+
+  measure: search_bar_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.search_bar
+      value: "yes"
+    }
+  }
+
+  measure: barcode_scans {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.barcode_scans
+      value: "yes"
     }
   }
 
@@ -448,6 +615,46 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: coach_tab {
+    sql: ${screenName} = 'help_help_landing' ;;
+    type: yesno
+  }
+
+  dimension: chat_now {
+    sql: ${screenName}= 'help_chat_window' ;;
+    type: yesno
+  }
+
+  dimension: get_help {
+    sql: ${screenName}= 'help_mobile_faq' ;;
+    type: yesno
+  }
+
+  dimension: profile_user {
+    sql: regexp_contains(${screenName}, 'profile_my_profile|profile_myself_view') ;;
+    type: yesno
+  }
+
+  dimension: plus_symbol {
+    sql: ${screenName} = 'Track' ;;
+    type: yesno
+  }
+
+dimension: search_bar {
+  sql: ${screenName} = 'Search' ;;
+  type: yesno
+}
+
+dimension: journey_tab {
+  sql: ${screenName} = 'rewards_journey_home' ;;
+  type: yesno
+}
+
+dimension: notifications_page {
+  sql: regexp_contains(${screenName},'global_notifications|connect_notifications') ;;
+  type: yesno
+}
+
   dimension: connect_new_tab {
     sql: ${screenName} = 'connect_stream_new';;
     type: yesno
@@ -460,10 +667,11 @@ view: hits_appInfo {
 
   dimension: connect_profile_views {
     type: yesno
-    sql: ${screenName} = 'connect_profile' ;;
+    sql: regexp_contains(${screenName}, 'connect_profile|profile_other_view') ;;
 
   }
 }
+
 
 
 view: hits_eventInfo {
@@ -477,6 +685,16 @@ view: hits_eventInfo {
     sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
     type: yesno
   }
+
+dimension: barcode_scans {
+  sql: regexp_contains(${eventAction}, 'barcodescanner_') ;;
+  type: yesno
+}
+
+dimension: group_id_new {
+  sql: case when regexp_contains(${eventAction}, 'connect_groups_') then  ${eventLabel} end ;;
+  type: string
+}
 
 dimension: connect_commenters {
   sql: (${eventAction} =  'connect_comment'
@@ -493,8 +711,35 @@ dimension: connect_posters {
     sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
     type: yesno
   }
+dimension: profile_followers {
+  sql: ${eventAction} = 'connect_user_follow';;
+  type: yesno
+}
 
+dimension: weight_tracking {
+  sql: ${eventAction} = 'journey_trackedweight';;
+  type: yesno
+}
 
+dimension: notifs_new_follower {
+  sql: ${eventAction} = 'notifications_connect_new_follower'  ;;
+  type: yesno
+}
+
+dimension: notifs_new_comment {
+  sql: ${eventAction} = 'notifications_connect_new_comment' ;;
+  type: yesno
+}
+
+dimension: notifs_new_like {
+  sql: ${eventAction} = 'notifications_connect_new_like' ;;
+  type: yesno
+}
+
+dimension: all_notifs {
+  sql: regexp_contains(${eventAction}, 'notifications_connect_new_follower|notifications_connect_new_comment|notifications_connect_new_like') ;;
+  type: yesno
+}
 
   ##events related to iaf
   dimension: iaf_my_day {
@@ -632,6 +877,23 @@ view: hits_customVariables {
 
 view: customDimensions {
   extends: [customDimensions_base]
+
+  dimension: product_owned {
+    sql: case when customDimensions.index=10 then customDimensions.value end;;
+    type: string
+  }
+  dimension: product_owned_group {
+    type: string
+    sql: case when  (case when customDimensions.index=10 then customDimensions.value end) = "[ONLINE]"
+              then "Digital"
+              WHEN (case when customDimensions.index=10 then customDimensions.value end) = "[MONTHLY_PASS, ETOOLS]"
+              THEN "Studio"
+              WHEN (case when customDimensions.index=10 then customDimensions.value end) = "[ETOOLS, MONTHLY_PASS]"
+              THEN "Studio"
+              ELSE null
+              end;;
+  }
+
 
 
 }
