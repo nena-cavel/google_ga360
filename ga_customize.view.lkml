@@ -761,7 +761,7 @@ dimension: all_notifs {
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
 
                when ${eventAction} = 'food_browse_Recipes' then 'Discover Recipes'
-               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect'
+               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
               when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
               when ${hits_appInfo.screenName} = 'food_browse_Restaurants' then 'Restaurants'
               when ${hits_appInfo.screenName} = 'food_rollovercard' then 'Rollover Card'
