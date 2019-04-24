@@ -853,7 +853,7 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
 
 
 dimension: my_day_cards {
-  sql: case when  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
+  sql: case when  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
   else null end
    ;;
   type: string
