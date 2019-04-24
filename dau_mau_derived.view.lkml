@@ -4,7 +4,7 @@ view: dau_mau_derived {
   view_label: "DAU and MAU Site Metrics"
   derived_table: {
     # This derived table summarizes distinct active users at the weekly grain
-    datagroup_trigger: monthly_cache
+    datagroup_trigger: monthly_cache_ga
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}
@@ -140,7 +140,7 @@ measure: connect_posters {
 view: dau_mau_derived_daily {
   # This derived table summarizes distinct active users at the daily grain
   derived_table: {
-    datagroup_trigger: monthly_cache
+    datagroup_trigger: monthly_cache_ga
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}

@@ -1,6 +1,6 @@
 include: "ga_block.view.lkml"
 
-datagroup: monthly_cache {
+datagroup: monthly_cache_ga {
   sql_trigger: select EXTRACT(month FROM CURRENT_DATE('America/New_York')) ;;
 }
 
@@ -317,6 +317,24 @@ measure: chat_now_users {
       value: "yes"
     }
   }
+  measure: myday_meal_screens_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.myday_meal_screens
+      value: "yes"
+    }
+  }
+
+  measure: myday_connect_carousel_users {
+    type: count_distinct
+    sql: ${fullVisitorId}  ;;
+    filters: {
+      field: hits_eventInfo.myday_connect_carousel
+      value: "yes"
+    }
+  }
+
 ## measures for iaf_ desktop
   measure: my_day_users_desktop {
     type:  count_distinct
@@ -670,6 +688,13 @@ dimension: notifications_page {
     sql: regexp_contains(${screenName}, 'connect_profile|profile_other_view') ;;
 
   }
+
+  dimension: myday_meal_screens {
+    sql: regexp_contains(${screenName}, 'food_meal_breakfast|food_meal_breakfastlog|food_meal_dinner|food_meal_dinnerlog|food_meal_lunch|food_meal_lunchlog|food_meal_snacklog|food_meal_snack') ;;
+    type: yesno
+  }
+
+
 }
 
 
@@ -700,6 +725,16 @@ dimension: connect_commenters {
   sql: (${eventAction} =  'connect_comment'
       or ${eventAction} = 'connect_reply_to_member') ;;
   type: yesno
+}
+
+dimension: myday_iaf {
+  sql: ${eventAction} = 'iaf_my_day_card' ;;
+  type: yesno
+}
+
+dimension: myday_connect_carousel {
+  type: yesno
+  sql: regexp_contains(${eventAction}, 'connect_mini_post_1|connect_mini_post_2|connect_mini_post_3|connect_seemoreposts_myday') ;;
 }
 
 dimension: connect_posters {

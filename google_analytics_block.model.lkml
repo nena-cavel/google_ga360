@@ -60,7 +60,7 @@ explore: ga_sessions {
 explore: dau_mau_derived {
   label: "DAU and MAU Site Metrics"
   from: dau_mau_derived_daily
-  persist_with: monthly_cache
+  persist_with: monthly_cache_ga
   join: dau_mau_derived_monthly {
     from: dau_mau_derived
     type: inner
