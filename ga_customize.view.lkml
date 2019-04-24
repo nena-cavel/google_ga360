@@ -796,7 +796,8 @@ dimension: all_notifs {
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
 
                when ${eventAction} = 'food_browse_Recipes' then 'Discover Recipes'
-               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect'
+               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
+              when ${eventAction} = 'connect_seemoreposts_myday' then 'Connect (See More)'
               when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
               when ${hits_appInfo.screenName} = 'food_browse_Restaurants' then 'Restaurants'
               when ${hits_appInfo.screenName} = 'food_rollovercard' then 'Rollover Card'
@@ -807,11 +808,11 @@ dimension: all_notifs {
               when ${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
-                      'food_card_recipes_Family_friendly' ) then 'Recipe Tenure'
+                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks' ) then 'Recipe Tenure'
   when (${hits_appInfo.screenName} not in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
-                      'food_card_recipes_Family_friendly' ) and ${hits_appInfo.screenName} like 'food_card_recipes_%')  then 'Recipe Date'
+                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks'  ) and ${hits_appInfo.screenName} like 'food_card_recipes_%')  then 'Recipe Date'
 when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
               'food_card_article_Tips_for_dining_out', 'food_card_article_Ideas_for_Smart_Snacking', 'food_card_article_How_do_I_estimate_portions_', 'food_card_article_Tips_for_syncing_your_fitness_device', 'food_card_article_Why_does_fruit_count_in_a_smoothie_', 'food_card_article_The_importance_of_practicing_awareness',
               'food_card_article_How_to_avoid_emotional_eating', 'food_card_article_The_importance_of_non_weight_goals', 'food_card_article_Keep_going_strong_with_WellnessWins_', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints_', 'food_card_article_Ideas_for_smart_snacking',
@@ -865,6 +866,14 @@ dimension: recipe_and_articles_cards {
   else null end;;
   type:  string
 }
+
+  dimension: recipe_and_articles_cards_yesno {
+
+    sql:  ${card_name} in ("Recipe Tenure",  "Recipe Date", "All Recipes", "Article Tenure", "Article Date","All Articles")
+     ;;
+    type:  yesno
+  }
+
 
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
