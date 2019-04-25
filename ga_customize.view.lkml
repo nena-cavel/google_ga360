@@ -242,6 +242,80 @@ measure:  profile_follows {
     }
   }
 
+  measure: all_users_following {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.all_follows
+      value: "yes"
+    }
+  }
+
+
+  measure: total_member_blocks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field:hits_eventInfo.member_blocks
+    value:"yes"
+    }
+  }
+
+  measure: total_reported_comments {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId})  ;;
+  filters: {
+    field: hits_eventInfo.reported_comments
+    value: "yes"
+  }
+  }
+
+  measure: total_reported_posts {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field: hits_eventInfo.reported_posts
+    value: "yes"
+  }
+  }
+
+measure: total_connect_page_loads {
+  type: count_distinct
+sql: concat(cast(${visitId} as string),cast(hits.hitnumber as string)) ;;
+filters: {
+  field: hits_appInfo.connect_trending_page_loads
+  value: "yes"
+}
+}
+
+measure: new_feed_users {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+filters: {
+  field: hits_appInfo.new_feed
+  value: "yes"
+}
+}
+
+
+  measure: following_feed_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.following_feed
+      value: "yes"
+    }
+  }
+
+measure: connect_trending_page {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+filters: {
+  field: hits_appInfo.connect_trending_page
+  value: "yes"
+}
+}
+
   measure: coach_tab_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -694,6 +768,25 @@ dimension: notifications_page {
     type: yesno
   }
 
+dimension: new_feed {
+  type: yesno
+  sql: ${screenName} = 'connect_stream_new' ;;
+}
+
+dimension: following_feed {
+  type: yesno
+  sql: ${screenName} = 'connect_stream_following' ;;
+}
+
+dimension: connect_trending_page_loads {
+  type: yesno
+  sql: regexp_contains(${screenName} , 'connect_stream_trending|connect_load_more_trending') ;;
+}
+
+dimension: connect_trending_page {
+  type: yesno
+  sql: ${screenName} = 'connect_stream_trending' ;;
+  }
 
 }
 
@@ -775,6 +868,28 @@ dimension: all_notifs {
   sql: regexp_contains(${eventAction}, 'notifications_connect_new_follower|notifications_connect_new_comment|notifications_connect_new_like') ;;
   type: yesno
 }
+
+dimension: all_follows {
+  sql: regexp_contains(${eventAction}, 'connect_user_follow|connect_member_fast_follow') ;;
+  type: yesno
+}
+
+dimension: member_blocks {
+  sql: regexp_contains(${eventAction}, 'connect_user_block|connect_block_member_profile') ;;
+  type: yesno
+}
+
+dimension: reported_comments {
+  sql: regexp_contains(${eventAction}, 'connect_comment_report|connect_reply_report') ;;
+  type: yesno
+}
+
+dimension: reported_posts {
+  sql: ${eventAction} = 'connect_post_report' ;;
+  type: yesno
+}
+
+
 
   ##events related to iaf
   dimension: iaf_my_day {
