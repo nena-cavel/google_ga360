@@ -77,7 +77,9 @@ view: ga_sessions_weekly {
     view_label: "Session"
     label: "Device Category"
   }
-
+  measure: test {
+    type: sum
+  }
   measure: connect_users {
     type: sum
   }
