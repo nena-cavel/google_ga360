@@ -34,7 +34,7 @@ region,
 test.operating_system as operating_system,
 SUM(CASE WHEN (test.screen_name = 'connect_stream_trending' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_stream,
 SUM(CASE WHEN (test.screen_name = 'connect_profile' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_profile,
-SUM(CASE WHEN (test.screen_name = 'connect_comments' AND test.hit_type= 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_comments,
+SUM(CASE WHEN ((test.screen_name = 'connect_comments' or test.screen_name = 'connect_replies_list') AND test.hit_type= 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_comments,
 SUM(CASE WHEN (test.screen_name = 'connect_stream_hashtag' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_hashtag,
 SUM(CASE WHEN (test.event_name = 'connect_post_see_more' AND test.hit_type = 'EVENT') THEN test.total_screenviews ELSE 0 END) AS see_more_posts,
 SUM(CASE WHEN ((test.event_name = 'connect_comment' OR test.event_name = 'connect_reply_to_member') and test.hit_type = 'EVENT') THEN test.total_screenviews ELSE 0 END) AS comments,
@@ -55,7 +55,7 @@ FROM
    COUNT(DISTINCT CONCAT( CAST(visitId AS STRING), CAST(h.hitnumber AS STRING))) as total_screenviews
   FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, UNNEST(customdimensions) as cd, unnest(hits) as h
   WHERE SUFFIX Between '20181001'AND '20190831'
-  and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
+  and (REGEXP_CONTAINS(h.appinfo.screenName, 'connect_replies_list|connect_stream_trending|connect_profile|connect_comments|connect_stream_hashtag')
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
   and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')

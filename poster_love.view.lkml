@@ -1,5 +1,6 @@
 view: poster_love {
   derived_table: {
+    datagroup_trigger: monthly_cache_ga
     sql:
 #standardSQL
 
@@ -83,7 +84,7 @@ unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as dat
 ON month_post_created = extract(month from date)
 GROUP BY 1,2,3,4
 
-order by 4 desc
+#order by 4 desc
 ;;
   }
   dimension_group: date {
