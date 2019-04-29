@@ -327,7 +327,14 @@ view: ga_sessions_base {
     sql: ${fullVisitorId} ;;
     drill_fields: [fullVisitorId, visitnumber, session_count, totals.hits, totals.page_views, totals.timeonsite]
   }
-
+  measure: funnel_prospect_session_count {
+    type: count_distinct
+    sql: ${id};;
+    filters: {
+      field: funnelProspect
+      value: "Yes"
+    }
+  }
   measure: average_sessions_ver_visitor {
     type: number
     sql: 1.0 * (${session_count}/NULLIF(${unique_visitors},0))  ;;
