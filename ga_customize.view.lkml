@@ -187,6 +187,15 @@ measure:  profile_follows {
     }
   }
 
+  measure: groups_visits {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.groups_users
+      value: "yes"
+    }
+  }
+
   measure: connect_likers {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -889,6 +898,11 @@ dimension: reported_posts {
   type: yesno
 }
 
+dimension: tracked_food {
+  sql: regexp_contains(${eventAction}, 'tracking_trackedfood|food_frequentFoods_tracked|tracking_trackeditem|food_frequents_tracked|tracking_trackedrecipe|tracking_trackedmeal') ;;
+  type: yesno
+}
+
 
 
   ##events related to iaf
@@ -1048,6 +1062,32 @@ view: customDimensions {
   dimension: product_owned {
     sql: case when customDimensions.index=10 then customDimensions.value end;;
     type: string
+  }
+
+  dimension: region_name {
+    type: string
+    sql: case when  (case when customDimensions.index=53 then customDimensions.value end) = "us"
+              then "United States"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "de"
+              THEN "Germany"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "gb"
+              THEN "UK"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "fr"
+              THEN "France"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "ca"
+              THEN "Canada"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "se"
+              THEN "Sweden"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "au"
+              THEN "ANZ"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "nl"
+              THEN "Netherlands"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "be"
+              THEN "Belgium"
+              WHEN (case when customDimensions.index=53 then customDimensions.value end) = "ch"
+              THEN "Switzerland"
+              ELSE null
+              end ;;
   }
   dimension: product_owned_group {
     type: string
