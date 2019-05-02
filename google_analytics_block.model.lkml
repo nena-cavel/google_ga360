@@ -40,6 +40,12 @@ explore: ga_sessions {
       AND ${invited_users.iaf} <= Cast(concat(substr(${ga_sessions.date},0,4),'-',substr(${ga_sessions.date},5,2),'-',substr(${ga_sessions.date},7,2)) AS DATETIME);;
 
     }
+  join: session_fact {
+    from: session_fact
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${ga_sessions.id} = ${session_fact.id} ;;
+  }
 # join: invited_users_left {
 #   from: invited_users
 #   type: left_outer
