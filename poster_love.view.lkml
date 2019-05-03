@@ -37,6 +37,7 @@ FROM
 
   SELECT DISTINCT
   EXTRACT(MONTH FROM payload_post.created_at) as month_post_created,
+   extract(year from payload_post.created_at) as year_post_generated,
   payload_post.subclass as post_type,
   payload_post.locale as region,
   cp.payload_post.uuid AS post_id,
@@ -81,7 +82,8 @@ FROM
   ) post_engagements
 INNER JOIN
 unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
-ON month_post_created = extract(month from date)
+ON (month_post_created = extract(month from date)
+      and year_post_generated = extract(year from date))
 GROUP BY 1,2,3,4
 
 #order by 4 desc
