@@ -25,6 +25,7 @@ view: ga_sessions_weekly {
       column: count_sessions_event1234 { field: funnel_growth_dashboard.count_sessions_event1234_prospects }
       column: count_sessions_event12345 { field: funnel_growth_dashboard.count_sessions_event12345_prospects }
       column: iaf_copyLink_desktop {}
+      column: iaf_sendEmail_desktop {}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
@@ -84,6 +85,10 @@ view: ga_sessions_weekly {
   }
 
   measure: iaf_copyLink_desktop {
+    type: sum
+  }
+
+  measure: iaf_sendEmail_desktop {
     type: sum
   }
 
