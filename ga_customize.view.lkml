@@ -1011,6 +1011,12 @@ dimension: recipe_and_articles_cards {
     type:  yesno
   }
 
+  dimension: recipe_and_article_card_category{
+    sql: case when ${recipe_and_articles_cards} in ('Article Tenure', 'Article Date')  then 'All Articles'
+         when ${recipe_and_articles_cards} in ('Recipe Tenure', 'Recipe Date') then 'All Recipes' END;;
+    drill_fields: ["recipe_and_articles_cards"]
+  }
+
 
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
