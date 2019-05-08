@@ -978,7 +978,7 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               when ${hits_appInfo.screenName} = 'MemberRecipes' then 'Member Recipes'
               when ${eventAction} = 'food_browse_seeall' then 'See All'
               when ${eventAction} = 'food_browse_favorites' then 'Favorites'
-              when ${hits_appInfo.screenName} = 'Favorites'
+              when ${hits_appInfo.screenName} = 'Favorites' then 'Favorites (+)'
               when ${eventAction} = 'food_browse_featuredcollectionscroll' then 'Featured Collection Scroll'
                when ${eventAction} = 'food_browse_created' then 'Created'
 
@@ -1025,6 +1025,25 @@ dimension: recipe_and_articles_cards {
          when ${recipe_and_articles_cards} in ('Recipe Tenure', 'Recipe Date') then 'All Recipes' END;;
     drill_fields: ["recipe_and_articles_cards"]
   }
+
+
+dimension: discover_recipe_cards {
+
+  sql:  case when ${card_name} in ('Created', 'Featured Collection Scroll', 'Favorites (+)', 'Favorites', 'See All',  'Member Recipes', 'Recipe Builder', 'Discover Recipes')  then ${card_name}
+  else null end;;
+  type:  string
+}
+
+  dimension: discover_recipe_card_yesno {
+
+    sql:  ${card_name} in ('Created', 'Featured Collection Scroll', 'Favorites (+)', 'Favorites', 'See All',  'Member Recipes', 'Recipe Builder', 'Discover Recipes')
+      ;;
+    type:  yesno
+}
+
+
+
+
 
 
   dimension: iaf_myDay_desktop {
