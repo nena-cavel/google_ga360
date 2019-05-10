@@ -22,11 +22,11 @@ view: ga_sessions {
   filter: consolidated_date_filter {
     default_value: "7 days ago for 7 days"
     description: "This filter applies to both session start time and partition date."
-    type: date_time
-    sql: date_add(date({% date_start consolidated_date_filter %}), interval -1 day ) < ${partition_date::date}
-     AND date_add(date({% date_end consolidated_date_filter %}), interval 1 day) > ${partition_date::date}
+    type: date
+    sql: ${partition_date::date} >= date_add(date({% date_start consolidated_date_filter %}), interval -2 day )
+     AND ${partition_date::date} <= date_add(date({% date_end consolidated_date_filter %}), interval 2 day)
      AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
-
+    convert_tz: no
   }
   extends: [ga_sessions_base]
   measure:  unique_prospects{
@@ -993,6 +993,15 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               'food_browse_recipes_Cooking_for_One') then 'Default Collections - Discover Recipes'
               when ${hits_appInfo.screenName} like ('food_card_recipes_%') then 'All Recipes'
               when ${hits_appInfo.screenName} like ('food_card_article_%') then 'All Articles'
+              when ${eventAction} = 'food_browse_recipebuilder' then 'Recipe Builder'
+              when ${hits_appInfo.screenName} = 'MemberRecipes' then 'Member Recipes'
+              when ${eventAction} = 'food_browse_seeall' then 'See All'
+              when ${eventAction} = 'food_browse_favorites' then 'Favorites'
+              when ${hits_appInfo.screenName} = 'Favorites' then 'Favorites (+)'
+              when ${eventAction} = 'food_browse_featuredcollectionscroll' then 'Featured Collection Scroll'
+               when ${eventAction} = 'food_browse_created' then 'Created'
+
+
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
@@ -1009,7 +1018,7 @@ dimension: my_day_cards {
 }
 
   dimension: my_day_cards_yesno {
-    sql:  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+    sql:  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
 
          ;;
     type: yesno
@@ -1029,6 +1038,31 @@ dimension: recipe_and_articles_cards {
      ;;
     type:  yesno
   }
+
+  dimension: recipe_and_article_card_category{
+    sql: case when ${recipe_and_articles_cards} in ('Article Tenure', 'Article Date')  then 'All Articles'
+         when ${recipe_and_articles_cards} in ('Recipe Tenure', 'Recipe Date') then 'All Recipes' END;;
+    drill_fields: ["recipe_and_articles_cards"]
+  }
+
+
+dimension: discover_recipe_cards {
+
+  sql:  case when ${card_name} in ("Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder", "Discover Recipes")  then ${card_name}
+  else null end;;
+  type:  string
+}
+
+  dimension: discover_recipe_card_yesno {
+
+    sql:  ${card_name} in ("Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder", "Discover Recipes")
+      ;;
+    type:  yesno
+}
+
+
+
+
 
 
   dimension: iaf_myDay_desktop {
