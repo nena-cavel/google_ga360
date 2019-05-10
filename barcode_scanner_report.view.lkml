@@ -6,21 +6,22 @@ date as gen_date,
 (CASE WHEN cd.index=53 then cd.value END) AS region,
 device.operatingSystem AS os ,
 h.eventinfo.eventaction as scan_name,
-CONCAT(fullvisitorid, CAST(visitId AS STRING), CAST(h.hitnumber AS STRING)) as total_events
+CONCAT(fullvisitorid, CAST(visitId AS STRING), CAST(h.hitnumber AS STRING)) as total_events,
+fullvisitorId as users
 FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h
 INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 7 day)) as date
+unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 month)) as date
 ON (EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
   AND EXTRACT( year FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(year from date) )
 WHERE SUFFIX Between '20180101'AND '20191231'
 AND REGEXP_CONTAINS(h.eventinfo.eventaction, 'barcodescanner_fooddatabase|barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_foodsnondatabase')
 AND (CASE WHEN cd.index=53 then cd.value END) is not null
-GROUP BY 1,2,3,4,5 ;;
+GROUP BY 1,2,3,4,5,6 ;;
   }
   dimension_group: week_date {
     type: time
     convert_tz: no
-    timeframes: [date,week,week_of_year,raw]
+    timeframes: [date,week,month,month_name,week_of_year,raw]
     sql: timestamp(${TABLE}.gen_date) ;;
   }
 
@@ -71,5 +72,10 @@ measure: total_events {
   type: count_distinct
   sql: ${TABLE}.total_events ;;
   value_format: "0.000,,\" M\""
+}
+
+measure: total_scanners {
+  type: count_distinct
+  sql: ${TABLE}.total_events ;;
 }
 }

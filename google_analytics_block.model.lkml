@@ -99,7 +99,7 @@ explore: kpi_funnel_static {
   }
 
   explore: engagement_score{
-    persist_for: "100 hours"
+    persist_for: "24 hours"
     join: post_love_score_daily {
       type: inner
       relationship: one_to_one

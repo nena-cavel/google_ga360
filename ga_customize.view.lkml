@@ -370,9 +370,18 @@ measure: chat_now_users {
     }
   }
 
-  measure: barcode_scans {
+  measure: barcode_scanners {
     type: count_distinct
     sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.barcode_scans
+      value: "yes"
+    }
+  }
+
+  measure: total_barcode_scans {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
     filters: {
       field: hits_eventInfo.barcode_scans
       value: "yes"
@@ -814,9 +823,19 @@ view: hits_eventInfo {
   }
 
 dimension: barcode_scans {
-  sql: regexp_contains(${eventAction}, 'barcodescanner_') ;;
+  sql: regexp_contains(${eventAction}, 'barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_fooddatabase|barcodescanner_foodsnondatabase') ;;
   type: yesno
 }
+
+  dimension: barcode_scan_names {
+    type: string
+    sql: (CASE WHEN regexp_contains(${eventAction}, "barcodescanner_crowdsourced|barcodescanner_crowdsourceditem")
+        THEN "Crowdsourced"
+        WHEN ${eventAction}= "barcodescanner_fooddatabase" THEN "WW Verified Food"
+        WHEN ${eventAction}="barcodescanner_foodsnondatabase" THEN "Not in DB"
+        end)
+        ;;
+  }
 
 dimension: group_id_new {
   sql: case when regexp_contains(${eventAction}, 'connect_groups_') then  ${eventLabel} end ;;
