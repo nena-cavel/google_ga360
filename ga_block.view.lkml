@@ -156,7 +156,7 @@ view: ga_sessions_base {
   }
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
-    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
+    suggestions: ["us","de","nl","fr","be","ca","ch","au","se","br","gb"]
   }
 
   dimension: market {
