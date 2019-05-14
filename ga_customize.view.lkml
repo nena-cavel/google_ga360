@@ -1060,6 +1060,13 @@ dimension: discover_recipe_cards {
     type:  yesno
 }
 
+dimension: tenure_or_date {
+  label: "Card type - Tenure or Date"
+  sql: case when ${card_name} in ('Recipe Date', 'Article Date') then 'Date-Based Card'
+            when ${card_name} in ('Recipe Tenure', 'Article Tenure') then 'Tenure-Based Card'
+       else null end;;
+  suggestions: ["Date-Based Card","Tenure-Based Card" ]
+}
 
 
 
