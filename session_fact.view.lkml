@@ -3,7 +3,6 @@
   view: session_fact {
     view_label: "Session"
     derived_table: {
-      datagroup_trigger: daily_sessions_cache
       explore_source: ga_sessions {
         timezone: "America/New_York"
         column: visitStart_date {}
