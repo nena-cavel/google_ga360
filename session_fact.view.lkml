@@ -3,7 +3,7 @@
   view: session_fact {
     view_label: "Session"
     derived_table: {
-      datagroup_trigger: daily_sessions_cache
+
       explore_source: ga_sessions {
         timezone: "America/New_York"
         column: visitStart_date {}
@@ -11,6 +11,7 @@
         column: funnel_prospect_session_count {}
         column:  iaf_page_desktop_users {}
         column: channelGrouping {}
+        column: fullVisitorId {}
         filters: {
           field: ga_sessions.partition_date
           value: "70 weeks ago for 70 weeks"
@@ -21,6 +22,7 @@
         }
 
       }
+      datagroup_trigger: daily_sessions_cache
     }
 
     dimension: visitStart_date {
@@ -29,6 +31,11 @@
       label: "Visit Start Week"
       type: date
       convert_tz: no
+    }
+
+    dimension: fullVisitorId {
+      hidden: yes
+      label: "FullVisitorID"
     }
 
     dimension: id {
