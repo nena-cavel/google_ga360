@@ -177,3 +177,8 @@ explore: reported_posts_new {
 }
 
 explore: ga_daily_counts {}
+explore: media_posting_funnel {}
+explore: video_posting_funnel {}
+explore: photo_posting_funnel {}
+explore: groups_funnel {}
+explore: groups_carousel_funnel  {}

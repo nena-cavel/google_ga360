@@ -32,7 +32,7 @@ ON d.Date = EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))
 
 WHERE SUFFIX Between '20181001'AND '20191230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
-group by 1 ,2, 3, 4,5 ;;
+group by 1 ,2, 3, 4 ,5 ;;
   }
 
 
