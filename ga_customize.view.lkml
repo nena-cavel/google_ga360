@@ -75,6 +75,11 @@ view: ga_sessions {
     }
   }
 
+measure: fullvisitid_count {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+}
+
   measure: connect_visits {
     type: count_distinct
     sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
@@ -139,6 +144,11 @@ measure:  profile_follows {
       field: hits_appInfo.connect_profile_views
       value: "yes"
     }
+  }
+
+  measure: android_users {
+    type: count_distinct
+    sql: case when ${application_type} = 'Android' then ${fullVisitorId} end ;;
   }
 
   measure: notifications_users {
