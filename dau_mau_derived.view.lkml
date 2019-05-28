@@ -20,7 +20,7 @@ view: dau_mau_derived {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "16 months ago for 13 months"
+        value: "16 months ago for 16 months"
       }
       filters: {
         field: hits_appInfo.screenName
@@ -140,7 +140,7 @@ measure: connect_posters {
 view: dau_mau_derived_daily {
   # This derived table summarizes distinct active users at the daily grain
   derived_table: {
-    datagroup_trigger: monthly_cache_ga
+    datagroup_trigger: weekly_cache
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}
@@ -150,7 +150,7 @@ view: dau_mau_derived_daily {
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "16 months ago for 13 months"
+        value: "16 months ago for 16 months"
       }
       filters: {
         field: hits_appInfo.screenName
