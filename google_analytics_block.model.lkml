@@ -142,13 +142,7 @@ explore: kpi_funnel_static {
 
   }
 
-  explore: groups_kpis {
-    persist_for: "96 hours"
-  }
 
-  explore: groups_kpi_weekly {
-    persist_for: "96 hours"
-  }
 
 explore: ga_sessions_weekly {
   persist_with: weekly_cache
