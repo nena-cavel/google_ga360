@@ -75,6 +75,11 @@ view: ga_sessions {
     }
   }
 
+measure: fullvisitid_count {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+}
+
   measure: connect_visits {
     type: count_distinct
     sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
@@ -139,6 +144,11 @@ measure:  profile_follows {
       field: hits_appInfo.connect_profile_views
       value: "yes"
     }
+  }
+
+  measure: android_users {
+    type: count_distinct
+    sql: case when ${application_type} = 'Android' then ${fullVisitorId} end ;;
   }
 
   measure: notifications_users {
@@ -397,6 +407,16 @@ measure: chat_now_users {
     }
   }
 
+
+  measure: connect_posts {
+    type: count_distinct
+    sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.connect_posters
+      value: "yes"
+    }
+  }
+
   measure: homepage_prospect_visitors {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -417,6 +437,96 @@ measure: chat_now_users {
       value: "yes"
     }
   }
+
+  measure: connect_share_withus_clicks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.share_with_us_connect
+      value: "yes"
+    }
+}
+
+measure: select_video_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_eventInfo.selected_video
+    value: "yes"
+  }
+}
+
+measure: connect_start_recording {
+  type: count_distinct
+  sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.start_recording_video
+    value: "yes"
+  }
+}
+
+measure: connect_finish_recording {
+  type: count_distinct
+  sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.finish_recording_video
+    value: "yes"
+  }
+}
+
+measure: connect_media_gallery {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_appInfo.connect_media_gallery
+    value: "yes"
+  }
+}
+
+measure: choose_photovideot_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_eventInfo.choose_photo_connect
+    value: "yes"
+  }
+}
+
+measure: capture_media_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_appInfo.connect_capture_media
+    value: "yes"
+  }
+}
+
+measure: add_videophoto_connect_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.add_videophoto_connect
+    value: "yes"
+  }
+}
+
+measure: backbutton_connectpost_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.backbutton_connectpost
+    value: "yes"
+  }
+}
+
+measure: next_fromeditpost_connect_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_appInfo.next_fromeditpost_connect
+    value: "yes"
+  }
+}
 
   measure: myday_connect_carousel_users {
     type: count_distinct
@@ -524,6 +634,62 @@ measure: unique_visitors_uuid {
       value: "yes"
     }
   }
+
+
+measure: view_incarousel_group {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field: hits_eventInfo.view_incarousel_group
+    value: "yes"
+  }
+}
+
+measure: browse_groups {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field: hits_eventInfo.browse_groups
+    value: "yes"
+  }
+}
+
+  measure: browse_groups_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.browse_groups
+      value: "yes"
+    }
+  }
+
+  measure: see_all_groups {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.see_all_groups
+      value: "yes"
+    }
+  }
+
+  measure: groups_either_selection {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.groups_either_selection
+      value: "yes"
+    }
+  }
+
+measure: users_joining_groups {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_eventInfo.join_group
+    value: "yes"
+  }
+}
+
 
   measure: my_day_users {
     type: count_distinct
@@ -725,6 +891,11 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: connect_media_gallery {
+    sql: ${screenName} = 'connect_post_media' ;;
+    type: yesno
+  }
+
   dimension: coach_tab {
     sql: ${screenName} = 'help_help_landing' ;;
     type: yesno
@@ -786,6 +957,16 @@ dimension: notifications_page {
     type: yesno
   }
 
+dimension: connect_capture_media {
+  sql: ${screenName} = 'connect_post_camera' ;;
+  type: yesno
+}
+
+  dimension: next_fromeditpost_connect {
+    sql: ${screenName}= 'connect_post_theme_done' ;;
+    type: yesno
+  }
+
 dimension: new_feed {
   type: yesno
   sql: ${screenName} = 'connect_stream_new' ;;
@@ -816,6 +997,64 @@ view: hits_eventInfo {
     sql: ${eventAction} = "play" ;;
     type: yesno
   }
+
+dimension: share_with_us_connect {
+  sql: ${eventAction}='connect_share_with_us' ;;
+  type: yesno
+}
+
+dimension:  start_recording_video {
+  sql: ${eventAction} = 'connect_capture_tap_video_icon' ;;
+  type: yesno
+}
+
+dimension: finish_recording_video {
+  sql: ${eventAction} = 'connect_recording_done';;
+  type: yesno
+}
+
+dimension: selected_video {
+  sql: ${eventAction} = 'connect_gallery_video_length' ;;
+  type: yesno
+}
+
+dimension: choose_photo_connect {
+  sql: ${eventAction} = 'connect_gallery_continue' ;;
+  type: yesno
+}
+
+dimension: browse_groups {
+  sql: regexp_contains(${eventAction}, '^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
+  type: yesno
+}
+
+dimension: see_all_groups {
+  sql: regexp_contains(${eventAction}, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich$|connect_groups_see_allmein_weg$|connect_groups_see_allessen$|connect_groups_see_allumdenken$|connect_groups_see_allbewegen$|connect_groups_see_allprofil$|connect_groups_see_allmon_parcours$|connect_groups_see_allaliment$|connect_groups_see_all_tat_d_esprit$') ;;
+  type: yesno
+}
+
+dimension: view_incarousel_group {
+  sql: regexp_contains(${eventAction}, 'connect_groups_see_food_|connect_groups_see_journey_|connect_groups_see_identity_|connect_groups_see_journey_|connect_groups_see_mindset_|connect_groups_see_activity_|connect_groups_see_Food_|connect_groups_see_hobbies_|connect_groups_see_Hobbies_|connect_groups_see_hobbies_|connect_groups_see_Journey_|connect_groups_see_Mein_Weg_|connect_groups_see_Mon_parcours_|connect_groups_see_Essen_|connect_groups_see_Umdenken_|connect_groups_see_Das_bin_ich_|connect_groups_see_Activité_|connect_groups_see_Cuisine_|connect_groups_see_locations_|connect_groups_see_État_d_esprit_|connect_groups_see_Bewegen_|connect_groups_see_Profil_|connect_groups_see_Eten_|connect_groups_see_Aktivitet_|connect_groups_see_Alimentação_|connect_groups_see_Resa_|connect_groups_see_Beweging_|connect_groups_see_Dit_ben_ik__|connect_groups_see_Mat_|connect_groups_see_Mijn_WW_|connect_groups_see_Feel_good_') ;;
+  type: yesno
+}
+
+dimension: groups_either_selection {
+  sql: regexp_contains(${eventAction}, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich$|connect_groups_see_allmein_weg$|connect_groups_see_allessen$|connect_groups_see_allumdenken$|connect_groups_see_allbewegen$|connect_groups_see_all_tat_d_esprit$|connect_groups_see_allprofil$|connect_groups_see_allaliment$|connect_groups_see_food_|connect_groups_see_journey_|connect_groups_see_identity_|connect_groups_see_journey_|connect_groups_see_mindset_|connect_groups_see_activity_|connect_groups_see_Food_|connect_groups_see_hobbies_|connect_groups_see_Hobbies_|connect_groups_see_hobbies_|connect_groups_see_Journey_|connect_groups_see_Mein_Weg_|connect_groups_see_Mon_parcours_|connect_groups_see_Essen_|connect_groups_see_Umdenken_|connect_groups_see_Das_bin_ich_|connect_groups_see_Activité_|connect_groups_see_Cuisine_|connect_groups_see_locations_|connect_groups_see_État_d_esprit_|connect_groups_see_Bewegen_|connect_groups_see_Profil_|connect_groups_see_Eten_|connect_groups_see_Aktivitet_|connect_groups_see_Alimentação_|connect_groups_see_Resa_|connect_groups_see_Beweging_|connect_groups_see_Dit_ben_ik__|connect_groups_see_Mat_|connect_groups_see_Mijn_WW_|connect_groups_see_Feel_good_') ;;
+  type: yesno
+}
+
+dimension: backbutton_connectpost {
+  sql: ${eventAction} = 'connect_post_flow_back_button' ;;
+  type: yesno
+}
+  dimension: add_videophoto_connect {
+    sql: ${eventAction}= 'connect_post_add_video_photo' ;;
+    type: yesno
+  }
+dimension: join_group {
+  sql: ${eventAction} = 'connect_groups_join_public_group' ;;
+  type: yesno
+}
 
   dimension: connect_likers {
     sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
@@ -1109,6 +1348,11 @@ view: hits_customDimensions {
   #  sql: (SELECT value FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`.hits.customDimensions WHERE index=85) ;;
   # }
 
+  dimension: post_type {
+    type: string
+    sql: case when hits_customDimensions.index=76 then hits_customDimensions.value end ;;
+  }
+
 }
 
 view: hits_customVariables {
@@ -1161,6 +1405,9 @@ view: customDimensions {
               end;;
   }
 
-
+#dimension: post_type {
+#  type: string
+#  sql: case when customDimensions.index=76 then customDimensions.value end ;;
+#}
 
 }

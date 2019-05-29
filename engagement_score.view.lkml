@@ -69,7 +69,7 @@ FROM
    ON d.Date = subquery.test_date
 
   where subquery.operating_system NOT LIKE 'BlackBerry'
-GROUP BY 1, 2, 3, 4,5;;
+GROUP BY 1, 2, 3, 4 , 5 ;;
 
   }
 
