@@ -1,6 +1,6 @@
 view: connect_daily_counts {
   derived_table: {
-   # persist_for: "24 hours"
+    #persist_for: "24 hours"
     datagroup_trigger: daily_sessions_cache
     sql: SELECT DISTINCT
 (EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))) as generated_date,

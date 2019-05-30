@@ -178,6 +178,77 @@ measure:  profile_follows {
     }
   }
 
+  measure: total_weight_tracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+  }
+
+
+  measure: journey_weighttracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+    filters: {
+      field: hits_appInfo.journey_weight_screens
+      value: "yes"
+    }
+  }
+
+  measure: journey_weighttracking_users {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+    filters: {
+      field: hits_appInfo.journey_weight_screens
+      value: "yes"
+    }
+  }
+
+  measure: total_profile_weighttracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.profile_weighttracking
+      value: "yes"
+    }
+  }
+
+  measure: profile_weighttracking_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.profile_weighttracking
+      value: "yes"
+    }
+  }
+
+  measure: weight_changemanagement_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.weight_changemanagement
+      value: "yes"
+    }
+  }
+
+measure: profile_weightseeall_users {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_eventInfo.profile_weightseeall
+    value: "yes"
+  }
+}
 
   measure: connect_profile_views {
     type: count_distinct
@@ -594,6 +665,7 @@ measure: next_fromeditpost_connect_clicks {
   }
 
 
+
 dimension: uuid_dimension {
   type: string
   sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=12) ;;
@@ -977,6 +1049,12 @@ dimension: following_feed {
   sql: ${screenName} = 'connect_stream_following' ;;
 }
 
+dimension: journey_weight_screens {
+  type: yesno
+  sql: regexp_contains(${screenName}, 'journey_weightlossprogress|journey_weighttable') ;;
+}
+
+
 dimension: connect_trending_page_loads {
   type: yesno
   sql: regexp_contains(${screenName} , 'connect_stream_trending|connect_load_more_trending') ;;
@@ -1120,6 +1198,21 @@ dimension: notifs_new_follower {
   sql: ${eventAction} = 'notifications_connect_new_follower'  ;;
   type: yesno
 }
+
+dimension: profile_weighttracking {
+  sql: ${eventAction} = 'profile_trackweightcta' ;;
+  type: yesno
+}
+
+dimension: weight_changemanagement {
+  sql: ${eventAction} = 'profile_seeonprofilecta' ;;
+  type: yesno
+}
+
+  dimension: profile_weightseeall {
+    type: yesno
+    sql: ${eventAction} = 'profile_weightseeall' ;;
+  }
 
 dimension: notifs_new_comment {
   sql: ${eventAction} = 'notifications_connect_new_comment' ;;
