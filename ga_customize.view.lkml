@@ -1140,7 +1140,7 @@ dimension: join_group {
   }
 
 dimension: barcode_scans {
-  sql: regexp_contains(${eventAction}, 'barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_fooddatabase|barcodescanner_foodsnondatabase') ;;
+  sql: regexp_contains(${eventAction}, 'barcodescanner_') ;;
   type: yesno
 }
 
