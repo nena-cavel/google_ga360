@@ -5,6 +5,8 @@ view: ga_daily_counts {
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}
+      column: profile_users {}
+      column: groups_users {}
       column: visitStart_month {}
       column: application_type {}
       ### Step 3: Nena's filtered measure template
@@ -49,7 +51,9 @@ view: ga_daily_counts {
     type: number
   }
 
-
+measure: profile_users {
+  type: sum
+}
 
 dimension: group_id_new {
   type: string

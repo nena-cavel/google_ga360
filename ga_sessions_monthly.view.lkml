@@ -10,7 +10,10 @@ view: ga_sessions_monthly {
       column: connect_users {}
       column: groups_users {}
       column: my_day_users {}
-
+      column: groups_visits {}
+      column: barcode_scanners {}
+      column: total_barcode_scans {}
+      column: barcode_scan_names {field: hits_eventInfo.barcode_scan_names}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
@@ -56,6 +59,21 @@ view: ga_sessions_monthly {
     view_label: "Session"
     type: sum
   }
+
+measure: barcode_scanners {
+  view_label: "Session"
+  type: sum
+}
+
+measure: total_barcode_scans {
+  view_label: "Session"
+  type: sum
+}
+
+dimension: barcode_scan_names {
+  view_label: "Session"
+  type: string
+}
 
   measure: my_day_users {
     view_label: "Session"
