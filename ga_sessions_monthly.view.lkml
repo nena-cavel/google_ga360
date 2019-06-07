@@ -6,12 +6,18 @@ view: ga_sessions_monthly {
     explore_source: ga_sessions {
       timezone: "America/New_York"
       column: visitStart_month {}
+      column: operatingSystem {field: device.operatingSystem}
+      column: screenName { field: hits_appInfo.screenName}
       column: market {}
       column: connect_users {}
-      column: groups_users {}
-      column: my_day_users {}
+      derived_column: my_day_users {
+          sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
+      }
       column: groups_visits {}
-      column: barcode_scanners {}
+      column: fullVisitorId {}
+      derived_column: barcode_scanners {
+        sql: CASE WHEN barcode_scan_names is not null then fullVisitorId end ;;
+        }
       column: total_barcode_scans {}
       column: barcode_scan_names {field: hits_eventInfo.barcode_scan_names}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
@@ -50,6 +56,11 @@ view: ga_sessions_monthly {
     label: "Market"
   }
 
+  dimension: operatingSystem {
+    view_label: "Session"
+    type: string
+  }
+
   dimension: deviceCategory {
     view_label: "Session"
     label: "Device Category"
@@ -62,7 +73,7 @@ view: ga_sessions_monthly {
 
 measure: barcode_scanners {
   view_label: "Session"
-  type: sum
+  type: count_distinct
 }
 
 measure: total_barcode_scans {
@@ -77,7 +88,7 @@ dimension: barcode_scan_names {
 
   measure: my_day_users {
     view_label: "Session"
-    type: sum
+    type: count_distinct
   }
 
 

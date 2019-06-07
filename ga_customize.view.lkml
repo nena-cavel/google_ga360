@@ -218,7 +218,7 @@ measure:  profile_follows {
     type: count_distinct
     sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
     filters: {
-      field: hits_eventInfo.profile_weighttracking
+      field: hits_appInfo.profile_weighttracking
       value: "yes"
     }
   }
@@ -227,7 +227,7 @@ measure:  profile_follows {
     type: count_distinct
     sql: ${fullVisitorId} ;;
     filters: {
-      field: hits_eventInfo.profile_weighttracking
+      field: hits_appInfo.profile_weighttracking
       value: "yes"
     }
   }
@@ -245,7 +245,7 @@ measure: profile_weightseeall_users {
   type: count_distinct
   sql: ${fullVisitorId} ;;
   filters: {
-    field: hits_eventInfo.profile_weightseeall
+    field: hits_appInfo.profile_weightseeall
     value: "yes"
   }
 }
@@ -1003,6 +1003,17 @@ dimension: journey_tab {
   type: yesno
 }
 
+  dimension: profile_weighttracking {
+    sql: ${screenName} = 'profile_trackweightcta' ;;
+    type: yesno
+  }
+
+
+  dimension: profile_weightseeall {
+    type: yesno
+    sql: ${screenName} = 'profile_weightseeall' ;;
+  }
+
 dimension: notifications_page {
   sql: regexp_contains(${screenName},'global_notifications|connect_notifications') ;;
   type: yesno
@@ -1199,20 +1210,14 @@ dimension: notifs_new_follower {
   type: yesno
 }
 
-dimension: profile_weighttracking {
-  sql: ${eventAction} = 'profile_trackweightcta' ;;
-  type: yesno
-}
+
 
 dimension: weight_changemanagement {
-  sql: ${eventAction} = 'profile_seeonprofilecta' ;;
+  sql:  ${eventLabel} = 'see_on_profile' ;;
   type: yesno
 }
 
-  dimension: profile_weightseeall {
-    type: yesno
-    sql: ${eventAction} = 'profile_weightseeall' ;;
-  }
+
 
 dimension: notifs_new_comment {
   sql: ${eventAction} = 'notifications_connect_new_comment' ;;

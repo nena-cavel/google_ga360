@@ -1,5 +1,4 @@
-
-view: ga_sessions_weekly {
+ view: ga_sessions_weekly {
   view_label: "Weekly Sessions Summary"
   derived_table: {
     datagroup_trigger: weekly_cache
@@ -11,9 +10,22 @@ view: ga_sessions_weekly {
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
       column: homepage_visitors {}
-      column: connect_users {}
-      column: groups_users {}
-      column: my_day_users {}
+      column: fullVisitorId {}
+      column: screenName { field: hits_appInfo.screenName}
+      column: event_action { field: hits_eventInfo.eventAction}
+      column: event_label { field: hits_eventInfo.eventLabel}
+      derived_column: connect_users {
+        sql: case when screenName = 'connect_stream_trending' then fullVisitorId end ;;
+      }
+      derived_column: groups_users {
+        sql: case when event_action = 'connect_groups_landing' then fullVisitorId end ;;
+      }
+      derived_column: my_day_users {
+        sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
+        }
+      derived_column: group_id {
+        sql: case when regexp_contains(event_action, 'connect_groups') then event_label end  ;;
+      }
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
@@ -83,11 +95,14 @@ view: ga_sessions_weekly {
   }
 
   measure: connect_users {
-    type: sum
+    type: count_distinct
   }
 
+dimension: group_id {
+  type: string
+}
   measure: my_day_users {
-    type: sum
+    type: count_distinct
   }
 
   measure: iaf_copyLink_desktop {
@@ -99,7 +114,7 @@ view: ga_sessions_weekly {
   }
 
   measure: groups_users {
-    type: sum
+    type: count_distinct
   }
   measure: transactions_count {
     view_label: "Session"
