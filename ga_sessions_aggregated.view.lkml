@@ -1,4 +1,5 @@
- view: ga_sessions_weekly {
+
+view: ga_sessions_weekly {
   view_label: "Weekly Sessions Summary"
   derived_table: {
     datagroup_trigger: weekly_cache
@@ -15,6 +16,8 @@
       column: connect_users {}
       column: groups_users {}
       column: my_day_users {}
+      column: connect_users {}
+      column: groups_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
