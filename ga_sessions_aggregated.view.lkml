@@ -11,21 +11,10 @@
       column: sus1_visitors {}
       column: homepage_visitors {}
       column: fullVisitorId {}
-      column: screenName { field: hits_appInfo.screenName}
-      column: event_action { field: hits_eventInfo.eventAction}
-      column: event_label { field: hits_eventInfo.eventLabel}
-      derived_column: connect_users {
-        sql: case when screenName = 'connect_stream_trending' then fullVisitorId end ;;
-      }
-      derived_column: groups_users {
-        sql: case when event_action = 'connect_groups_landing' then fullVisitorId end ;;
-      }
-      derived_column: my_day_users {
-        sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
-        }
-      derived_column: group_id {
-        sql: case when regexp_contains(event_action, 'connect_groups') then event_label end  ;;
-      }
+      column: group_id_new { field:hits_eventInfo.group_id_new}
+      column: connect_users {}
+      column: groups_users {}
+      column: my_day_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
@@ -95,14 +84,14 @@
   }
 
   measure: connect_users {
-    type: count_distinct
+    type: sum
   }
 
-dimension: group_id {
+dimension: group_id_new {
   type: string
 }
   measure: my_day_users {
-    type: count_distinct
+    type: sum
   }
 
   measure: iaf_copyLink_desktop {
@@ -114,7 +103,7 @@ dimension: group_id {
   }
 
   measure: groups_users {
-    type: count_distinct
+    type: sum
   }
   measure: transactions_count {
     view_label: "Session"

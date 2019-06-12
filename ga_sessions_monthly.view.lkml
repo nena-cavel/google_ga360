@@ -9,16 +9,24 @@ view: ga_sessions_monthly {
       column: operatingSystem {field: device.operatingSystem}
       column: screenName { field: hits_appInfo.screenName}
       column: market {}
+      column: event_action { field: hits_eventInfo.eventAction}
+      column: event_label { field: hits_eventInfo.eventLabel}
+      derived_column: group_id {
+        sql: case when regexp_contains(event_action, 'connect_groups') then event_label end  ;;
+      }
       column: connect_users {}
       derived_column: my_day_users {
           sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
       }
-      column: groups_visits {}
+
       column: fullVisitorId {}
       derived_column: barcode_scanners {
         sql: CASE WHEN barcode_scan_names is not null then fullVisitorId end ;;
         }
       column: total_barcode_scans {}
+      derived_column: groups_users {
+        sql: case when event_action = 'connect_groups_landing' then fullVisitorId end ;;
+      }
       column: barcode_scan_names {field: hits_eventInfo.barcode_scan_names}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
@@ -91,10 +99,13 @@ dimension: barcode_scan_names {
     type: count_distinct
   }
 
+dimension: group_id {
+  type: string
+}
 
   measure: groups_users {
     view_label: "Session"
-    type: sum
+    type: count_distinct
   }
 
   measure: unique_visitors {
