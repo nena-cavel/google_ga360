@@ -1305,7 +1305,7 @@ dimension: tracked_food {
     }
 
   dimension: aaptiv_cards {
-    sql: case when  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+    sql: case when  ${aaptiv_card_name} in ( "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
       "Get Strong Faster", "Cardio + Strength" ) then ${aaptiv_card_name}
         else null end
          ;;
@@ -1314,7 +1314,7 @@ dimension: tracked_food {
   }
 
   dimension: aaptiv_cards_yesno {
-    sql:  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+    sql:  ${aaptiv_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
       "Get Strong Faster", "Cardio + Strength")
 
                ;;
