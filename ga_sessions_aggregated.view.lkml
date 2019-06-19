@@ -11,6 +11,11 @@ view: ga_sessions_weekly {
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
       column: homepage_visitors {}
+      column: fullVisitorId {}
+      column: group_id_new { field:hits_eventInfo.group_id_new}
+      column: connect_users {}
+      column: groups_users {}
+      column: my_day_users {}
       column: connect_users {}
       column: groups_users {}
       column: homepage_prospect_visitors {}
@@ -26,6 +31,7 @@ view: ga_sessions_weekly {
       column: count_sessions_event12345 { field: funnel_growth_dashboard.count_sessions_event12345_prospects }
       column: iaf_copyLink_desktop {}
       column: iaf_sendEmail_desktop {}
+      column: iaf_myDay_users_desktop {}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
@@ -81,6 +87,13 @@ view: ga_sessions_weekly {
   }
 
   measure: connect_users {
+    type: sum
+  }
+
+dimension: group_id_new {
+  type: string
+}
+  measure: my_day_users {
     type: sum
   }
 
@@ -162,6 +175,12 @@ view: ga_sessions_weekly {
   measure: unique_invited_visitors {
     type: sum
     view_label: "Invited Visitors"
+  }
+
+  measure: iaf_myDay_users_desktop {
+    view_label: "Session"
+    label: "Unique Prospects"
+    type: sum
   }
 }
 

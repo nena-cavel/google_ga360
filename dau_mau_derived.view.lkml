@@ -4,7 +4,7 @@ view: dau_mau_derived {
   view_label: "DAU and MAU Site Metrics"
   derived_table: {
     # This derived table summarizes distinct active users at the weekly grain
-    datagroup_trigger: monthly_cache_ga
+    datagroup_trigger: weekly_cache
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}
@@ -16,11 +16,11 @@ view: dau_mau_derived {
       column: connect_likers {}
       column: connect_commenters {}
       column: connect_posters {}
-      #column: unique_visitors_uuid {}
+      column: unique_visitors_uuid {}
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "16 months ago for 13 months"
+        value: "16 months ago for 16 months"
       }
       filters: {
         field: hits_appInfo.screenName
@@ -126,7 +126,7 @@ view: dau_mau_derived {
 
   measure: connect_commenters {
     type: sum
-  }
+ }
 measure: connect_posters {
   type: sum
 }
@@ -140,17 +140,17 @@ measure: connect_posters {
 view: dau_mau_derived_daily {
   # This derived table summarizes distinct active users at the daily grain
   derived_table: {
-    datagroup_trigger: monthly_cache_ga
+    datagroup_trigger: weekly_cache
     explore_source: ga_sessions {
       column: site_region {}
       column: unique_visitors {}
       column: visitStart_date {}
       column: application_type {}
-      #column: unique_visitors_uuid {}
+      column: unique_visitors_uuid {}
       filters: {
         field: ga_sessions.partition_date
         #value: "12 months ago for 12 months"
-        value: "16 months ago for 13 months"
+        value: "16 months ago for 16 months"
       }
       filters: {
         field: hits_appInfo.screenName

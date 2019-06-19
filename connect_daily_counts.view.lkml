@@ -1,11 +1,12 @@
 view: connect_daily_counts {
   derived_table: {
-   # persist_for: "24 hours"
+    #persist_for: "24 hours"
     datagroup_trigger: daily_sessions_cache
     sql: SELECT DISTINCT
 (EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))) as generated_date,
 d.FiscalWeekOfYear AS fiscal_week,
 d.FiscalYear as fiscal_year,
+d.DayName,
 (CASE WHEN cd.index=53 then cd.value else null end) as region,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_trending" AND h.type = 'APPVIEW') then fullvisitorid END)) AS connect_traffic,
 COUNT(DISTINCT (CASE WHEN (h.appinfo.screenname = "connect_stream_new" AND h.type = 'APPVIEW') then fullvisitorid END)) AS following_traffic,
@@ -31,7 +32,7 @@ ON d.Date = EXTRACT(date FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time))
 
 WHERE SUFFIX Between '20181001'AND '20191230'
 and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz')
-group by 1 ,2, 3, 4 ;;
+group by 1 ,2, 3, 4 ,5 ;;
   }
 
 

@@ -13,7 +13,7 @@ datagroup: weekly_cache {
 }
 
 datagroup: daily_sessions_cache {
-  sql_trigger: select EXTRACT(DATE FROM CURRENT_DATE('America/New_York')) ;;
+  sql_trigger: select extract(dayofweek from timestamp_sub(current_timestamp(), interval 11 hour)) as every_day ;;
 }
 
 datagroup: static_pdt {
@@ -99,7 +99,7 @@ explore: kpi_funnel_static {
   }
 
   explore: engagement_score{
-    persist_for: "100 hours"
+    persist_for: "24 hours"
     join: post_love_score_daily {
       type: inner
       relationship: one_to_one
@@ -114,7 +114,7 @@ explore: kpi_funnel_static {
   }
 
   explore: post_love_score_daily {
-    persist_for: "48 hours"
+   # persist_for: "48 hours"
   }
 
   explore: groups_launch {
@@ -142,13 +142,7 @@ explore: kpi_funnel_static {
 
   }
 
-  explore: groups_kpis {
-    persist_for: "96 hours"
-  }
 
-  explore: groups_kpi_weekly {
-    persist_for: "96 hours"
-  }
 
 explore: ga_sessions_weekly {
   persist_with: weekly_cache
@@ -178,4 +172,11 @@ explore: reported_posts_new {
 
 explore: ga_daily_counts {}
 
-####
+explore: media_posting_funnel {}
+explore: video_posting_funnel {}
+explore: photo_posting_funnel {}
+explore: groups_funnel {}
+explore: groups_carousel_funnel  {}
+explore: ga_sessions_monthly {
+  persist_with: monthly_cache_ga
+}

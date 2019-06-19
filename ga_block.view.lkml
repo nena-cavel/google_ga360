@@ -156,13 +156,15 @@ view: ga_sessions_base {
   }
   dimension: site_region {
     sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=53) ;;
-    suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
+    suggestions: ["us","de","nl","fr","be","ca","ch","au","se","br","gb"]
+    map_layer_name: countries
   }
 
   dimension: market {
     suggestions: ["US","DE","NL","FR","BE","CA","CH","AU","SE","BR","GB"]
     sql: CASE WHEN REGEXP_CONTAINS(${site_region}, 'us|de|nl|fr|be|ca|ch|au|se|br|gb') THEN UPPER(${site_region})
        WHEN ${site_region} = 'uk' THEN 'GB' ELSE NULL END ;;
+      map_layer_name: countries
   }
 
   dimension: signupVersion {

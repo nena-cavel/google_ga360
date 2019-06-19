@@ -6,8 +6,10 @@ view: poster_love {
 
 SELECT
 
-date,
+date_post_created,
 region,
+post_content,
+user_posting,
 post_type,
 post_id,
 
@@ -36,9 +38,10 @@ FROM
 -- note that right now there can be multiple posts with the same uuid (create and update?) which will double up entries. This is probably not desirable? Example shown in comment at bottom
 
   SELECT DISTINCT
-  EXTRACT(MONTH FROM payload_post.created_at) as month_post_created,
-   extract(year from payload_post.created_at) as year_post_generated,
+  EXTRACT(date FROM payload_post.created_at) as date_post_created,
   payload_post.subclass as post_type,
+  payload_post.content as post_content,
+  payload_post.user.uuid as user_posting,
   payload_post.locale as region,
   cp.payload_post.uuid AS post_id,
   engagements.engagement_type,
@@ -80,11 +83,8 @@ FROM
 --LIMIT 1000
 
   ) post_engagements
-INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 MONTH)) as date
-ON (month_post_created = extract(month from date)
-      and year_post_generated = extract(year from date))
-GROUP BY 1,2,3,4
+
+GROUP BY 1,2,3,4,5,6
 
 #order by 4 desc
 ;;
@@ -94,12 +94,22 @@ GROUP BY 1,2,3,4
     datatype: datetime
     type: time
     convert_tz: no
-    sql: timestamp(${TABLE}.date) ;;
+    sql: timestamp(${TABLE}.date_post_created) ;;
   }
 
   dimension: post_type {
     type:  string
     sql: ${TABLE}.post_type ;;
+  }
+
+  dimension: post_content {
+    type: string
+    sql: ${TABLE}.post_content ;;
+  }
+
+  dimension: ww_official_users {
+    type: string
+    sql: case when regexp_contains(${TABLE}.user_posting, 's23-') then ${TABLE}.user_posting end  ;;
   }
 
   dimension: region {
@@ -134,6 +144,7 @@ GROUP BY 1,2,3,4
 
   measure: avg_likes {
     type: average
+    value_format: "0.0"
     sql: ${TABLE}.total_likes ;;
   }
 
@@ -143,10 +154,12 @@ GROUP BY 1,2,3,4
   }
   measure: avg_comments {
     type: average
+    value_format: "0.0"
     sql: ${TABLE}.total_comments ;;
   }
   measure: poster_love {
     type:  average
+    value_format: "0.0"
     sql: ${TABLE}.poster_love ;;
   }
 

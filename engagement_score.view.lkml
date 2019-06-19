@@ -1,7 +1,7 @@
 view: engagement_score {
   derived_table: {
    # persist_for: "24 hours"
-    datagroup_trigger: daily_sessions_cache
+    #datagroup_trigger: daily_sessions_cache
     sql: SELECT DISTINCT
 subquery.test_date as session_date,
 d.FiscalWeekOfYear AS fiscal_week,
@@ -69,7 +69,7 @@ FROM
    ON d.Date = subquery.test_date
 
   where subquery.operating_system NOT LIKE 'BlackBerry'
-GROUP BY 1, 2, 3, 4, 5 ;;
+GROUP BY 1, 2, 3, 4 , 5 ;;
 
   }
 

@@ -22,11 +22,11 @@ view: ga_sessions {
   filter: consolidated_date_filter {
     default_value: "7 days ago for 7 days"
     description: "This filter applies to both session start time and partition date."
-    type: date_time
-    sql: date_add(date({% date_start consolidated_date_filter %}), interval -1 day ) < ${partition_date::date}
-     AND date_add(date({% date_end consolidated_date_filter %}), interval 1 day) > ${partition_date::date}
+    type: date
+    sql: ${partition_date::date} >= date_add(date({% date_start consolidated_date_filter %}), interval -2 day )
+     AND ${partition_date::date} <= date_add(date({% date_end consolidated_date_filter %}), interval 2 day)
      AND {% condition consolidated_date_filter %} ${visitStart_raw} {% endcondition %} ;;
-
+    convert_tz: no
   }
   extends: [ga_sessions_base]
   measure:  unique_prospects{
@@ -74,6 +74,11 @@ view: ga_sessions {
       value: "yes"
     }
   }
+
+measure: fullvisitid_count {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+}
 
   measure: connect_visits {
     type: count_distinct
@@ -141,6 +146,11 @@ measure:  profile_follows {
     }
   }
 
+  measure: android_users {
+    type: count_distinct
+    sql: case when ${application_type} = 'Android' then ${fullVisitorId} end ;;
+  }
+
   measure: notifications_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -168,6 +178,77 @@ measure:  profile_follows {
     }
   }
 
+  measure: total_weight_tracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+  }
+
+
+  measure: journey_weighttracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+    filters: {
+      field: hits_appInfo.journey_weight_screens
+      value: "yes"
+    }
+  }
+
+  measure: journey_weighttracking_users {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.weight_tracking
+      value: "yes"
+    }
+    filters: {
+      field: hits_appInfo.journey_weight_screens
+      value: "yes"
+    }
+  }
+
+  measure: total_profile_weighttracking {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_appInfo.profile_weighttracking
+      value: "yes"
+    }
+  }
+
+  measure: profile_weighttracking_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.profile_weighttracking
+      value: "yes"
+    }
+  }
+
+  measure: weight_changemanagement_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.weight_changemanagement
+      value: "yes"
+    }
+  }
+
+measure: profile_weightseeall_users {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_appInfo.profile_weightseeall
+    value: "yes"
+  }
+}
 
   measure: connect_profile_views {
     type: count_distinct
@@ -370,9 +451,18 @@ measure: chat_now_users {
     }
   }
 
-  measure: barcode_scans {
+  measure: barcode_scanners {
     type: count_distinct
     sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.barcode_scans
+      value: "yes"
+    }
+  }
+
+  measure: total_barcode_scans {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
     filters: {
       field: hits_eventInfo.barcode_scans
       value: "yes"
@@ -385,6 +475,16 @@ measure: chat_now_users {
     filters: {
         field: hits_eventInfo.connect_posters
         value: "yes"
+    }
+  }
+
+
+  measure: connect_posts {
+    type: count_distinct
+    sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.connect_posters
+      value: "yes"
     }
   }
 
@@ -408,6 +508,96 @@ measure: chat_now_users {
       value: "yes"
     }
   }
+
+  measure: connect_share_withus_clicks {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.share_with_us_connect
+      value: "yes"
+    }
+}
+
+measure: select_video_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_eventInfo.selected_video
+    value: "yes"
+  }
+}
+
+measure: connect_start_recording {
+  type: count_distinct
+  sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.start_recording_video
+    value: "yes"
+  }
+}
+
+measure: connect_finish_recording {
+  type: count_distinct
+  sql:  concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.finish_recording_video
+    value: "yes"
+  }
+}
+
+measure: connect_media_gallery {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_appInfo.connect_media_gallery
+    value: "yes"
+  }
+}
+
+measure: choose_photovideot_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_eventInfo.choose_photo_connect
+    value: "yes"
+  }
+}
+
+measure: capture_media_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_appInfo.connect_capture_media
+    value: "yes"
+  }
+}
+
+measure: add_videophoto_connect_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.add_videophoto_connect
+    value: "yes"
+  }
+}
+
+measure: backbutton_connectpost_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string))  ;;
+  filters: {
+    field: hits_eventInfo.backbutton_connectpost
+    value: "yes"
+  }
+}
+
+measure: next_fromeditpost_connect_clicks {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+  filters: {
+    field: hits_appInfo.next_fromeditpost_connect
+    value: "yes"
+  }
+}
 
   measure: myday_connect_carousel_users {
     type: count_distinct
@@ -475,6 +665,7 @@ measure: chat_now_users {
   }
 
 
+
 dimension: uuid_dimension {
   type: string
   sql: (SELECT value FROM UNNEST(${TABLE}.customDimensions) WHERE index=12) ;;
@@ -515,6 +706,62 @@ measure: unique_visitors_uuid {
       value: "yes"
     }
   }
+
+
+measure: view_incarousel_group {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field: hits_eventInfo.view_incarousel_group
+    value: "yes"
+  }
+}
+
+measure: browse_groups {
+  type: count_distinct
+  sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+  filters: {
+    field: hits_eventInfo.browse_groups
+    value: "yes"
+  }
+}
+
+  measure: browse_groups_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.browse_groups
+      value: "yes"
+    }
+  }
+
+  measure: see_all_groups {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.see_all_groups
+      value: "yes"
+    }
+  }
+
+  measure: groups_either_selection {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.groups_either_selection
+      value: "yes"
+    }
+  }
+
+measure: users_joining_groups {
+  type: count_distinct
+  sql: ${fullVisitorId} ;;
+  filters: {
+    field: hits_eventInfo.join_group
+    value: "yes"
+  }
+}
+
 
   measure: my_day_users {
     type: count_distinct
@@ -716,6 +963,11 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: connect_media_gallery {
+    sql: ${screenName} = 'connect_post_media' ;;
+    type: yesno
+  }
+
   dimension: coach_tab {
     sql: ${screenName} = 'help_help_landing' ;;
     type: yesno
@@ -751,6 +1003,17 @@ dimension: journey_tab {
   type: yesno
 }
 
+  dimension: profile_weighttracking {
+    sql: ${screenName} = 'profile_trackweightcta' ;;
+    type: yesno
+  }
+
+
+  dimension: profile_weightseeall {
+    type: yesno
+    sql: ${screenName} = 'profile_weightseeall' ;;
+  }
+
 dimension: notifications_page {
   sql: regexp_contains(${screenName},'global_notifications|connect_notifications') ;;
   type: yesno
@@ -777,6 +1040,16 @@ dimension: notifications_page {
     type: yesno
   }
 
+dimension: connect_capture_media {
+  sql: ${screenName} = 'connect_post_camera' ;;
+  type: yesno
+}
+
+  dimension: next_fromeditpost_connect {
+    sql: ${screenName}= 'connect_post_theme_done' ;;
+    type: yesno
+  }
+
 dimension: new_feed {
   type: yesno
   sql: ${screenName} = 'connect_stream_new' ;;
@@ -786,6 +1059,12 @@ dimension: following_feed {
   type: yesno
   sql: ${screenName} = 'connect_stream_following' ;;
 }
+
+dimension: journey_weight_screens {
+  type: yesno
+  sql: regexp_contains(${screenName}, 'journey_weightlossprogress|journey_weighttable') ;;
+}
+
 
 dimension: connect_trending_page_loads {
   type: yesno
@@ -808,6 +1087,64 @@ view: hits_eventInfo {
     type: yesno
   }
 
+dimension: share_with_us_connect {
+  sql: ${eventAction}='connect_share_with_us' ;;
+  type: yesno
+}
+
+dimension:  start_recording_video {
+  sql: ${eventAction} = 'connect_capture_tap_video_icon' ;;
+  type: yesno
+}
+
+dimension: finish_recording_video {
+  sql: ${eventAction} = 'connect_recording_done';;
+  type: yesno
+}
+
+dimension: selected_video {
+  sql: ${eventAction} = 'connect_gallery_video_length' ;;
+  type: yesno
+}
+
+dimension: choose_photo_connect {
+  sql: ${eventAction} = 'connect_gallery_continue' ;;
+  type: yesno
+}
+
+dimension: browse_groups {
+  sql: regexp_contains(${eventAction}, '^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
+  type: yesno
+}
+
+dimension: see_all_groups {
+  sql: regexp_contains(${eventAction}, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich$|connect_groups_see_allmein_weg$|connect_groups_see_allessen$|connect_groups_see_allumdenken$|connect_groups_see_allbewegen$|connect_groups_see_allprofil$|connect_groups_see_allmon_parcours$|connect_groups_see_allaliment$|connect_groups_see_all_tat_d_esprit$') ;;
+  type: yesno
+}
+
+dimension: view_incarousel_group {
+  sql: regexp_contains(${eventAction}, 'connect_groups_see_food_|connect_groups_see_journey_|connect_groups_see_identity_|connect_groups_see_journey_|connect_groups_see_mindset_|connect_groups_see_activity_|connect_groups_see_Food_|connect_groups_see_hobbies_|connect_groups_see_Hobbies_|connect_groups_see_hobbies_|connect_groups_see_Journey_|connect_groups_see_Mein_Weg_|connect_groups_see_Mon_parcours_|connect_groups_see_Essen_|connect_groups_see_Umdenken_|connect_groups_see_Das_bin_ich_|connect_groups_see_Activité_|connect_groups_see_Cuisine_|connect_groups_see_locations_|connect_groups_see_État_d_esprit_|connect_groups_see_Bewegen_|connect_groups_see_Profil_|connect_groups_see_Eten_|connect_groups_see_Aktivitet_|connect_groups_see_Alimentação_|connect_groups_see_Resa_|connect_groups_see_Beweging_|connect_groups_see_Dit_ben_ik__|connect_groups_see_Mat_|connect_groups_see_Mijn_WW_|connect_groups_see_Feel_good_') ;;
+  type: yesno
+}
+
+dimension: groups_either_selection {
+  sql: regexp_contains(${eventAction}, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich$|connect_groups_see_allmein_weg$|connect_groups_see_allessen$|connect_groups_see_allumdenken$|connect_groups_see_allbewegen$|connect_groups_see_all_tat_d_esprit$|connect_groups_see_allprofil$|connect_groups_see_allaliment$|connect_groups_see_food_|connect_groups_see_journey_|connect_groups_see_identity_|connect_groups_see_journey_|connect_groups_see_mindset_|connect_groups_see_activity_|connect_groups_see_Food_|connect_groups_see_hobbies_|connect_groups_see_Hobbies_|connect_groups_see_hobbies_|connect_groups_see_Journey_|connect_groups_see_Mein_Weg_|connect_groups_see_Mon_parcours_|connect_groups_see_Essen_|connect_groups_see_Umdenken_|connect_groups_see_Das_bin_ich_|connect_groups_see_Activité_|connect_groups_see_Cuisine_|connect_groups_see_locations_|connect_groups_see_État_d_esprit_|connect_groups_see_Bewegen_|connect_groups_see_Profil_|connect_groups_see_Eten_|connect_groups_see_Aktivitet_|connect_groups_see_Alimentação_|connect_groups_see_Resa_|connect_groups_see_Beweging_|connect_groups_see_Dit_ben_ik__|connect_groups_see_Mat_|connect_groups_see_Mijn_WW_|connect_groups_see_Feel_good_') ;;
+  type: yesno
+}
+
+dimension: backbutton_connectpost {
+  sql: ${eventAction} = 'connect_post_flow_back_button' ;;
+  type: yesno
+}
+  dimension: add_videophoto_connect {
+    sql: ${eventAction}= 'connect_post_add_video_photo' ;;
+    type: yesno
+  }
+dimension: join_group {
+  sql: ${eventAction} = 'connect_groups_join_public_group' ;;
+  type: yesno
+}
+
   dimension: connect_likers {
     sql: regexp_contains(${eventAction}, 'connect_post_like|connect_comment_like|connect_reply_like|connect_post_like_tap') ;;
     type: yesno
@@ -817,6 +1154,16 @@ dimension: barcode_scans {
   sql: regexp_contains(${eventAction}, 'barcodescanner_') ;;
   type: yesno
 }
+
+  dimension: barcode_scan_names {
+    type: string
+    sql: (CASE WHEN regexp_contains(${eventAction}, "barcodescanner_crowdsourced|barcodescanner_crowdsourceditem")
+        THEN "Crowdsourced"
+        WHEN ${eventAction}= "barcodescanner_fooddatabase" THEN "WW Verified Food"
+        WHEN ${eventAction}="barcodescanner_foodsnondatabase" THEN "Not in DB"
+        end)
+        ;;
+  }
 
 dimension: group_id_new {
   sql: case when regexp_contains(${eventAction}, 'connect_groups_') then  ${eventLabel} end ;;
@@ -862,6 +1209,15 @@ dimension: notifs_new_follower {
   sql: ${eventAction} = 'notifications_connect_new_follower'  ;;
   type: yesno
 }
+
+
+
+dimension: weight_changemanagement {
+  sql:  ${eventLabel} = 'see_on_profile' ;;
+  type: yesno
+}
+
+
 
 dimension: notifs_new_comment {
   sql: ${eventAction} = 'notifications_connect_new_comment' ;;
@@ -920,11 +1276,60 @@ dimension: tracked_food {
     type:  yesno
   }
 
+  dimension: aaptiv_card_name {
+    sql: case when ${eventAction} in ('activity_card_aaptiv', 'aaptivcard') then 'Aaptiv'
+      when ${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
+      'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d' then 'Start Getting Stronger'
+      when ${eventAction} in ('activity_card_aaptiv_Basic_walking_wo_0' , 'activity_card_aaptiv_Basic_walking_worko', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking',
+      'activity_card_aaptiv_Entra_nement_d' then 'Basic Walking'
+      when ${eventAction} in ('activity_card_aaptiv_Walk_to_the_beat_0', 'activity_card_aaptiv_Walk_to_the_beat', 'activity_card_aaptiv_Walk_to_the_be', 'activity_card_aaptiv_Walk_to_the_b', 'activity_card_aaptiv_Marcher_en_ryt', 'activity_card_aaptiv_Marcher_en_ry', 'activity_card_aaptiv_Courir_en_mesu',
+      'activity_card_aaptiv_Courir_en_mes') then 'Walk to the Beat'
+      when ${eventAction} in ('activity_card_aaptiv_Pick_up_the_pace_0', 'activity_card_aaptiv_Pick_up_the_pace', 'activity_card_aaptiv_Pick_up_the_pa', 'activity_card_aaptiv_Pick_up_the_p', 'activity_card_aaptiv_Acc_l_rer_le_r', 'activity_card_aaptiv_Accélérer_le_',
+      'activity_card_aaptiv_De_la_marche_a') then 'Pick Up the Pace'
+      when ${eventAction} in ('activity_card_aaptiv_Fast_and_total_t_0', 'activity_card_aaptiv_Fast_and_total_trai', 'activity_card_aaptiv_Fast_and_total_tra', 'activity_card_aaptiv_Fast_and_total', 'activity_card_aaptiv_Fast_and_tota', 'activity_card_aaptiv_Entra_nement_r',
+      'activity_card_aaptiv_Entra_nement_c') then 'Fast and Total Training'
+      when ${eventAction} in ('activity_card_aaptiv_Find_your_streng_0', 'activity_card_aaptiv_Find_your_strength', 'activity_card_aaptiv_Find_your_stre', 'activity_card_aaptiv_Find_your_str', 'activity_card_aaptiv_Trouvez_votre_', 'activity_card_aaptiv_Trouvez_votre',
+      'activity_card_aaptiv_D_couvrez_votr') then 'Find your Strength'
+      when ${eventAction} in ('activity_card_aaptiv_Jog_run_interval_0', 'activity_card_aaptiv_Jog_run_intervals', 'activity_card_aaptiv_Jog_run_interv', 'activity_card_aaptiv_Jog_run_inter', 'activity_card_aaptiv_Intervalles_jo', 'activity_card_aaptiv_Intervalles_j',
+      'activity_card_aaptiv_Entra_nement_f'then 'Jog/Run'
+      when ${eventAction} in ('activity_card_aaptiv_Get_strong_faste_0', 'activity_card_aaptiv_Get_strong_faster', 'activity_card_aaptiv_Get_strong_fas', 'activity_card_aaptiv_Get_strong_fa', 'activity_card_aaptiv_Devenir_fort_', 'activity_card_aaptiv_Devenir_fort_p', 'activity_card_aaptiv_Circuit_d_entr',
+      'activity_card_aaptiv_Circuit_d_ent') then 'Get Strong Faster'
+      when ${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
+      'activity_card_aaptiv_Cardio___muscu') then 'Cardio + Strength'
+
+
+     else 'Other' end
+              ;;
+    suggestions: [ "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength"]
+    }
+
+  dimension: aaptiv_cards {
+    sql: case when  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength" ) then ${aaptiv_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: aaptiv_cards_yesno {
+    sql:  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength")
+
+               ;;
+    type: yesno
+
+  }
+
+
+
+
   dimension: card_name {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
-
-               when ${eventAction} = 'food_browse_Recipes' then 'Discover Recipes'
+ when ${hits_appInfo.screenName} = 'Search' then 'Search'
+               when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
                when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
               when ${eventAction} = 'connect_seemoreposts_myday' then 'Connect (See More)'
               when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
@@ -974,15 +1379,24 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               'food_browse_recipes_Cooking_for_One') then 'Default Collections - Discover Recipes'
               when ${hits_appInfo.screenName} like ('food_card_recipes_%') then 'All Recipes'
               when ${hits_appInfo.screenName} like ('food_card_article_%') then 'All Articles'
+              when ${eventAction} = 'food_browse_recipebuilder' then 'Recipe Builder'
+              when ${hits_appInfo.screenName} = 'MemberRecipes' then 'Member Recipes'
+              when ${eventAction} = 'food_browse_seeall' then 'See All'
+              when ${eventAction} = 'food_browse_favorites' then 'Favorites'
+              when ${hits_appInfo.screenName} = 'Favorites' then 'Favorites (+)'
+              when ${eventAction} = 'food_browse_featuredcollectionscroll' then 'Featured Collection Scroll'
+               when ${eventAction} = 'food_browse_created' then 'Created'
+
+
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date" ]
+    suggestions: ["Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder" ]
   }
 
 
 dimension: my_day_cards {
-  sql: case when  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
+  sql: case when  ${card_name} in ("Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
   else null end
    ;;
   type: string
@@ -990,7 +1404,7 @@ dimension: my_day_cards {
 }
 
   dimension: my_day_cards_yesno {
-    sql:  ${card_name} in ("Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+    sql:  ${card_name} in ("Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
 
          ;;
     type: yesno
@@ -1010,6 +1424,38 @@ dimension: recipe_and_articles_cards {
      ;;
     type:  yesno
   }
+
+  dimension: recipe_and_article_card_category{
+    sql: case when ${recipe_and_articles_cards} in ('Article Tenure', 'Article Date')  then 'All Articles'
+         when ${recipe_and_articles_cards} in ('Recipe Tenure', 'Recipe Date') then 'All Recipes' END;;
+    drill_fields: ["recipe_and_articles_cards"]
+  }
+
+
+dimension: discover_recipe_cards {
+
+  sql:  case when ${card_name} in ("Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder", "Discover Recipes")  then ${card_name}
+  else null end;;
+  type:  string
+}
+
+  dimension: discover_recipe_card_yesno {
+
+    sql:  ${card_name} in ("Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder", "Discover Recipes")
+      ;;
+    type:  yesno
+}
+
+dimension: tenure_or_date {
+  label: "Card type - Tenure or Date"
+  sql: case when ${card_name} in ('Recipe Date', 'Article Date') then 'Date-Based Card'
+            when ${card_name} in ('Recipe Tenure', 'Article Tenure') then 'Tenure-Based Card'
+       else null end;;
+  suggestions: ["Date-Based Card","Tenure-Based Card" ]
+}
+
+
+
 
 
   dimension: iaf_myDay_desktop {
@@ -1048,6 +1494,11 @@ view: hits_customDimensions {
   # dimension: group_id {
   #  sql: (SELECT value FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`.hits.customDimensions WHERE index=85) ;;
   # }
+
+  dimension: post_type {
+    type: string
+    sql: case when hits_customDimensions.index=76 then hits_customDimensions.value end ;;
+  }
 
 }
 
@@ -1101,6 +1552,9 @@ view: customDimensions {
               end;;
   }
 
-
+#dimension: post_type {
+#  type: string
+#  sql: case when customDimensions.index=76 then customDimensions.value end ;;
+#}
 
 }
