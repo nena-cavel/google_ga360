@@ -1283,7 +1283,7 @@ dimension: tracked_food {
       when ${eventAction} in ('activity_card_aaptiv_Basic_walking_wo_0' , 'activity_card_aaptiv_Basic_walking_worko', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking',
       'activity_card_aaptiv_Entra_nement_d' then 'Basic Walking'
       when ${eventAction} in ('activity_card_aaptiv_Walk_to_the_beat_0', 'activity_card_aaptiv_Walk_to_the_beat', 'activity_card_aaptiv_Walk_to_the_be', 'activity_card_aaptiv_Walk_to_the_b', 'activity_card_aaptiv_Marcher_en_ryt', 'activity_card_aaptiv_Marcher_en_ry', 'activity_card_aaptiv_Courir_en_mesu',
-      'activity_card_aaptiv_Courir_en_mes') then Walk to the Beat'
+      'activity_card_aaptiv_Courir_en_mes') then 'Walk to the Beat'
       when ${eventAction} in ('activity_card_aaptiv_Pick_up_the_pace_0', 'activity_card_aaptiv_Pick_up_the_pace', 'activity_card_aaptiv_Pick_up_the_pa', 'activity_card_aaptiv_Pick_up_the_p', 'activity_card_aaptiv_Acc_l_rer_le_r', 'activity_card_aaptiv_Accélérer_le_',
       'activity_card_aaptiv_De_la_marche_a') then 'Pick Up the Pace'
       when ${eventAction} in ('activity_card_aaptiv_Fast_and_total_t_0', 'activity_card_aaptiv_Fast_and_total_trai', 'activity_card_aaptiv_Fast_and_total_tra', 'activity_card_aaptiv_Fast_and_total', 'activity_card_aaptiv_Fast_and_tota', 'activity_card_aaptiv_Entra_nement_r',
@@ -1300,7 +1300,8 @@ dimension: tracked_food {
 
      else 'Other' end
               ;;
-    suggestions: ["Search","Headspace", "Aaptiv"]
+    suggestions: [ "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength"]
     }
 
   dimension: card_name {
