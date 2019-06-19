@@ -1331,7 +1331,21 @@ dimension: tracked_food {
 
   }
 
+  dimension: aaptiv {
+    sql: case when  ${aaptiv_card_name} in ("Aaptiv") then ${aaptiv_card_name}
+        else null end
+         ;;
+    type: string
 
+  }
+
+  dimension: aaptiv_yesno {
+    sql:  ${aaptiv_card_name} in ("Aaptiv")
+
+               ;;
+    type: yesno
+
+  }
 
 
   dimension: card_name {
