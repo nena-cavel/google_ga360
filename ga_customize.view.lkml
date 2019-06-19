@@ -1280,7 +1280,7 @@ dimension: tracked_food {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
  when ${hits_appInfo.screenName} = 'Search' then 'Search'
-               when ${eventAction} = 'food_browse_Recipes' then 'Discover Recipes'
+               when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
                when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
               when ${eventAction} = 'connect_seemoreposts_myday' then 'Connect (See More)'
               when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
