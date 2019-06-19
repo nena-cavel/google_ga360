@@ -1291,7 +1291,7 @@ dimension: tracked_food {
       when ${eventAction} in ('activity_card_aaptiv_Find_your_streng_0', 'activity_card_aaptiv_Find_your_strength', 'activity_card_aaptiv_Find_your_stre', 'activity_card_aaptiv_Find_your_str', 'activity_card_aaptiv_Trouvez_votre_', 'activity_card_aaptiv_Trouvez_votre',
       'activity_card_aaptiv_D_couvrez_votr') then 'Find your Strength'
       when ${eventAction} in ('activity_card_aaptiv_Jog_run_interval_0', 'activity_card_aaptiv_Jog_run_intervals', 'activity_card_aaptiv_Jog_run_interv', 'activity_card_aaptiv_Jog_run_inter', 'activity_card_aaptiv_Intervalles_jo', 'activity_card_aaptiv_Intervalles_j',
-      'activity_card_aaptiv_Entra_nement_f'then 'Jog/Run'
+      'activity_card_aaptiv_Entra_nement_f' then 'Jog/Run'
       when ${eventAction} in ('activity_card_aaptiv_Get_strong_faste_0', 'activity_card_aaptiv_Get_strong_faster', 'activity_card_aaptiv_Get_strong_fas', 'activity_card_aaptiv_Get_strong_fa', 'activity_card_aaptiv_Devenir_fort_', 'activity_card_aaptiv_Devenir_fort_p', 'activity_card_aaptiv_Circuit_d_entr',
       'activity_card_aaptiv_Circuit_d_ent') then 'Get Strong Faster'
       when ${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
