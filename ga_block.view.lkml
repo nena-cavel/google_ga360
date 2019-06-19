@@ -377,6 +377,14 @@ view: ga_sessions_base {
 
   dimension: channelGrouping {label: "Channel Grouping"}
 
+  dimension: channelGroupingCA {
+    label: "Channel Grouping CA"
+
+    type:  string
+    sql:  CASE WHEN ${trafficSource}.source = "facebook" AND ${trafficSource}.medium = "cpc" THEN "Paid Social" ELSE ${channelGrouping} END ;;
+    drill_fields: [trafficSource.source]
+    }
+
   # subrecords
   dimension: geoNetwork {hidden: yes}
   dimension: totals {hidden:yes}
@@ -496,8 +504,9 @@ view: totals_base {
 
   measure: bounces_total {
     type: sum
-    sql: ${TABLE}.bounces ;;
+    sql: COALESCE(${TABLE}.bounces, 0) ;;
   }
+
   measure: bounce_rate {
     type:  number
     sql: 1.0 * ${bounces_total} / NULLIF(${ga_sessions.session_count},0) ;;
