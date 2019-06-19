@@ -1276,6 +1276,15 @@ dimension: tracked_food {
     type:  yesno
   }
 
+  dimension: aaptiv_card_name {
+    sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
+    when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
+
+     else 'Other' end
+              ;;
+    suggestions: ["Search","Headspace", "Aaptiv"]
+    }
+
   dimension: card_name {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
