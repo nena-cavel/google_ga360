@@ -1277,7 +1277,7 @@ dimension: tracked_food {
   }
 
   dimension: aaptiv_card_name {
-    sql: case when ${eventAction} in ('activity_card_aaptiv', 'aaptivcard') then 'Aaptiv'
+    sql: case when (${eventAction} = 'activity_card_aaptiv' or ${eventLabel} = 'aaptivcard') then 'Aaptiv'
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
       'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants'))  then 'Start Getting Stronger'
@@ -1350,7 +1350,7 @@ dimension: tracked_food {
 
   dimension: card_name {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
-              when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
+              when (${eventAction} = 'activity_card_aaptiv' or ${eventLabel} = 'aaptivcard')then 'Aaptiv'
  when ${hits_appInfo.screenName} = 'Search' then 'Search'
                when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
                when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
