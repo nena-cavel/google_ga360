@@ -1304,6 +1304,27 @@ dimension: tracked_food {
       "Get Strong Faster", "Cardio + Strength"]
     }
 
+  dimension: aaptiv_cards {
+    sql: case when  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength" ) then ${aaptiv_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: aaptiv_cards_yesno {
+    sql:  ${aaptiv_card_name} in ( "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength")
+
+               ;;
+    type: yesno
+
+  }
+
+
+
+
   dimension: card_name {
     sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
               when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
