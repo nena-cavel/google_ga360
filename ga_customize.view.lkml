@@ -1277,7 +1277,7 @@ dimension: tracked_food {
   }
 
   dimension: aaptiv_card_name {
-    sql: case when ${eventAction} = 'activity_card_aaptiv' then 'Aaptiv'
+    sql: case when ${eventAction} in ('activity_card_aaptiv', 'aaptivcard') then 'Aaptiv'
       when ${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d' then 'Start Getting Stronger'
       when ${eventAction} in ('activity_card_aaptiv_Basic_walking_wo_0' , 'activity_card_aaptiv_Basic_walking_worko', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking',
