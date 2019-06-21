@@ -1276,6 +1276,19 @@ dimension: tracked_food {
     type:  yesno
   }
 
+
+  dimension: headspace_card_name {
+    sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
+    when (${eventAction} in ('food_card_mindset_Basics', 'food_card_mindsetBasics', 'food_card_mindset_Grunderna', 'food_card_mindsetGrunderna', 'food_card_mindsetBasis', 'food_card_mindset_Basis', 'food_card_mindset_Einfache_Atemübung', 'food_card_mindset_Einfache_Atem_bung', 'food_card_mindset_Les_bases', 'food_card_mindset_Notions_de_base',
+    'food_card_mindset_Base') then 'Basics'
+
+
+
+    else 'Other' end
+              ;;
+    suggestions: [ "Headspace"]
+    }
+
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
@@ -1349,7 +1362,7 @@ dimension: tracked_food {
 
 
   dimension: card_name {
-    sql: case when ${eventAction} = 'food_card_mindset' then 'Headspace'
+    sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
               when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
  when ${hits_appInfo.screenName} = 'Search' then 'Search'
                when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
