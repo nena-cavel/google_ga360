@@ -1285,11 +1285,23 @@ dimension: tracked_food {
     'food_card_mindset_featured_Nya_perspekti', 'food_card_mindset_featured_Veranderende_', 'food_card_mindset_featured_Veranderende', 'food_card_mindset_featured_Perspectives_', 'food_card_mindset_featured_Perspectives', 'food_card_mindset_featured_Nya_perspekt', 'food_card_mindset_featured_Changer_de_pe',
     'food_card_mindset_featured_Changer_de_p') then 'Changing Perspectives'
     when  ${eventAction} in ('food_card_mindsetTake_a_Moment_to_Pause', 'food_card_mindset_Take_a_Moment_to_Pause', 'food_card_mindset_Unna_dig_en_paus', 'food_card_mindsetUnna_dig_en_paus', 'food_card_mindsetNeem_een_moment_om_te_', 'food_card_mindset_Neem_een_moment_om_te_', 'food_card_mindset_Du_fühlst_dich_überf', 'food_card_mindset_Accordez_vous_une_paus', 'food_card_mindset_Du_fühlst_dich_überfo', 'food_card_mindset_Du_f_hlst_dich__berfor', 'food_card_mindset_Prenez_un_moment_pour', 'food_card_mindset_Prenez_un_moment_pour_', 'food_card_mindset_Prends_un_moment_pour', 'food_card_mindset_Prends_un_moment_pour_', 'food_card_mindset_Prenez_le_temps_d_une',
-    'food_card_mindset_Prenez_le_temps_d_une_') as 'Take a Moment to Pause'
+    'food_card_mindset_Prenez_le_temps_d_une_') then 'Take a Moment to Pause'
     when  ${eventAction} in ('food_card_mindsetEnd_of_Day', 'food_card_mindset_End_of_Day', 'food_card_mindset_Slut_p__dagen', 'food_card_mindsetSlut_på_dagen', 'food_card_mindsetEinde_van_de_dag', 'food_card_mindset_Einde_van_de_dag', 'food_card_mindset_Fin_de_la_journ_e', 'food_card_mindset_Entspannen_am_Abend', 'food_card_mindset_Fin_de_la_journée', 'food_card_mindset_Fin_de_journée',
-    'food_card_mindset_Fin_de_journ_e') as 'End of Day'
+    'food_card_mindset_Fin_de_journ_e') then 'End of Day'
 when  ${eventAction} in ('food_card_mindsetEngage_your_Senses_whe', 'food_card_mindset_Engage_your_Senses_whe', 'food_card_mindset_Engage_your_Senses_wh', 'food_card_mindset_Engagera_dina_sinnen_n', 'food_card_mindsetEngagera_dina_sinnen_n', 'food_card_mindsetBetrek_je_zintuigen_ti', 'food_card_mindset_Achtsam_Essen', 'food_card_mindset_Eveillez_vos_sens_lors', 'food_card_mindset_Impliquez_vos_sens_qua', 'food_card_mindset_Achtsames_Essen', 'food_card_mindset_Eveillez_vos_sens_lor', 'food_card_mindset_Eveille_tes_sens_en_m', 'food_card_mindset_Eveille_tes_sens_en_ma', 'food_card_mindset_Impliquez_vos_sens_qu',
-'food_card_mindset_Betrek_je_zintuigen_ti') as 'Engage Your Senses When Eating'
+'food_card_mindset_Betrek_je_zintuigen_ti') then 'Engage Your Senses When Eating'
+when  ${eventAction} in ('food_card_mindset_featured_Accepting_the', 'food_card_mindset_featured_Accepting_th', 'food_card_mindset_featured_Gedanken_akze', 'food_card_mindset_featured_Gedanken_akz', 'food_card_mindset_featured_Accepter_ses_', 'food_card_mindset_featured_Accepter_ses', 'food_card_mindset_Accepting_the_Mind', 'food_card_mindset_Accepter_ses_pens_es', 'food_card_mindset_Gedanken_akzeptieren', 'food_card_mindset_Accepter_ses_pens_es', 'food_card_mindset_Gedanken_akzeptieren',
+'food_card_mindset_Accepter_ses_pens_es') then 'Accepting the Mind'
+when  ${eventAction} in ('food_card_mindset_Walking_in_Your_Home', 'food_card_mindset_Walking_in_your_home', 'food_card_mindset_Achtsames_Gehen', 'food_card_mindset_Marchez_dans_votre_mai',
+'food_card_mindset_Marcher_en_toute_con') then 'Walking in Your Home'
+when  ${eventAction} in ('food_card_mindset_Refresh_Meditation', 'food_card_mindset_Refresh_Meditatio', 'food_card_mindset_Deine_Auszeit',
+'food_card_mindset_Relaxation') then 'Refresh'
+when  ${eventAction} in ('food_card_mindset_Focus_Meditation', 'food_card_mindset_Focus_meditation', 'food_card_mindset_Fokus_Meditation', 'food_card_mindset_Fokuserad_meditat', 'food_card_mindset_Fokuserad_meditation', 'food_card_mindset_Focus_op_meditati', 'food_card_mindset_Focus_op_meditatie', 'food_card_mindset_Focus_sur_la_m_di',
+'food_card_mindset_Focus_sur_la_m_ditatio') then 'Focus'
+when  ${eventAction} in ('food_card_mindset_Monkey_Mind', 'food_card_mindset_Fokus_Meditation', 'food_card_mindset_Fokuserad_meditat', 'food_card_mindset_Je_geest_trainen', 'food_card_mindset_Trainier_deinen_G', 'food_card_mindset_Trainier_deinen_Geist', 'food_card_mindset_Entra_nez_votre_e', 'food_card_mindset_Entra_ne_ton_espr', 'food_card_mindset_Entra_nez_votre_esprit', 'food_card_mindset_Entra_ne_ton_esprit', 'food_card_mindset_Apprivoisez_l_esp', 'food_card_mindset_Apprivoisez_l_esprit_d',
+'food_card_mindset_Exercer_son_menta') then 'Monkey Mind'
+when  ${eventAction} in ('food_card_mindset_Take_a_Break', 'food_card_mindset_Neem_even_pauze', 'food_card_mindset_Mach_mal_Pause', 'food_card_mindset_Faites_une_pause', 'food_card_mindset_Prenez_une_pause', 'food_card_mindset_Prends_toi_une_pa',
+'food_card_mindset_Prends_toi_une_pause') then 'Take a Break'
 
     else 'Other' end
               ;;
