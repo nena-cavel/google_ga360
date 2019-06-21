@@ -1279,9 +1279,11 @@ dimension: tracked_food {
 
   dimension: headspace_card_name {
     sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
-    when (${eventAction} in ('food_card_mindset_Basics', 'food_card_mindsetBasics', 'food_card_mindset_Grunderna', 'food_card_mindsetGrunderna', 'food_card_mindsetBasis', 'food_card_mindset_Basis', 'food_card_mindset_Einfache_Atemübung', 'food_card_mindset_Einfache_Atem_bung', 'food_card_mindset_Les_bases', 'food_card_mindset_Notions_de_base',
+    when ${eventAction} in ('food_card_mindset_Basics', 'food_card_mindsetBasics', 'food_card_mindset_Grunderna', 'food_card_mindsetGrunderna', 'food_card_mindsetBasis', 'food_card_mindset_Basis', 'food_card_mindset_Einfache_Atemübung', 'food_card_mindset_Einfache_Atem_bung', 'food_card_mindset_Les_bases', 'food_card_mindset_Notions_de_base',
     'food_card_mindset_Base') then 'Basics'
-
+    when  ${eventAction} in ('food_card_mindset_intro', 'food_card_mindset_Changing_Perspectives', 'food_card_mindset_Nya_perspektiv', 'food_card_mindset_Veranderende_perspecti', 'food_card_mindset_Perspectives_changeant', 'food_card_mindset_Perspektiven__ndern', 'food_card_mindset_Changez_de_perspective', 'food_card_mindset_Perspectives_changeant', 'food_card_mindset_Changer_de_perspective', 'food_card_mindset_featured_Changing_Pers', 'food_card_mindset_featured_Changing_Per', 'food_card_mindset_featured_Perspektiven', 'food_card_mindset_featured_Perspektiven_', 'food_card_mindset_featured_Changez_de_pe', 'food_card_mindset_featured_Changez_de_p',
+    'food_card_mindset_featured_Nya_perspekti', 'food_card_mindset_featured_Veranderende_', 'food_card_mindset_featured_Veranderende', 'food_card_mindset_featured_Perspectives_', 'food_card_mindset_featured_Perspectives', 'food_card_mindset_featured_Nya_perspekt', 'food_card_mindset_featured_Changer_de_pe',
+    'food_card_mindset_featured_Changer_de_p') then 'Changing Perspectives'
 
 
     else 'Other' end
