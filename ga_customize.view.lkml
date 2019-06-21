@@ -1305,7 +1305,8 @@ when  ${eventAction} in ('food_card_mindset_Take_a_Break', 'food_card_mindset_Ne
 
     else 'Other' end
               ;;
-    suggestions: [ "Headspace"]
+    suggestions: [ "Headspace", "Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break"]
     }
 
   dimension: aaptiv_card_name {
