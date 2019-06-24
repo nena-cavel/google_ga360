@@ -1309,6 +1309,46 @@ when  ${eventAction} in ('food_card_mindset_Take_a_Break', 'food_card_mindset_Ne
       "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break"]
     }
 
+  dimension: headspace_cards {
+    sql: case when  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break") then ${headspace_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: headspace_cards_yesno {
+    sql:  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break")
+
+               ;;
+    type: yesno
+
+  }
+
+  dimension: headspace {
+    sql: case when  ${headspace_card_name} in ("Headspace") then ${headspace_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: headspace_yesno {
+    sql:  ${headspace_card_name} in ("Headspace")
+
+                     ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
+
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
