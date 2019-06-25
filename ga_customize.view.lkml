@@ -1455,6 +1455,36 @@ then 'Appreciate Cooking'
   }
 
 
+  dimension: aaptiv_action_card_name {
+    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Meditation'
+          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+ else 'Other' end
+              ;;
+    suggestions: [ "Played Meditation", "Completed Meditation"]
+  }
+
+
+
+  dimension: aaptiv_actions {
+    sql: case when  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation") then ${aaptiv_action_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: aaptiv_actions_yesno {
+    sql:  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation")
+
+                                 ;;
+    type: yesno
+
+  }
+
+
+
+
+
   dimension: card_name {
     sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
               when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
