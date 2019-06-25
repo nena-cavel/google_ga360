@@ -1309,8 +1309,7 @@ when ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', '
 'Marchez_chez_vous___ou_n_importe_o_') then 'Walk at Home or Anywhere'
 when ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Achtsames_Kochen', 'Uppskatta_matlagning', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine', 'Manger_en_toute_conscience')
 then 'Appreciate Cooking'
-when (${eventCategory} = ('mindset') and ${eventAction} = ('media_play')) then 'Played Meditation'
-when (${eventCategory} = ('mindset') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+
 
     else 'Other' end
               ;;
@@ -1352,8 +1351,19 @@ when (${eventCategory} = ('mindset') and ${eventAction} = ('media_100')) then 'C
 
   }
 
+
+  dimension: headspace_action_card_name {
+    sql: case when (${eventCategory} = ('mindset') and ${eventAction} = ('media_play')) then 'Played Meditation'
+          when (${eventCategory} = ('mindset') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+ else 'Other' end
+              ;;
+    suggestions: [ "Played Meditation", "Completed Meditation"]
+    }
+
+
+
   dimension: headspace_actions {
-    sql: case when  ${headspace_card_name} in ("Played Meditation", "Completed Meditation") then ${headspace_card_name}
+    sql: case when  ${headspace_action_card_name} in ("Played Meditation", "Completed Meditation") then ${headspace_action_card_name}
         else null end
          ;;
     type: string
@@ -1361,7 +1371,7 @@ when (${eventCategory} = ('mindset') and ${eventAction} = ('media_100')) then 'C
   }
 
   dimension: headspace_actions_yesno {
-    sql:  ${headspace_card_name} in ("Played Meditation", "Completed Meditation")
+    sql:  ${headspace_action_card_name} in ("Played Meditation", "Completed Meditation")
 
                            ;;
     type: yesno
