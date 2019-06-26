@@ -1314,12 +1314,12 @@ then 'Appreciate Cooking'
     else 'Other' end
               ;;
     suggestions: [ "Headspace", "Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break"]
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking"]
     }
 
   dimension: headspace_cards {
     sql: case when  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break") then ${headspace_card_name}
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking") then ${headspace_card_name}
         else null end
          ;;
     type: string
@@ -1328,7 +1328,7 @@ then 'Appreciate Cooking'
 
   dimension: headspace_cards_yesno {
     sql:  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break")
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking")
 
                ;;
     type: yesno
