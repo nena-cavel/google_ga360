@@ -1622,8 +1622,8 @@ dimension: tenure_or_date {
     when ${hits_appInfo.screenName} = 'onb_profilescreen2' then 'Personal Information 2 (Activity)'
     when (${hits_appInfo.screenName} = 'onb_tutorial' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
     when ((${eventCategory} = 'onboarding' and ${eventAction} = 'tutorial_skip') or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
-
-
+    when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
+    when (${hits_appInfo.screenName} = 'onb_tfs_complete' or ${eventAction} = 'onb_tutorial203_complete' or ${eventAction} = 'onb_tutorial204_complete') then 'Tutorial Finish'
 
 
 
