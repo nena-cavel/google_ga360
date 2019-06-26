@@ -1616,6 +1616,24 @@ dimension: tenure_or_date {
 
 
 
+  dimension: onboarding_card_name {
+    sql: case when ${hits_appInfo.screenName} = 'onb_welcomescreen' then 'Welcome Screen'
+    when ${hits_appInfo.screenName} = 'onb_profilescreen1' then 'Personal Information 1'
+    when ${hits_appInfo.screenName} = 'onb_profilescreen2' then 'Personal Information 2 (Activity)'
+    when (${hits_appInfo.screenName} = 'onb_tutorial' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
+    when ((${eventCategory} = 'onboarding' and ${eventAction} = 'tutorial_skip') or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
+
+
+
+
+
+  -- Continue with the rest of the cards
+              else 'Other' end
+              ;;
+    suggestions: ["Welcome Screen"]
+  }
+
+
 
 
   dimension: iaf_myDay_desktop {
