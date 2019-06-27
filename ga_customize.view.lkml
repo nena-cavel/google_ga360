@@ -1624,6 +1624,11 @@ dimension: tenure_or_date {
     when ((${eventCategory} = 'onboarding' and ${eventAction} = 'tutorial_skip') or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
     when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
     when (${hits_appInfo.screenName} = 'onb_tfs_complete' or ${eventAction} = 'onb_tutorial203_complete' or ${eventAction} = 'onb_tutorial204_complete') then 'Tutorial Finish'
+    when (${eventAction} = 'onb_my_day_checklist_tutorial204' or ${eventAction} = 'tracking_tutorial') then 'Tracking Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_tutorial203' or ${eventAction} = 'dashboard_tutorial') then 'Dashboard Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_setweightgoal' or ${eventAction} = 'weight_goal') then 'Weight Goal Tutorial'
+
+
 
 
 
