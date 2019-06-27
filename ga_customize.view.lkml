@@ -1618,8 +1618,8 @@ dimension: tenure_or_date {
 
   dimension: onboarding_card_name {
     sql: case when ${hits_appInfo.screenName} = 'onb_welcomescreen' then 'Welcome Screen'
-    when ${hits_appInfo.screenName} = 'onb_profilescreen1' then 'Personal Information 1'
-    when ${hits_appInfo.screenName} = 'onb_profilescreen2' then 'Personal Information 2 (Activity)'
+    when (${hits_appInfo.screenName} = 'onb_profilescreen1' or ${eventAction} = 'onb_profile_step1') then 'Personal Information 1'
+    when (${hits_appInfo.screenName} = 'onb_profilescreen2' or ${eventAction} = 'onb_profile_step2') then 'Personal Information 2 (Activity)'
     when (${hits_appInfo.screenName} = 'onb_tutorial' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
     when ((${eventCategory} = 'onboarding' and ${eventAction} = 'tutorial_skip') or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
     when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
@@ -1648,7 +1648,21 @@ dimension: tenure_or_date {
   }
 
 
+  dimension: on_profile_creation_cards {
+    sql: case when  ${onboarding_card_name} in ("Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
 
+  }
+
+  dimension: on_profile_creation_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)")
+
+               ;;
+    type: yesno
+
+  }
 
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
