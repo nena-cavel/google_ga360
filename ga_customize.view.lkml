@@ -1648,6 +1648,40 @@ dimension: tenure_or_date {
   }
 
 
+
+  dimension: on_tipsforsuccess_cards {
+    sql: case when  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_tipsforsuccess_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial")
+
+                     ;;
+    type: yesno
+
+  }
+
+  dimension: on_tips_cards {
+    sql: case when  ${onboarding_card_name} in ("Tips for Success") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_tips_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Tips for Success")
+
+                     ;;
+    type: yesno
+
+  }
+
+
   dimension: on_profile_creation_cards {
     sql: case when  ${onboarding_card_name} in ("Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)") then ${onboarding_card_name}
         else null end
