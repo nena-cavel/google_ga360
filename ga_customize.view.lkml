@@ -1664,6 +1664,29 @@ dimension: tenure_or_date {
 
   }
 
+  dimension: on_articles_cards {
+    sql: case when  ${onboarding_card_name} in ("How Freestyle Works Article", "Understanding SP Budget", "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success",
+    "How to Sync Fitness Device") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_articles_cards_yesno {
+    sql:  ${onboarding_card_name} in ("How Freestyle Works Article", "Understanding SP Budget", "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success",
+    "How to Sync Fitness Device")
+
+                     ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
     type:  yesno
