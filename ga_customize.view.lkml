@@ -1627,15 +1627,24 @@ dimension: tenure_or_date {
     when (${eventAction} = 'onb_my_day_checklist_tutorial204' or ${eventAction} = 'tracking_tutorial') then 'Tracking Tutorial'
     when (${eventAction} = 'onb_my_day_checklist_tutorial203' or ${eventAction} = 'dashboard_tutorial') then 'Dashboard Tutorial'
     when (${eventAction} = 'onb_my_day_checklist_setweightgoal' or ${eventAction} = 'weight_goal') then 'Weight Goal Tutorial'
-
-
-
+    when (${eventAction} = 'onb_my_day_checklist_weighinday' or ${eventAction} = 'weight_tracking_day') then 'Weight Tracking Day Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_check' or ${hits_appInfo.screenName} = 'onb_tips_success') then 'Tips for Success'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_1 ' then 'How Freestyle Works Article'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_2 ' then 'Understanding SP Budget'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_3' then 'Zero Point Food'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_4' then 'Sample Meals'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_5' then 'WellnessWins'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_6 ' then 'Connect'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_7' then 'Mindset of Success'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_8' then 'How to Sync Fitness Device'
 
 
   -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Welcome Screen"]
+    suggestions: ["Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)", "Tutorial Start", "Skip Tutorial", "Tutorial 0 Pt Introduction",
+      "Tutorial Finish", "Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial", "Tips for Success", "How Freestyle Works Article", "Understanding SP Budget",
+      "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success", "How to Sync Fitness Device"]
   }
 
 
