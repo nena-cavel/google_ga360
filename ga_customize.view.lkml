@@ -1382,8 +1382,29 @@ then 'Appreciate Cooking'
   }
 
 
+  dimension: headspace_play_card_name {
+    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Uppskatta_matlagning', 'Achtsames_Kochen', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine',
+    'Manger_en_toute_conscience')) then 'Appreciate Cooking'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Basics', 'Grunderna', 'Basis', 'Les_bases', 'Notions_de_base',
+      'Base')) then Basic
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('End_of_Day', 'Entspannen_am_Abend', 'Slut_p__dagen', 'Fin_de_la_journ_e', 'Einde_van_de_dag',
+      'Fin_de_journ_e')) then 'End of Day'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez', 'Achtsames_Essen'))
+      then 'Engage Your Senses when Eating'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Focus', 'Fokus', 'Fokuserad', 'Concentrer',
+      'Concentration')) then 'Focus'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Einfache_Atem_Technik', 'Prenez_un_moment_pour_faire_une_pause', 'Nimm_dir_einen_Moment_f_r_eine_Pause',
+      'Accordez_vous_une_pause')) then 'Take a Moment to Pause'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', 'Ta_en_promenad', 'Bewust_wandelen__thuis_of_ergens_anders', 'Marchez_chez_vous___ou_n_importe_o_',
+      'Marcher_en_toute_conscience')) then 'Walk at Home or Anywhere'
+when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home'
 
 
+ else 'Other' end
+              ;;
+    suggestions: [ "Appreciate Cooking"]
+    }
 
 
   dimension: aaptiv_card_name {
