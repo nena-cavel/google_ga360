@@ -1386,7 +1386,7 @@ then 'Appreciate Cooking'
     sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Uppskatta_matlagning', 'Achtsames_Kochen', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine',
     'Manger_en_toute_conscience')) then 'Appreciate Cooking'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Basics', 'Grunderna', 'Basis', 'Les_bases', 'Notions_de_base',
-      'Base')) then Basic
+      'Base')) then 'Basic'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('End_of_Day', 'Entspannen_am_Abend', 'Slut_p__dagen', 'Fin_de_la_journ_e', 'Einde_van_de_dag',
       'Fin_de_journ_e')) then 'End of Day'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez', 'Achtsames_Essen'))
@@ -1403,8 +1403,27 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
 
  else 'Other' end
               ;;
-    suggestions: [ "Appreciate Cooking"]
+    suggestions: ["Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home"]
     }
+
+
+
+  dimension: headspace_playcard_name {
+    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home") then ${headspace_play_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: headspace_playcard_name_yesno {
+    sql:  ${headspace_play_card_name} in ("Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home")
+
+                           ;;
+    type: yesno
+
+}
+
 
 
   dimension: aaptiv_card_name {
