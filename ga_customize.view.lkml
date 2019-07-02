@@ -1384,32 +1384,32 @@ then 'Appreciate Cooking'
 
   dimension: headspace_play_card_name {
     sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Uppskatta_matlagning', 'Achtsames_Kochen', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine',
-    'Manger_en_toute_conscience')) then 'Appreciate Cooking'
+    'Manger_en_toute_conscience')) then 'Appreciate Cooking: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Basics', 'Grunderna', 'Basis', 'Les_bases', 'Notions_de_base',
-      'Base')) then 'Basic'
+      'Base')) then 'Basic: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('End_of_Day', 'Entspannen_am_Abend', 'Slut_p__dagen', 'Fin_de_la_journ_e', 'Einde_van_de_dag',
-      'Fin_de_journ_e')) then 'End of Day'
+      'Fin_de_journ_e')) then 'End of Day: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez', 'Achtsames_Essen'))
-      then 'Engage Your Senses when Eating'
+      then 'Engage Your Senses when Eating: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Focus', 'Fokus', 'Fokuserad', 'Concentrer',
-      'Concentration')) then 'Focus'
-      when (${eventAction} = 'media_play' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break'
+      'Concentration')) then 'Focus: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Einfache_Atem_Technik', 'Prenez_un_moment_pour_faire_une_pause', 'Nimm_dir_einen_Moment_f_r_eine_Pause',
-      'Accordez_vous_une_pause')) then 'Take a Moment to Pause'
+      'Accordez_vous_une_pause')) then 'Take a Moment to Pause: Media Play'
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', 'Ta_en_promenad', 'Bewust_wandelen__thuis_of_ergens_anders', 'Marchez_chez_vous___ou_n_importe_o_',
-      'Marcher_en_toute_conscience')) then 'Walk at Home or Anywhere'
-when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home'
+      'Marcher_en_toute_conscience')) then 'Walk at Home or Anywhere: Media Play'
+when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home: Media Play'
 
 
  else 'Other' end
               ;;
-    suggestions: ["Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home"]
+    suggestions: ["Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play"]
     }
 
 
 
   dimension: headspace_playcard_name {
-    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home") then ${headspace_play_card_name}
+    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play") then ${headspace_play_card_name}
         else null end
          ;;
     type: string
@@ -1417,7 +1417,7 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
   }
 
   dimension: headspace_playcard_name_yesno {
-    sql:  ${headspace_play_card_name} in ("Appreciate Cooking", "Basic", "End of Day", "Engage Your Senses when Eating", "Focus", "Take a Break", "Take a Moment to Pause", "Walk at Home or Anywhere", "Walking in Your Home")
+    sql:  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play")
 
                            ;;
     type: yesno
@@ -1526,28 +1526,28 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
 
 
   dimension: aaptiv_play_card_name {
-    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Basic_walking_workout', 'Walking_Workout_f_r_Einsteiger', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants')) then 'Basic Walking'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Cardio___strength', 'Cardio___Kraft', 'Cardio___renforcement', 'Cardio___muscu')) then 'Cardio + Strength'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Fast_and_total_training', 'HIT_Ganzk_rper_Workout', 'Entra_nement_rapide_et_total')) then 'Fast and Total Training'
+    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Basic_walking_workout', 'Walking_Workout_f_r_Einsteiger', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants')) then 'Basic Walking: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Cardio___strength', 'Cardio___Kraft', 'Cardio___renforcement', 'Cardio___muscu')) then 'Cardio + Strength: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Fast_and_total_training', 'HIT_Ganzk_rper_Workout', 'Entra_nement_rapide_et_total')) then 'Fast and Total Training: Media Play'
             when (${eventAction} = 'media_play' and ${eventLabel} in ('Find_your_strength', 'Entdecke_deine_Kraft', 'Trouvez_votre_point_fort', 'Trouve_ton_point_fort', 'D_couvrez_votre_force_physique'))
-            then 'Find your Strength'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Get_strong_faster', 'Kraft_Zirkeltraining', 'Devenir_fort_plus_rapidement', 'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation')) then 'Get Strong Faster'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course', 'Entra_nement_fractionn_')) then 'Jog/Run'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Pick_up_the_pace', 'Vom_Walken_zum_Joggen', 'Acc_l_rer_le_rythme', 'De_la_marche_au_jogging')) then 'Pick Up the Pace'
-            when (${eventAction} = 'media_play' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger', 'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')) then 'Start Getting Stronger'
-      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_to_the_beat', 'Walking_im_Takt', 'Marcher_en_rythme', 'Courir_en_mesure')) then 'Walk to the Beat'
+            then 'Find your Strength: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Get_strong_faster', 'Kraft_Zirkeltraining', 'Devenir_fort_plus_rapidement', 'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation')) then 'Get Strong Faster: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course', 'Entra_nement_fractionn_')) then 'Jog/Run: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Pick_up_the_pace', 'Vom_Walken_zum_Joggen', 'Acc_l_rer_le_rythme', 'De_la_marche_au_jogging')) then 'Pick Up the Pace: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger', 'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')) then 'Start Getting Stronger: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_to_the_beat', 'Walking_im_Takt', 'Marcher_en_rythme', 'Courir_en_mesure')) then 'Walk to the Beat: Media Play'
 
 
         ;;
-    suggestions: ["Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength"]
+    suggestions: ["Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play"]
   }
 
 
 
   dimension: aaptiv_playcard_name {
-    sql: case when  ${aaptiv_play_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength") then ${aaptiv_play_card_name}
+    sql: case when  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play") then ${aaptiv_play_card_name}
         else null end
          ;;
     type: string
@@ -1555,8 +1555,8 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
   }
 
   dimension: aaptiv_playcard_name_yesno {
-    sql:  ${aaptiv_play_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength")
+    sql:  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play")
 
                                  ;;
     type: yesno
