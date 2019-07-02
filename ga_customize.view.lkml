@@ -1401,15 +1401,34 @@ then 'Appreciate Cooking'
 when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home: Media Play'
 
 
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Kochen', 'Appr_ciez__vraiment__la_cuisine', 'Appreciate_Cooking', 'Appreciate_cooking', 'Bewust_koken', 'Manger_en_toute_conscience', 'Uppskatta_matlagning'))
+then 'Appreciate Cooking: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Base', 'Basics', 'Basis', 'Grunderna', 'Les_bases', 'Notions_de_base')) then 'Basic: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Einde_van_de_dag', 'End_of_Day', 'Entspannen_am_Abend', 'Fin_de_journ_e', 'Fin_de_la_journ_e', 'Slut_p__dagen')) then 'End of Day: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez')) then 'Engage Your Senses when Eating: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Concentration', 'Concentrer', 'Focus', 'Fokus', 'Fokuserad')) then 'Focus: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Einfache_Atem_Technik', 'Prenez_un_moment_pour_faire_une_pause')) then 'Take a Moment to Pause: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Bewust_wandelen__thuis_of_ergens_anders', 'Marchez_chez_vous___ou_n_importe_o_', 'Ta_en_promenad', 'Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere'))
+then 'Walk at Home or Anywhere: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home: Media 100'
+
+
+
  else 'Other' end
               ;;
-    suggestions: ["Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play"]
+    suggestions: ["Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play",
+      "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100", "Take a Moment to Pause: Media 100", "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100"]
     }
 
 
 
   dimension: headspace_playcard_name {
-    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play") then ${headspace_play_card_name}
+    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play",
+    "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100",
+      "Take a Moment to Pause: Media 100", "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100") then ${headspace_play_card_name}
         else null end
          ;;
     type: string
@@ -1417,7 +1436,10 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
   }
 
   dimension: headspace_playcard_name_yesno {
-    sql:  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play")
+    sql:  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play",
+    "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100", "Take a Moment to Pause: Media 100",
+      "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100")
 
                            ;;
     type: yesno
