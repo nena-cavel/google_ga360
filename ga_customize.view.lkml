@@ -1560,16 +1560,32 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
       when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_to_the_beat', 'Walking_im_Takt', 'Marcher_en_rythme', 'Courir_en_mesure')) then 'Walk to the Beat: Media Play'
 
 
+
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants', 'Walking_Workout_f_r_Einsteiger')) then 'Basic Walking: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Cardio___Kraft', 'Cardio___renforcement', 'Cardio___strength')) then 'Cardio + Strength: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entra_nement_corporel_complet', 'Entra_nement_rapide_et_total', 'Fast_and_total_training', 'HIT_Ganzk_rper_Workout')) then 'Fast and Total Training: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entdecke_deine_Kraft', 'Find_your_strength', 'Trouvez_votre_point_fort')) then 'Find your Strength: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Course_fractionn_e', 'Devenir_fort_plus_rapidement', 'Get_strong_faster', 'Kraft_Zirkeltraining', 'Krafttraining_f_r_Einsteiger')) then 'Get Strong Faster: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entra_nement_fractionn_', 'Intervalles_jog_course', 'Intervalltraining', 'Jog_run_intervals')) then 'Jog/Run: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Acc_l_rer_le_rythme', 'De_la_marche_au_jogging', 'Pick_up_the_pace', 'Vom_Walken_zum_Joggen')) then 'Pick Up the Pace: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants', 'Start_getting_stronger')) then 'Start Getting Stronger: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Marcher_en_rythme', 'Walk_to_the_beat', 'Walking_im_Takt')) then 'Walk to the Beat: Media 100'
+
+
         ;;
     suggestions: ["Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
-      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play"]
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100"]
   }
 
 
 
   dimension: aaptiv_playcard_name {
     sql: case when  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
-      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play") then ${aaptiv_play_card_name}
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100") then ${aaptiv_play_card_name}
         else null end
          ;;
     type: string
@@ -1578,7 +1594,9 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_playcard_name_yesno {
     sql:  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
-      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play")
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100")
 
                                  ;;
     type: yesno
