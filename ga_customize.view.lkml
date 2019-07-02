@@ -1525,6 +1525,46 @@ when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) th
   }
 
 
+  dimension: aaptiv_play_card_name {
+    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Basic_walking_workout', 'Walking_Workout_f_r_Einsteiger', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants')) then 'Basic Walking'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Cardio___strength', 'Cardio___Kraft', 'Cardio___renforcement', 'Cardio___muscu')) then 'Cardio + Strength'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Fast_and_total_training', 'HIT_Ganzk_rper_Workout', 'Entra_nement_rapide_et_total')) then 'Fast and Total Training'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Find_your_strength', 'Entdecke_deine_Kraft', 'Trouvez_votre_point_fort', 'Trouve_ton_point_fort', 'D_couvrez_votre_force_physique'))
+            then 'Find your Strength'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Get_strong_faster', 'Kraft_Zirkeltraining', 'Devenir_fort_plus_rapidement', 'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation')) then 'Get Strong Faster'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course', 'Entra_nement_fractionn_')) then 'Jog/Run'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Pick_up_the_pace', 'Vom_Walken_zum_Joggen', 'Acc_l_rer_le_rythme', 'De_la_marche_au_jogging')) then 'Pick Up the Pace'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger', 'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')) then 'Start Getting Stronger'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_to_the_beat', 'Walking_im_Takt', 'Marcher_en_rythme', 'Courir_en_mesure')) then 'Walk to the Beat'
+
+
+        ;;
+    suggestions: ["Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength"]
+  }
+
+
+
+  dimension: aaptiv_playcard_name {
+    sql: case when  ${aaptiv_play_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength") then ${aaptiv_play_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: aaptiv_playcard_name_yesno {
+    sql:  ${aaptiv_play_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
+      "Get Strong Faster", "Cardio + Strength")
+
+                                 ;;
+    type: yesno
+
+  }
+
+
+
 
 
 
