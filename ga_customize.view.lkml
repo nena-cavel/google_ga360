@@ -1800,6 +1800,8 @@ dimension: tenure_or_date {
   dimension: on_tipsforsuccess_cards_yesno {
     sql:  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial")
 
+
+
                      ;;
     type: yesno
 
