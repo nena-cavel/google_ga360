@@ -1771,6 +1771,22 @@ dimension: tenure_or_date {
   }
 
 
+  dimension: onboarding_type {
+    label: "Onboarding Tutorial Type - Completed or Skipped"
+    sql: case when (${onboarding_card_name} = 'Tutorial Start' and  ${onboarding_card_name} = 'Tutorial Finish') then 'Completed Tutorial'
+            when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
+       else null end;;
+    suggestions: ["Completed Tutorial","Skipped Tutorial" ]
+
+}
+
+
+
+
+
+
+
+
 
   dimension: on_tipsforsuccess_cards {
     sql: case when  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial") then ${onboarding_card_name}
