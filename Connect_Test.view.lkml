@@ -34,8 +34,7 @@ view: connect_test {
     }
   }
   dimension: visitStart_week {
-    hidden: yes
-    view_label: "Session"
+    view_label: "Connect"
     label: "Visit Start Week"
     type: date_week
     convert_tz: no
@@ -46,13 +45,12 @@ view: connect_test {
     label: "Market"
   }
 
-
 dimension: group_id_name {
   view_label: "Connect"
 }
+
 measure: unique_visitors {
     view_label: "Connect"
-    label: "group_specific_users"
     type: sum
   }
 

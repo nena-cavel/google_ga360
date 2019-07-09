@@ -1166,13 +1166,13 @@ dimension: barcode_scans {
   }
 
 dimension: group_id_new {
-  sql: case when regexp_contains(${eventAction}, 'connect_groups_') then  ${eventLabel} end ;;
+  sql: case when regexp_contains(${eventAction}, 'connect_groups_') then  ${eventLabel} ELSE END ;;
   type: string
 }
 
 dimension: group_id_name {
   type: string
-  sql: case when ${group_id_new} = '6ad99fd2-3dd7-4bf6-ae09-7bdb5f940395' then 'Black Women'
+  sql: (case when ${group_id_new} = '6ad99fd2-3dd7-4bf6-ae09-7bdb5f940395' then 'Black Women'
               WHEN ${group_id_new} = 'bfb51aec-f1bd-4ab3-9667-a97b04636cc8' then 'Arizona Members'
               WHEN ${group_id_new} = 'f8bb2853-68d2-4f1b-b2ed-9ef81c6d0ea4' THEN 'Cincinnati Members'
               WHEN ${group_id_new} = '2357dc29-e414-43d9-bbe2-71dbb529fad5' THEN 'Dry WW'
@@ -1369,7 +1369,7 @@ dimension: group_id_name {
               when ${group_id_new} = 'e9145864-d124-4720-8b13-859018ded2f1' then 'Achtsamkeit'
               when ${group_id_new} = '718d1e95-84b4-4d04-8832-a5b0c94d1eff' then 'Fietsen'
               ELSE ${group_id_new}
-              END ;;
+              END) ;;
 }
 
 
