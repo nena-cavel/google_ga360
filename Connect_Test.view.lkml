@@ -50,7 +50,7 @@ view: connect_test {
 dimension: group_id_name {
   view_label: "Connect"
 }
-  measure: unique_visitors {
+measure: unique_visitors {
     view_label: "Connect"
     label: "group_specific_users"
     type: sum

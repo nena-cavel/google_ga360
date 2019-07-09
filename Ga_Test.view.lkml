@@ -21,7 +21,6 @@ view: ga_test {
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
       column: unique_funnel_prospects {}
-      column: unique_visitors {}
       column: transactions_count { field: totals.transactions_count }
       column: count_sessions_event1 { field: funnel_growth_dashboard.count_sessions_event1_prospects }
       column: count_sessions_event12 { field: funnel_growth_dashboard.count_sessions_event12_prospects }
@@ -119,11 +118,7 @@ view: ga_test {
     label: "Unique Funnel Prospects"
     type: sum
   }
-  measure: unique_visitors {
-    view_label: "Session"
-    label: "Unique Visitors"
-    type: sum
-  }
+
   measure: sus1_visitors {
     view_label: "Session"
     label: "SUS1 Visitors"
