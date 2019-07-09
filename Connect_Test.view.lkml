@@ -52,6 +52,7 @@ dimension: group_id_name {
 }
   measure: unique_visitors {
     view_label: "Connect"
+    label: "group_specific_users"
     type: sum
   }
 
