@@ -1418,46 +1418,49 @@ dimension: tracked_food {
   dimension: headspace_card_name {
     sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
     when (${eventAction} in ('food_card_mindset_Basics', 'food_card_mindsetBasics', 'food_card_mindset_Grunderna', 'food_card_mindsetGrunderna', 'food_card_mindsetBasis', 'food_card_mindset_Basis', 'food_card_mindset_Einfache_Atemübung', 'food_card_mindset_Einfache_Atem_bung', 'food_card_mindset_Les_bases', 'food_card_mindset_Notions_de_base',
-    'food_card_mindset_Base') or ${eventLabel} in ('Basics', 'Les_bases', 'Grunderna', 'Basis', 'Notions_de_base', 'Base')) then 'Basics'
+    'food_card_mindset_Base') or (${eventAction} = 'meditation' and ${eventLabel} in ('Basics', 'Les_bases', 'Grunderna', 'Basis',
+    'Notions_de_base', 'Base'))) then 'Basics'
     when  (${eventAction} in ('food_card_mindset_intro', 'food_card_mindset_Changing_Perspectives', 'food_card_mindset_Nya_perspektiv', 'food_card_mindset_Veranderende_perspecti', 'food_card_mindset_Perspectives_changeant', 'food_card_mindset_Perspektiven__ndern', 'food_card_mindset_Changez_de_perspective', 'food_card_mindset_Perspectives_changeant', 'food_card_mindset_Changer_de_perspective', 'food_card_mindset_featured_Changing_Pers', 'food_card_mindset_featured_Changing_Per', 'food_card_mindset_featured_Perspektiven', 'food_card_mindset_featured_Perspektiven_', 'food_card_mindset_featured_Changez_de_pe', 'food_card_mindset_featured_Changez_de_p',
     'food_card_mindset_featured_Nya_perspekti', 'food_card_mindset_featured_Veranderende_', 'food_card_mindset_featured_Veranderende', 'food_card_mindset_featured_Perspectives_', 'food_card_mindset_featured_Perspectives', 'food_card_mindset_featured_Nya_perspekt', 'food_card_mindset_featured_Changer_de_pe',
-    'food_card_mindset_featured_Changer_de_p') or ${eventLabel} in ('Changing_Perspectives', 'Changing_perspectives', 'Perspektiven__ndern', 'Changez_de_perspective', 'Perspectives_changeantes',
-    'Nya_perspektiv', 'Changer_de_perspectives', 'Nouvelles_perspectives', 'Nieuwe_inzichten'))  then 'Changing Perspectives'
+    'food_card_mindset_featured_Changer_de_p') or (${eventAction} = 'meditation' and ${eventLabel} in ('Changing_Perspectives', 'Changing_perspectives', 'Perspektiven__ndern', 'Changez_de_perspective', 'Perspectives_changeantes',
+    'Nya_perspektiv', 'Changer_de_perspectives', 'Nouvelles_perspectives', 'Nieuwe_inzichten')))  then 'Changing Perspectives'
     when  (${eventAction} in ('food_card_mindsetTake_a_Moment_to_Pause', 'food_card_mindset_Take_a_Moment_to_Pause', 'food_card_mindset_Unna_dig_en_paus', 'food_card_mindsetUnna_dig_en_paus', 'food_card_mindsetNeem_een_moment_om_te_', 'food_card_mindset_Neem_een_moment_om_te_', 'food_card_mindset_Du_fühlst_dich_überf', 'food_card_mindset_Accordez_vous_une_paus', 'food_card_mindset_Du_fühlst_dich_überfo', 'food_card_mindset_Du_f_hlst_dich__berfor', 'food_card_mindset_Prenez_un_moment_pour', 'food_card_mindset_Prenez_un_moment_pour_', 'food_card_mindset_Prends_un_moment_pour', 'food_card_mindset_Prends_un_moment_pour_', 'food_card_mindset_Prenez_le_temps_d_une',
-    'food_card_mindset_Prenez_le_temps_d_une_') or ${eventLabel} in ('Take_a_Moment_to_Pause', 'Nimm_dir_einen_Moment_f_r_eine_Pause', 'Neem_een_moment_om_te_pauzeren', 'Unna_dig_en_paus', 'Prends_un_moment_pour_faire_une_pause',
-    'Accordez_vous_une_pause', 'Prenez_un_moment_pour_faire_une_pause', 'Einfache_Atem_Technik'))then 'Take a Moment to Pause'
+    'food_card_mindset_Prenez_le_temps_d_une_') or (${eventAction} = 'meditation' and ${eventLabel} in ('Take_a_Moment_to_Pause', 'Nimm_dir_einen_Moment_f_r_eine_Pause', 'Neem_een_moment_om_te_pauzeren', 'Unna_dig_en_paus', 'Prends_un_moment_pour_faire_une_pause',
+    'Accordez_vous_une_pause', 'Prenez_un_moment_pour_faire_une_pause', 'Einfache_Atem_Technik')))then 'Take a Moment to Pause'
     when  (${eventAction} in ('food_card_mindsetEnd_of_Day', 'food_card_mindset_End_of_Day', 'food_card_mindset_Slut_p__dagen', 'food_card_mindsetSlut_på_dagen', 'food_card_mindsetEinde_van_de_dag', 'food_card_mindset_Einde_van_de_dag', 'food_card_mindset_Fin_de_la_journ_e', 'food_card_mindset_Entspannen_am_Abend', 'food_card_mindset_Fin_de_la_journée', 'food_card_mindset_Fin_de_journée',
-    'food_card_mindset_Fin_de_journ_e') or ${eventLabel} in ('End_of_Day', 'Fin_de_la_journ_e', 'Slut_p__dagen', 'Fin_de_journ_e', 'Einde_van_de_dag', 'Entspannen_am_Abend')) then 'End of Day'
+    'food_card_mindset_Fin_de_journ_e') or (${eventAction} = 'meditation' and ${eventLabel} in ('End_of_Day', 'Fin_de_la_journ_e', 'Slut_p__dagen', 'Fin_de_journ_e',
+    'Einde_van_de_dag', 'Entspannen_am_Abend'))) then 'End of Day'
 when  (${eventAction} in ('food_card_mindsetEngage_your_Senses_whe', 'food_card_mindset_Engage_your_Senses_whe', 'food_card_mindset_Engage_your_Senses_wh', 'food_card_mindset_Engagera_dina_sinnen_n', 'food_card_mindsetEngagera_dina_sinnen_n', 'food_card_mindsetBetrek_je_zintuigen_ti', 'food_card_mindset_Achtsam_Essen', 'food_card_mindset_Eveillez_vos_sens_lors', 'food_card_mindset_Impliquez_vos_sens_qua', 'food_card_mindset_Achtsames_Essen', 'food_card_mindset_Eveillez_vos_sens_lor', 'food_card_mindset_Eveille_tes_sens_en_m', 'food_card_mindset_Eveille_tes_sens_en_ma', 'food_card_mindset_Impliquez_vos_sens_qu',
-'food_card_mindset_Betrek_je_zintuigen_ti') or ${eventLabel} in ('Engage_your_Senses_when_Eating', 'Achtsames_Essen', 'Eveillez_vos_sens_lorsque_vous_mangez', 'Betrek_je_zintuigen_tijdens_het_eten', 'Impliquez_vos_sens_quand_vous_mangez', 'Eveille_tes_sens_en_mangeant',
-'Engagera_dina_sinnen_n_r_du__ter'))then 'Engage Your Senses When Eating'
+'food_card_mindset_Betrek_je_zintuigen_ti') or (${eventAction} = 'meditation' and ${eventLabel} in ('Engage_your_Senses_when_Eating', 'Achtsames_Essen', 'Eveillez_vos_sens_lorsque_vous_mangez', 'Betrek_je_zintuigen_tijdens_het_eten', 'Impliquez_vos_sens_quand_vous_mangez', 'Eveille_tes_sens_en_mangeant',
+'Engagera_dina_sinnen_n_r_du__ter')))then 'Engage Your Senses When Eating'
 when  ${eventAction} in ('food_card_mindset_featured_Accepting_the', 'food_card_mindset_featured_Accepting_th', 'food_card_mindset_featured_Gedanken_akze', 'food_card_mindset_featured_Gedanken_akz', 'food_card_mindset_featured_Accepter_ses_', 'food_card_mindset_featured_Accepter_ses', 'food_card_mindset_Accepting_the_Mind', 'food_card_mindset_Accepter_ses_pens_es', 'food_card_mindset_Gedanken_akzeptieren', 'food_card_mindset_Accepter_ses_pens_es', 'food_card_mindset_Gedanken_akzeptieren',
 'food_card_mindset_Accepter_ses_pens_es') then 'Accepting the Mind'
 when  (${eventAction} in ('food_card_mindset_Walking_in_Your_Home', 'food_card_mindset_Walking_in_your_home', 'food_card_mindset_Achtsames_Gehen', 'food_card_mindset_Marchez_dans_votre_mai',
-'food_card_mindset_Marcher_en_toute_con') or ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home'
+'food_card_mindset_Marcher_en_toute_con') or (${eventAction} = 'meditation' and ${eventLabel} in ('Achtsames_Gehen'))) then 'Walking in Your Home'
 when  ${eventAction} in ('food_card_mindset_Refresh_Meditation', 'food_card_mindset_Refresh_Meditatio', 'food_card_mindset_Deine_Auszeit',
 'food_card_mindset_Relaxation') then 'Refresh'
 when (${eventAction} in ('food_card_mindset_Focus_Meditation', 'food_card_mindset_Focus_meditation', 'food_card_mindset_Fokus_Meditation', 'food_card_mindset_Fokuserad_meditat', 'food_card_mindset_Fokuserad_meditation', 'food_card_mindset_Focus_op_meditati', 'food_card_mindset_Focus_op_meditatie', 'food_card_mindset_Focus_sur_la_m_di',
-'food_card_mindset_Focus_sur_la_m_ditatio') or ${eventLabel} in ('Focus', 'Fokuserad', 'Concentrer', 'Concentration')) then 'Focus'
+'food_card_mindset_Focus_sur_la_m_ditatio') or (${eventAction} = 'meditation' and ${eventLabel} in ('Focus', 'Fokuserad', 'Concentrer', 'Concentration'))) then 'Focus'
 when  ${eventAction} in ('food_card_mindset_Monkey_Mind', 'food_card_mindset_Fokus_Meditation', 'food_card_mindset_Fokuserad_meditat', 'food_card_mindset_Je_geest_trainen', 'food_card_mindset_Trainier_deinen_G', 'food_card_mindset_Trainier_deinen_Geist', 'food_card_mindset_Entra_nez_votre_e', 'food_card_mindset_Entra_ne_ton_espr', 'food_card_mindset_Entra_nez_votre_esprit', 'food_card_mindset_Entra_ne_ton_esprit', 'food_card_mindset_Apprivoisez_l_esp', 'food_card_mindset_Apprivoisez_l_esprit_d',
 'food_card_mindset_Exercer_son_menta') then 'Monkey Mind'
 when  (${eventAction} in ('food_card_mindset_Take_a_Break', 'food_card_mindset_Neem_even_pauze', 'food_card_mindset_Mach_mal_Pause', 'food_card_mindset_Faites_une_pause', 'food_card_mindset_Prenez_une_pause', 'food_card_mindset_Prends_toi_une_pa',
-'food_card_mindset_Prends_toi_une_pause') or ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break'
-when ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', 'Ta_en_promenad', 'Bewust_wandelen__thuis_of_ergens_anders', 'Marcher_en_toute_conscience',
-'Marchez_chez_vous___ou_n_importe_o_') then 'Walk at Home or Anywhere'
-when ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Achtsames_Kochen', 'Uppskatta_matlagning', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine', 'Manger_en_toute_conscience')
+'food_card_mindset_Prends_toi_une_pause') or (${eventAction} = 'meditation' and ${eventLabel} in ('Prenez_le_temps_d_une_pause'))) then 'Take a Break'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', 'Ta_en_promenad', 'Bewust_wandelen__thuis_of_ergens_anders', 'Marcher_en_toute_conscience',
+'Marchez_chez_vous___ou_n_importe_o_')) then 'Walk at Home or Anywhere'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Achtsames_Kochen', 'Uppskatta_matlagning', 'Bewust_koken',
+'Appr_ciez__vraiment__la_cuisine', 'Manger_en_toute_conscience'))
 then 'Appreciate Cooking'
 
 
     else 'Other' end
               ;;
     suggestions: [ "Headspace", "Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break"]
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking"]
     }
 
   dimension: headspace_cards {
     sql: case when  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break") then ${headspace_card_name}
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking") then ${headspace_card_name}
         else null end
          ;;
     type: string
@@ -1466,7 +1469,7 @@ then 'Appreciate Cooking'
 
   dimension: headspace_cards_yesno {
     sql:  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break")
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking")
 
                ;;
     type: yesno
@@ -1517,39 +1520,101 @@ then 'Appreciate Cooking'
   }
 
 
+  dimension: headspace_play_card_name {
+    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Uppskatta_matlagning', 'Achtsames_Kochen', 'Bewust_koken', 'Appr_ciez__vraiment__la_cuisine',
+    'Manger_en_toute_conscience')) then 'Appreciate Cooking: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Basics', 'Grunderna', 'Basis', 'Les_bases', 'Notions_de_base',
+      'Base')) then 'Basic: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('End_of_Day', 'Entspannen_am_Abend', 'Slut_p__dagen', 'Fin_de_la_journ_e', 'Einde_van_de_dag',
+      'Fin_de_journ_e')) then 'End of Day: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez', 'Achtsames_Essen'))
+      then 'Engage Your Senses when Eating: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Focus', 'Fokus', 'Fokuserad', 'Concentrer',
+      'Concentration')) then 'Focus: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Einfache_Atem_Technik', 'Prenez_un_moment_pour_faire_une_pause', 'Nimm_dir_einen_Moment_f_r_eine_Pause',
+      'Accordez_vous_une_pause')) then 'Take a Moment to Pause: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere', 'Ta_en_promenad', 'Bewust_wandelen__thuis_of_ergens_anders', 'Marchez_chez_vous___ou_n_importe_o_',
+      'Marcher_en_toute_conscience')) then 'Walk at Home or Anywhere: Media Play'
+when (${eventAction} = 'media_play' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home: Media Play'
 
+
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Kochen', 'Appr_ciez__vraiment__la_cuisine', 'Appreciate_Cooking', 'Appreciate_cooking', 'Bewust_koken', 'Manger_en_toute_conscience', 'Uppskatta_matlagning'))
+then 'Appreciate Cooking: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Base', 'Basics', 'Basis', 'Grunderna', 'Les_bases', 'Notions_de_base')) then 'Basic: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Einde_van_de_dag', 'End_of_Day', 'Entspannen_am_Abend', 'Fin_de_journ_e', 'Fin_de_la_journ_e', 'Slut_p__dagen')) then 'End of Day: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Eveillez_vos_sens_lorsque_vous_mangez')) then 'Engage Your Senses when Eating: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Concentration', 'Concentrer', 'Focus', 'Fokus', 'Fokuserad')) then 'Focus: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Prenez_le_temps_d_une_pause')) then 'Take a Break: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Einfache_Atem_Technik', 'Prenez_un_moment_pour_faire_une_pause')) then 'Take a Moment to Pause: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Bewust_wandelen__thuis_of_ergens_anders', 'Marchez_chez_vous___ou_n_importe_o_', 'Ta_en_promenad', 'Walk_at_Home_or_Anywhere', 'Walk_at_home_or_anywhere'))
+then 'Walk at Home or Anywhere: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) then 'Walking in Your Home: Media 100'
+
+
+
+ else 'Other' end
+              ;;
+    suggestions: ["Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play", "Walk at Home or Anywhere: Media Play",
+      "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100", "Take a Moment to Pause: Media 100", "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100"]
+    }
+
+
+
+  dimension: headspace_playcard_name {
+    sql: case when  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play",
+    "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100",
+      "Take a Moment to Pause: Media 100", "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100") then ${headspace_play_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: headspace_playcard_name_yesno {
+    sql:  ${headspace_play_card_name} in ("Appreciate Cooking: Media Play", "Basic: Media Play", "End of Day: Media Play", "Engage Your Senses when Eating: Media Play", "Focus: Media Play", "Take a Break: Media Play", "Take a Moment to Pause: Media Play",
+    "Walk at Home or Anywhere: Media Play", "Walking in Your Home: Media Play",
+      "Appreciate Cooking: Media 100", "Basic: Media 100", "End of Day: Media 100", "Engage Your Senses when Eating: Media 100", "Focus: Media 100", "Take a Break: Media 100", "Take a Moment to Pause: Media 100",
+      "Walk at Home or Anywhere: Media 100", "Walking in Your Home: Media 100")
+
+                           ;;
+    type: yesno
+
+}
 
 
 
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
-      'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
-      'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants'))  then 'Start Getting Stronger'
+      'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
+      'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')))  then 'Start Getting Stronger'
       when (${eventAction} in ('activity_card_aaptiv_Basic_walking_wo_0' , 'activity_card_aaptiv_Basic_walking_worko', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking',
-      'activity_card_aaptiv_Entra_nement_d') or ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Walking_Workout_f_r_Einsteiger',
-      'Entra_nement_de_jogging_pour_d_butants'))then 'Basic Walking'
+      'activity_card_aaptiv_Entra_nement_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Walking_Workout_f_r_Einsteiger',
+      'Entra_nement_de_jogging_pour_d_butants')))then 'Basic Walking'
       when (${eventAction} in ('activity_card_aaptiv_Walk_to_the_beat_0', 'activity_card_aaptiv_Walk_to_the_beat', 'activity_card_aaptiv_Walk_to_the_be', 'activity_card_aaptiv_Walk_to_the_b', 'activity_card_aaptiv_Marcher_en_ryt', 'activity_card_aaptiv_Marcher_en_ry', 'activity_card_aaptiv_Courir_en_mesu',
-      'activity_card_aaptiv_Courir_en_mes') or ${eventLabel} in ('Walk_to_the_beat', 'Marcher_en_rythme', 'Walking_im_Takt',
-      'Courir_en_mesure')) then 'Walk to the Beat'
+      'activity_card_aaptiv_Courir_en_mes') or (${eventAction} = 'workout' and  ${eventLabel} in ('Walk_to_the_beat', 'Marcher_en_rythme', 'Walking_im_Takt',
+      'Courir_en_mesure'))) then 'Walk to the Beat'
       when (${eventAction} in ('activity_card_aaptiv_Pick_up_the_pace_0', 'activity_card_aaptiv_Pick_up_the_pace', 'activity_card_aaptiv_Pick_up_the_pa', 'activity_card_aaptiv_Pick_up_the_p', 'activity_card_aaptiv_Acc_l_rer_le_r', 'activity_card_aaptiv_Accélérer_le_',
-      'activity_card_aaptiv_De_la_marche_a') or ${eventLabel} in ('Pick_up_the_pace', 'Acc_l_rer_le_rythme', 'Vom_Walken_zum_Joggen',
-      'De_la_marche_au_jogging'))then 'Pick Up the Pace'
+      'activity_card_aaptiv_De_la_marche_a') or (${eventAction} = 'workout' and ${eventLabel} in ('Pick_up_the_pace', 'Acc_l_rer_le_rythme', 'Vom_Walken_zum_Joggen',
+      'De_la_marche_au_jogging')))then 'Pick Up the Pace'
       when (${eventAction} in ('activity_card_aaptiv_Fast_and_total_t_0', 'activity_card_aaptiv_Fast_and_total_trai', 'activity_card_aaptiv_Fast_and_total_tra', 'activity_card_aaptiv_Fast_and_total', 'activity_card_aaptiv_Fast_and_tota', 'activity_card_aaptiv_Entra_nement_r',
-      'activity_card_aaptiv_Entra_nement_c') or ${eventLabel} in ('Fast_and_total_training', 'Entra_nement_rapide_et_total', 'HIT_Ganzk_rper_Workout',
-      'Entra_nement_corporel_complet')) then 'Fast and Total Training'
+      'activity_card_aaptiv_Entra_nement_c') or (${eventAction} = 'workout' or  ${eventLabel} in ('Fast_and_total_training', 'Entra_nement_rapide_et_total', 'HIT_Ganzk_rper_Workout',
+      'Entra_nement_corporel_complet'))) then 'Fast and Total Training'
       when (${eventAction} in ('activity_card_aaptiv_Find_your_streng_0', 'activity_card_aaptiv_Find_your_strength', 'activity_card_aaptiv_Find_your_stre', 'activity_card_aaptiv_Find_your_str', 'activity_card_aaptiv_Trouvez_votre_', 'activity_card_aaptiv_Trouvez_votre',
-      'activity_card_aaptiv_D_couvrez_votr') or ${eventLabel} in ('Find_your_strength', 'Trouvez_votre_point_fort', 'Entdecke_deine_Kraft',
-      'D_couvrez_votre_force_physique', 'Trouve_ton_point_fort' ))then 'Find your Strength'
+      'activity_card_aaptiv_D_couvrez_votr') or (${eventAction} = 'workout' and ${eventLabel} in ('Find_your_strength', 'Trouvez_votre_point_fort', 'Entdecke_deine_Kraft',
+      'D_couvrez_votre_force_physique', 'Trouve_ton_point_fort' )))then 'Find your Strength'
       when (${eventAction} in ('activity_card_aaptiv_Jog_run_interval_0', 'activity_card_aaptiv_Jog_run_intervals', 'activity_card_aaptiv_Jog_run_interv', 'activity_card_aaptiv_Jog_run_inter', 'activity_card_aaptiv_Intervalles_jo', 'activity_card_aaptiv_Intervalles_j',
-      'activity_card_aaptiv_Entra_nement_f') or ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course',
-      'Entra_nement_fractionn_'))then 'Jog/Run'
+      'activity_card_aaptiv_Entra_nement_f') or (${eventAction} = 'workout' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course',
+      'Entra_nement_fractionn_')))then 'Jog/Run'
       when (${eventAction} in ('activity_card_aaptiv_Get_strong_faste_0', 'activity_card_aaptiv_Get_strong_faster', 'activity_card_aaptiv_Get_strong_fas', 'activity_card_aaptiv_Get_strong_fa', 'activity_card_aaptiv_Devenir_fort_', 'activity_card_aaptiv_Devenir_fort_p', 'activity_card_aaptiv_Circuit_d_entr',
-      'activity_card_aaptiv_Circuit_d_ent') or ${eventLabel} in ('Get_strong_faster', 'Devenir_fort_plus_rapidement', 'Kraft_Zirkeltraining',
-      'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation')) then 'Get Strong Faster'
+      'activity_card_aaptiv_Circuit_d_ent') or (${eventAction} = 'workout' and  ${eventLabel} in ('Get_strong_faster', 'Devenir_fort_plus_rapidement', 'Kraft_Zirkeltraining',
+      'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation'))) then 'Get Strong Faster'
       when (${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
-      'activity_card_aaptiv_Cardio___muscu') or ${eventLabel} in ('Cardio___strength', 'Cardio___renforcement', 'Cardio___Kraft',
-      'Cardio___muscu'))then 'Cardio + Strength'
+      'activity_card_aaptiv_Cardio___muscu') or (${eventAction} = 'workout' and  ${eventLabel} in ('Cardio___strength', 'Cardio___renforcement', 'Cardio___Kraft',
+      'Cardio___muscu')))then 'Cardio + Strength'
 
 
      else 'Other' end
@@ -1618,6 +1683,64 @@ then 'Appreciate Cooking'
     type: yesno
 
   }
+
+
+  dimension: aaptiv_play_card_name {
+    sql: case when (${eventAction} = 'media_play' and ${eventLabel} in ('Basic_walking_workout', 'Walking_Workout_f_r_Einsteiger', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants')) then 'Basic Walking: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Cardio___strength', 'Cardio___Kraft', 'Cardio___renforcement', 'Cardio___muscu')) then 'Cardio + Strength: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Fast_and_total_training', 'HIT_Ganzk_rper_Workout', 'Entra_nement_rapide_et_total')) then 'Fast and Total Training: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Find_your_strength', 'Entdecke_deine_Kraft', 'Trouvez_votre_point_fort', 'Trouve_ton_point_fort', 'D_couvrez_votre_force_physique'))
+            then 'Find your Strength: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Get_strong_faster', 'Kraft_Zirkeltraining', 'Devenir_fort_plus_rapidement', 'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation')) then 'Get Strong Faster: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course', 'Entra_nement_fractionn_')) then 'Jog/Run: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Pick_up_the_pace', 'Vom_Walken_zum_Joggen', 'Acc_l_rer_le_rythme', 'De_la_marche_au_jogging')) then 'Pick Up the Pace: Media Play'
+            when (${eventAction} = 'media_play' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger', 'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')) then 'Start Getting Stronger: Media Play'
+      when (${eventAction} = 'media_play' and ${eventLabel} in ('Walk_to_the_beat', 'Walking_im_Takt', 'Marcher_en_rythme', 'Courir_en_mesure')) then 'Walk to the Beat: Media Play'
+
+
+
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Entra_nement_de_jogging_pour_d_butants', 'Walking_Workout_f_r_Einsteiger')) then 'Basic Walking: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Cardio___Kraft', 'Cardio___renforcement', 'Cardio___strength')) then 'Cardio + Strength: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entra_nement_corporel_complet', 'Entra_nement_rapide_et_total', 'Fast_and_total_training', 'HIT_Ganzk_rper_Workout')) then 'Fast and Total Training: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entdecke_deine_Kraft', 'Find_your_strength', 'Trouvez_votre_point_fort')) then 'Find your Strength: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Course_fractionn_e', 'Devenir_fort_plus_rapidement', 'Get_strong_faster', 'Kraft_Zirkeltraining', 'Krafttraining_f_r_Einsteiger')) then 'Get Strong Faster: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Entra_nement_fractionn_', 'Intervalles_jog_course', 'Intervalltraining', 'Jog_run_intervals')) then 'Jog/Run: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Acc_l_rer_le_rythme', 'De_la_marche_au_jogging', 'Pick_up_the_pace', 'Vom_Walken_zum_Joggen')) then 'Pick Up the Pace: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants', 'Start_getting_stronger')) then 'Start Getting Stronger: Media 100'
+when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Marcher_en_rythme', 'Walk_to_the_beat', 'Walking_im_Takt')) then 'Walk to the Beat: Media 100'
+
+
+        ;;
+    suggestions: ["Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100"]
+  }
+
+
+
+  dimension: aaptiv_playcard_name {
+    sql: case when  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100") then ${aaptiv_play_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: aaptiv_playcard_name_yesno {
+    sql:  ${aaptiv_play_card_name} in ("Start Getting Stronger: Media Play", "Basic Walking: Media Play", "Walk to the Beat: Media Play", "Pick Up the Pace: Media Play", "Fast and Total Training: Media Play", "Find your Strength: Media Play", "Jog/Run: Media Play",
+      "Get Strong Faster: Media Play", "Cardio + Strength: Media Play",
+      "Basic Walking: Media 100", "Cardio + Strength: Media 100", "Fast and Total Training: Media 100", "Find your Strength: Media 100", "Get Strong Faster: Media 100","Jog/Run: Media 100", "Pick Up the Pace: Media 100","Pick Up the Pace: Media 100",
+      "Start Getting Stronger: Media 100", "Walk to the Beat: Media 100")
+
+                                 ;;
+    type: yesno
+
+  }
+
 
 
 
@@ -1756,20 +1879,126 @@ dimension: tenure_or_date {
 
   dimension: onboarding_card_name {
     sql: case when ${hits_appInfo.screenName} = 'onb_welcomescreen' then 'Welcome Screen'
-    when ${hits_appInfo.screenName} = 'onb_profilescreen1' then 'Personal Information 1'
-    when ${hits_appInfo.screenName} = 'onb_profilescreen2' then 'Personal Information 2 (Activity)'
-    when (${hits_appInfo.screenName} = 'onb_tutorial' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
-    when ((${eventCategory} = 'onboarding' and ${eventAction} = 'tutorial_skip') or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
+    when (${hits_appInfo.screenName} = 'onb_profilescreen1' or ${eventAction} = 'onb_profile_step1') then 'Personal Information 1'
+    when (${hits_appInfo.screenName} = 'onb_profilescreen2' or ${eventAction} = 'onb_profile_step2') then 'Personal Information 2 (Activity)'
+    when (${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
+    when (${eventAction} = 'tutorial_skip' or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
     when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
     when (${hits_appInfo.screenName} = 'onb_tfs_complete' or ${eventAction} = 'onb_tutorial203_complete' or ${eventAction} = 'onb_tutorial204_complete') then 'Tutorial Finish'
-
+    when (${eventAction} = 'onb_my_day_checklist_tutorial204' or ${eventAction} = 'tracking_tutorial') then 'Tracking Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_tutorial203' or ${eventAction} = 'dashboard_tutorial') then 'Dashboard Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_setweightgoal' or ${eventAction} = 'weight_goal') then 'Weight Goal Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_weighinday' or ${eventAction} = 'weight_tracking_day') then 'Weight Tracking Day Tutorial'
+    when (${eventAction} = 'onb_my_day_checklist_check' or ${hits_appInfo.screenName} = 'onb_tips_success') then 'Tips for Success'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_1 ' then 'How Freestyle Works Article'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_2 ' then 'Understanding SP Budget'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_3' then 'Zero Point Food'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_4' then 'Sample Meals'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_5' then 'WellnessWins'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_6 ' then 'Connect'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_7' then 'Mindset of Success'
+    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_8' then 'How to Sync Fitness Device'
 
 
   -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Welcome Screen"]
+    suggestions: ["Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)", "Tutorial Start", "Skip Tutorial", "Tutorial 0 Pt Introduction",
+      "Tutorial Finish", "Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial", "Tips for Success", "How Freestyle Works Article", "Understanding SP Budget",
+      "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success", "How to Sync Fitness Device"]
   }
+
+
+  dimension: onboarding_type {
+    label: "Onboarding Tutorial Type - Completed or Skipped"
+    sql: case when ${onboarding_card_name} in( 'Tutorial Start', 'Tutorial Finish') then 'Completed Tutorial'
+            when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
+       else null end;;
+    suggestions: ["Completed Tutorial","Skipped Tutorial" ]
+
+}
+
+  dimension: onboarding_type_yesno {
+    sql:  ${onboarding_card_name} in ("Completed Tutorial","Skipped Tutorial")
+                     ;;
+    type: yesno
+
+}
+
+
+
+
+
+  dimension: on_tipsforsuccess_cards {
+    sql: case when  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_tipsforsuccess_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Tracking Tutorial", "Dashboard Tutorial", "Weight Goal Tutorial", "Weight Tracking Day Tutorial")
+
+
+
+                     ;;
+    type: yesno
+
+  }
+
+  dimension: on_tips_cards {
+    sql: case when  ${onboarding_card_name} in ("Tips for Success") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_tips_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Tips for Success")
+
+                     ;;
+    type: yesno
+
+  }
+
+
+  dimension: on_profile_creation_cards {
+    sql: case when  ${onboarding_card_name} in ("Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_profile_creation_cards_yesno {
+    sql:  ${onboarding_card_name} in ("Welcome Screen", "Personal Information 1", "Personal Information 2 (Activity)")
+
+               ;;
+    type: yesno
+
+  }
+
+  dimension: on_articles_cards {
+    sql: case when  ${onboarding_card_name} in ("How Freestyle Works Article", "Understanding SP Budget", "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success",
+    "How to Sync Fitness Device") then ${onboarding_card_name}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: on_articles_cards_yesno {
+    sql:  ${onboarding_card_name} in ("How Freestyle Works Article", "Understanding SP Budget", "Zero Point Food", "Sample Meals", "WellnessWins", "Connect", "Mindset of Success",
+    "How to Sync Fitness Device")
+
+                     ;;
+    type: yesno
+
+  }
+
+
 
 
 
