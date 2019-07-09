@@ -13,8 +13,6 @@ view: ga_sessions_weekly {
       column: homepage_visitors {}
       column: fullVisitorId {}
       column: group_id_new { field:hits_eventInfo.group_id_new}
-      column: connect_users {}
-      column: groups_users {}
       column: my_day_users {}
       column: connect_users {}
       column: groups_users {}
@@ -318,7 +316,7 @@ dimension: group_id_name {
 
   measure: iaf_myDay_users_desktop {
     view_label: "Session"
-    label: "Unique Prospects"
+    label: "My Day Desktop Users"
     type: sum
   }
 }
