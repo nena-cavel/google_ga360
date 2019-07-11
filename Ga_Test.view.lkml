@@ -11,7 +11,6 @@ view: ga_test {
       column: is_weightwatchers { field: first_page.is_weightwatchers }
       column: sus1_visitors {}
       column: homepage_visitors {}
-      column: fullVisitorId {}
       column: connect_users {}
       column: groups_users {}
       column: my_day_users {}
