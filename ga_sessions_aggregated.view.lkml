@@ -273,7 +273,7 @@ dimension: group_id_name {
               WHEN ${group_id_new} = '3cf71a6a-6275-4899-83a7-c790b479a12b' THEN 'Zen'
               WHEN ${group_id_new} = '2faea726-d0fc-42d5-9443-335624ab428f' THEN 'Mitt varför'
               WHEN ${group_id_new} = 'ec3167e7-25f4-4b4a-8e05-1d9de0379a15' THEN 'Passionnés de cuisine'
-              WHEN ${group_id_new} =  '14ab4f5e-4cc1-4aed-aee4-21e065d4b3a2' then 'In my 20's'
+              WHEN ${group_id_new} =  '14ab4f5e-4cc1-4aed-aee4-21e065d4b3a2' then 'In my 20s'
               WHEN ${group_id_new} =  '7c7735a9-bc8a-4761-b764-01a5d81e5f03' then 'Pour les mamans'
               WHEN ${group_id_new} =  '3c3d9f7c-9e0f-449d-9067-ae436581fe02' then 'Wandelen'
               WHEN ${group_id_new} =  'eb10dbe9-898b-4c4d-b398-ef35f2bea259' then 'Mijn verhaal'
