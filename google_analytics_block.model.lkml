@@ -152,6 +152,16 @@ explore: ga_iaf_weekly {
   persist_with: weekly_cache
 }
 
+explore: ga_test {
+  persist_with: weekly_cache
+  description: "test for new stuff"
+  join: connect_test {
+    type: left_outer
+    relationship: many_to_many
+    sql_on: Concat(${ga_test.visitStart_week},${ga_test.market}) = concat(${connect_test.visitStart_week},${connect_test.market}) ;;
+  }
+}
+
 explore: new_autobanned_words {
   join: new_autobanned_comments {
     type: inner
