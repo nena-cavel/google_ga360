@@ -9,6 +9,7 @@ view: ga_sessions_monthly {
       column: operatingSystem {field: device.operatingSystem}
       column: screenName { field: hits_appInfo.screenName}
       column: market {}
+      column: language { field: device.language}
       column: event_action { field: hits_eventInfo.eventAction}
       column: event_label { field: hits_eventInfo.eventLabel}
       derived_column: group_id {
@@ -62,6 +63,20 @@ view: ga_sessions_monthly {
   dimension: market {
     view_label: "Session"
     label: "Market"
+  }
+  dimension: language {
+    type: string
+  }
+
+  dimension: device_language {
+    type: string
+    sql: CASE WHEN regexp_contains(${language}, 'en-') then 'English'
+              WHEN regexp_contains(${language}, 'de-') then 'German'
+              when regexp_contains(${language}, 'fr-') then 'French'
+              WHEN regexp_contains(${language}, 'nl-') then 'Dutch'
+              WHEN regexp_contains(${language}, 'sv-') then 'Swedish'
+              WHEN regexp_contains(${language}, 'pt-') then 'Portuguese'
+              END;;
   }
 
   dimension: operatingSystem {

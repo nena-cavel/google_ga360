@@ -857,6 +857,12 @@ view: device {
     type: yesno
     sql: ${browser} = 'GoogleAnalytics' ;;
   }
+
+#  dimension: device_language {
+#    type: string
+#
+ # }
+
 }
 
 view: hits {
