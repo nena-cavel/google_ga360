@@ -1871,13 +1871,13 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               'food_browse_recipes_Cooking_for_One') and ${hits.type} = 'APPVIEW') then 'Default Collections - Discover Recipes'
               when (${hits_appInfo.screenName} like ('food_card_recipes_%') and ${hits.type} = 'APPVIEW') then 'All Recipes'
               when (${hits_appInfo.screenName} like ('food_card_article_%') and ${hits.type} = 'APPVIEW') then 'All Articles'
-              when ${eventAction} = 'food_browse_recipebuilder' then 'Recipe Builder'
+              when (${eventAction} = 'food_browse_recipebuilder' and ${hits.type} = 'EVENT') then 'Recipe Builder'
               when (${hits_appInfo.screenName} = 'MemberRecipes' and ${hits.type} = 'APPVIEW') then 'Member Recipes'
-              when ${eventAction} = 'food_browse_seeall' then 'See All'
-              when ${eventAction} = 'food_browse_favorites' then 'Favorites'
+              when (${eventAction} = 'food_browse_seeall' and ${hits.type} = 'EVENT') then 'See All'
+              when (${eventAction} = 'food_browse_favorites' and ${hits.type} = 'EVENT') then 'Favorites'
               when (${hits_appInfo.screenName} = 'Favorites' and ${hits.type} = 'APPVIEW') then 'Favorites (+)'
-              when ${eventAction} = 'food_browse_featuredcollectionscroll' then 'Featured Collection Scroll'
-               when ${eventAction} = 'food_browse_created' then 'Created'
+              when (${eventAction} = 'food_browse_featuredcollectionscroll' and ${hits.type} = 'EVENT') then 'Featured Collection Scroll'
+               when (${eventAction} = 'food_browse_created' and ${hits.type} = 'EVENT') then 'Created'
               when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
 
 
