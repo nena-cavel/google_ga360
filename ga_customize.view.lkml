@@ -1818,19 +1818,19 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Ma
 
 
   dimension: card_name {
-    sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
-              when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
+    sql: case when (${eventAction} in ('food_card_mindset','headspace') and ${hits.type} = 'EVENT') then 'Headspace'
+              when (${eventAction} in ('activity_card_aaptiv','aaptivcard') and ${hits.type} = 'EVENT') then 'Aaptiv'
               when (${hits_appInfo.screenName} = 'Search' and ${hits.type} = 'APPVIEW') then 'Search'
-               when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
+               when ((${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') and ${hits.type} = 'EVENT') then 'Discover Recipes'
                when (${hits_appInfo.screenName} = 'connect_stream_trending' and ${hits.type} = 'APPVIEW') then 'Connect (Bottom of My Day)'
-              when ${eventAction} = 'connect_seemoreposts_myday' then 'Connect (See More)'
-              when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
+              when (${eventAction} = 'connect_seemoreposts_myday' and ${hits.type} = 'EVENT') then 'Connect (See More)'
+              when (${eventAction} = 'iaf_my_day_card' and ${hits.type} = 'EVENT') then 'Invite a Friend'
               when (${hits_appInfo.screenName} = 'food_browse_Restaurants' and ${hits.type} = 'APPVIEW') then 'Restaurants'
               when (${hits_appInfo.screenName} = 'food_rollovercard' and ${hits.type} = 'APPVIEW') then 'Rollover Card'
 
               when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
-              when ${eventAction} = 'onb_skip_tutorials' then 'Onboarding - Skip Tutorial'
-              when ${eventAction} = 'onb_start_tutorial1' then 'Onboarding - Start Tutorial'
+              when (${eventAction} = 'onb_skip_tutorials' and ${hits.type} = 'EVENT') then 'Onboarding - Skip Tutorial'
+              when (${eventAction} = 'onb_start_tutorial1' and ${hits.type} = 'EVENT') then 'Onboarding - Start Tutorial'
               when (${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
@@ -1888,9 +1888,6 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
   }
 
 
-dimension: my_day_cards_hit_type{
-  sql:  case when  ${hits.type} = 'APPVIEW' THEN ${card_name} ;;
-}
 
 
 dimension: my_day_cards {
