@@ -1818,28 +1818,28 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Ma
 
 
   dimension: card_name {
-    sql: case when ${eventAction} in ('food_card_mindset','headspace') then 'Headspace'
-              when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
- when ${hits_appInfo.screenName} = 'Search' then 'Search'
-               when (${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') then 'Discover Recipes'
-               when ${hits_appInfo.screenName} = 'connect_stream_trending' then 'Connect (Bottom of My Day)'
-              when ${eventAction} = 'connect_seemoreposts_myday' then 'Connect (See More)'
-              when ${eventAction} = 'iaf_my_day_card' then 'Invite a Friend'
-              when ${hits_appInfo.screenName} = 'food_browse_Restaurants' then 'Restaurants'
-              when ${hits_appInfo.screenName} = 'food_rollovercard' then 'Rollover Card'
+    sql: case when (${eventAction} in ('food_card_mindset','headspace') and ${hits.type} = 'EVENT') then 'Headspace'
+              when (${eventAction} in ('activity_card_aaptiv','aaptivcard') and ${hits.type} = 'EVENT') then 'Aaptiv'
+              when (${hits_appInfo.screenName} = 'Search' and ${hits.type} = 'APPVIEW') then 'Search'
+               when ((${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') and ${hits.type} = 'EVENT') then 'Discover Recipes'
+               when (${hits_appInfo.screenName} = 'connect_stream_trending' and ${hits.type} = 'APPVIEW') then 'Connect (Bottom of My Day)'
+              when (${eventAction} = 'connect_seemoreposts_myday' and ${hits.type} = 'EVENT') then 'Connect (See More)'
+              when (${eventAction} = 'iaf_my_day_card' and ${hits.type} = 'EVENT') then 'Invite a Friend'
+              when (${hits_appInfo.screenName} = 'food_browse_Restaurants' and ${hits.type} = 'APPVIEW') then 'Restaurants'
+              when (${hits_appInfo.screenName} = 'food_rollovercard' and ${hits.type} = 'APPVIEW') then 'Rollover Card'
 
-              when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
-              when ${eventAction} = 'onb_skip_tutorials' then 'Onboarding - Skip Tutorial'
-              when ${eventAction} = 'onb_start_tutorial1' then 'Onboarding - Start Tutorial'
-              when ${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
+              when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+              when (${eventAction} = 'onb_skip_tutorials' and ${hits.type} = 'EVENT') then 'Onboarding - Skip Tutorial'
+              when (${eventAction} = 'onb_start_tutorial1' and ${hits.type} = 'EVENT') then 'Onboarding - Start Tutorial'
+              when (${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
-                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks' ) then 'Recipe Tenure'
+                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks' ) and ${hits.type} = 'APPVIEW') then 'Recipe Tenure'
 
   when (${hits_appInfo.screenName} not in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
                        'food_card_recipes_Ideas_for_Veggie_Lovers','food_card_recipes_Family_Friendly_Meals', 'food_card_recipes_Endlich_Frühling_', 'food_card_recipes_Endlich_Fr_hling_', 'food_card_recipes_Iss__was_dir_schmeckt', 'food_card_recipes_Iss__was_dir_schmeckt_',
                       'food_card_recipes_Eintöpfe___Suppen', 'food_card_recipes_Bei_Partys_und_Festen', 'food_card_recipes_Snacks', 'food_card_recipes_Quick___easy', 'food_card_recipes_Seasonal', 'food_card_recipes_0_5_SmartPoints_', 'food_card_recipes_0_5_SmartPoints__recipes',
-                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks'  ) and ${hits_appInfo.screenName} like 'food_card_recipes_%')  then 'Recipe Date'
+                      'food_card_recipes_Family_friendly','food_card_recipes_Go_veg_', ' food_card_recipes_Simple_snacks'  ) and ${hits_appInfo.screenName} like 'food_card_recipes_%' and ${hits.type} = 'APPVIEW')  then 'Recipe Date'
 
 when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
               'food_card_article_Tips_for_dining_out', 'food_card_article_Ideas_for_Smart_Snacking', 'food_card_article_How_do_I_estimate_portions_', 'food_card_article_Tips_for_syncing_your_fitness_device', 'food_card_article_Why_does_fruit_count_in_a_smoothie_', 'food_card_article_The_importance_of_practicing_awareness',
@@ -1852,9 +1852,9 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               'food_card_article_Snacks_für_unterwegs', 'food_card_article_Snacks_f_r_unterwegs', 'food_card_article_Snacks_für_Unterwegs','food_card_article_What_can_I_eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints__', 'food_card_article_Why_we_weigh_in',
               'food_card_article_What_is_the_tracking_zone_', 'food_card_article_Your_questions_answered_about_eating_ZeroPoint__foods', 'food_card_article_Tips_for_eating_out', 'food_card_article_SmartPoints__are_there_to_be_enjoyed_', 'food_card_article_How_do_I_estimate_portions_on_the_go_',
               'food_card_article_Yep__you_can_still_enjoy_your_social_life_', 'food_card_article_Eating_on_the_go', 'food_card_article_How_to_do_I_eat_more_mindfully_', 'food_card_article_Hack_Your_Snacks', 'food_card_article_Hack_your_snacks'
-              ) and ${hits_appInfo.screenName} like 'food_card_article_%') then 'Article Date'
+              ) and ${hits_appInfo.screenName} like 'food_card_article_%' and ${hits.type} = 'APPVIEW') then 'Article Date'
 
-               when ${hits_appInfo.screenName} in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
+               when (${hits_appInfo.screenName} in ('food_card_article_Don_t_Know_What_to_Eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_What_is_Connect_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_The_importance_of_tracking_your_weight', 'food_card_article_What_s_your__why__',
               'food_card_article_Tips_for_dining_out', 'food_card_article_Ideas_for_Smart_Snacking', 'food_card_article_How_do_I_estimate_portions_', 'food_card_article_Tips_for_syncing_your_fitness_device', 'food_card_article_Why_does_fruit_count_in_a_smoothie_', 'food_card_article_The_importance_of_practicing_awareness',
               'food_card_article_How_to_avoid_emotional_eating', 'food_card_article_The_importance_of_non_weight_goals', 'food_card_article_Keep_going_strong_with_WellnessWins_', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints_', 'food_card_article_Ideas_for_smart_snacking',
               'food_card_article_Tips_for_syncing_your_fitness_device_', 'food_card_article_The_importance_of_practicing_awareness_', 'food_card_article_Du_weißt_nicht__was_du_essen_sollst_', 'food_card_article_Du_wei_t_nicht__was_du_essen_sollst_', 'food_card_article_Du_weisst_nicht__was_du_essen_sollst_',
@@ -1865,30 +1865,33 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               'food_card_article_Snacks_für_unterwegs', 'food_card_article_Snacks_f_r_unterwegs', 'food_card_article_Snacks_für_Unterwegs',  'food_card_article_What_can_I_eat_', 'food_card_article_Meal_planning_and_shopping_tips', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints_', 'food_card_article_Should_I_tap_into_my_Weekly_SmartPoints_', 'food_card_article_Should_I_tap_into_my_weekly_SmartPoints__', 'food_card_article_Why_we_weigh_in',
               'food_card_article_What_is_the_tracking_zone_', 'food_card_article_Your_questions_answered_about_eating_ZeroPoint__foods', 'food_card_article_Tips_for_eating_out', 'food_card_article_SmartPoints__are_there_to_be_enjoyed_', 'food_card_article_How_do_I_estimate_portions_on_the_go_',
               'food_card_article_Yep__you_can_still_enjoy_your_social_life_', 'food_card_article_Eating_on_the_go', 'food_card_article_How_to_do_I_eat_more_mindfully_', 'food_card_article_Hack_Your_Snacks', 'food_card_article_Hack_your_snacks'
-              ) then 'Article Tenure'
+              ) and ${hits.type} = 'APPVIEW') then 'Article Tenure'
 
-              when ${hits_appInfo.screenName} in ('food_browse_recipes_Popular', 'food_browse_recipes_Low_SmartPoints_Mains', 'food_browse_recipes_Low_SmartPoints_Sides', 'food_browse_recipes_Zero_SmartPoints_Toppings___Dips', 'food_browse_recipes_No_Cook', 'food_browse_recipes_Quick___Easy', 'food_browse_recipes_Chicken_Every_Way',
-              'food_browse_recipes_Cooking_for_One') then 'Default Collections - Discover Recipes'
-              when ${hits_appInfo.screenName} like ('food_card_recipes_%') then 'All Recipes'
-              when ${hits_appInfo.screenName} like ('food_card_article_%') then 'All Articles'
-              when ${eventAction} = 'food_browse_recipebuilder' then 'Recipe Builder'
-              when ${hits_appInfo.screenName} = 'MemberRecipes' then 'Member Recipes'
-              when ${eventAction} = 'food_browse_seeall' then 'See All'
-              when ${eventAction} = 'food_browse_favorites' then 'Favorites'
-              when ${hits_appInfo.screenName} = 'Favorites' then 'Favorites (+)'
-              when ${eventAction} = 'food_browse_featuredcollectionscroll' then 'Featured Collection Scroll'
-               when ${eventAction} = 'food_browse_created' then 'Created'
+              when (${hits_appInfo.screenName} in ('food_browse_recipes_Popular', 'food_browse_recipes_Low_SmartPoints_Mains', 'food_browse_recipes_Low_SmartPoints_Sides', 'food_browse_recipes_Zero_SmartPoints_Toppings___Dips', 'food_browse_recipes_No_Cook', 'food_browse_recipes_Quick___Easy', 'food_browse_recipes_Chicken_Every_Way',
+              'food_browse_recipes_Cooking_for_One') and ${hits.type} = 'APPVIEW') then 'Default Collections - Discover Recipes'
+              when (${hits_appInfo.screenName} like ('food_card_recipes_%') and ${hits.type} = 'APPVIEW') then 'All Recipes'
+              when (${hits_appInfo.screenName} like ('food_card_article_%') and ${hits.type} = 'APPVIEW') then 'All Articles'
+              when (${eventAction} = 'food_browse_recipebuilder' and ${hits.type} = 'EVENT') then 'Recipe Builder'
+              when (${hits_appInfo.screenName} = 'MemberRecipes' and ${hits.type} = 'APPVIEW') then 'Member Recipes'
+              when (${eventAction} = 'food_browse_seeall' and ${hits.type} = 'EVENT') then 'See All'
+              when (${eventAction} = 'food_browse_favorites' and ${hits.type} = 'EVENT') then 'Favorites'
+              when (${hits_appInfo.screenName} = 'Favorites' and ${hits.type} = 'APPVIEW') then 'Favorites (+)'
+              when (${eventAction} = 'food_browse_featuredcollectionscroll' and ${hits.type} = 'EVENT') then 'Featured Collection Scroll'
+               when (${eventAction} = 'food_browse_created' and ${hits.type} = 'EVENT') then 'Created'
+              when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
 
 
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder" ]
+    suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder" ]
   }
 
 
+
+
 dimension: my_day_cards {
-  sql: case when  ${card_name} in ("Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
+  sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
   else null end
    ;;
   type: string
@@ -1896,7 +1899,7 @@ dimension: my_day_cards {
 }
 
   dimension: my_day_cards_yesno {
-    sql:  ${card_name} in ("Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+    sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
 
          ;;
     type: yesno
@@ -1990,7 +1993,7 @@ dimension: tenure_or_date {
 }
 
   dimension: onboarding_type_yesno {
-    sql:  ${onboarding_card_name} in ("Completed Tutorial","Skipped Tutorial")
+    sql:  ${onboarding_card_name} in ( 'Tutorial Start', 'Tutorial Finish')
                      ;;
     type: yesno
 
