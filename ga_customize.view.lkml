@@ -1999,6 +1999,15 @@ dimension: tenure_or_date {
 
 }
 
+  measure: completed_onb_session_count {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_yesno
+      value: "Yes"
+    }
+  }
+
 
 
 

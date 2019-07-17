@@ -9,6 +9,7 @@
         column: visitStart_date {}
         column: id {}
         column: funnel_prospect_session_count {}
+        column: completed_onb_session_count {field:hits_eventInfo.completed_onb_session_count}
         column:  iaf_page_desktop_users {}
         column: channelGrouping {}
         column: fullVisitorId {}
@@ -57,6 +58,17 @@
       hidden: yes
       label: "Session Funnel Prospect Session Count"
       type: number
+    }
+
+    dimension:  completed_onb_session_count {
+      hidden: yes
+      label: "Session ONB completed Session Count"
+      type: number
+    }
+
+    dimension: did_ONB {
+      type: yesno
+      sql: ${completed_onb_session_count}= 1 ;;
     }
 
     dimension: is_prospect{
