@@ -87,6 +87,34 @@ view: ga_sessions_weekly {
     type: sum
   }
 
+  dimension: region_name {
+    type: string
+    sql:  case when ${market} = "US"
+    then "United States"
+    WHEN ${market} = "DE"
+    THEN "Germany"
+    WHEN ${market} = "GB"
+    THEN "UK"
+    WHEN ${market} = "FR"
+    THEN "France"
+    WHEN ${market} = "CA"
+    THEN "Canada"
+    WHEN ${market} = "SE"
+    THEN "Sweden"
+    WHEN ${market} = "AU"
+    THEN "ANZ"
+    WHEN ${market} = "NL"
+    THEN "Netherlands"
+    WHEN ${market} = "BE"
+    THEN "Belgium"
+    WHEN ${market} = "CH"
+    THEN "Switzerland"
+    WHEN ${market} = "BR"
+    then "Brazil"
+    ELSE null
+    end ;;
+  }
+
 dimension: group_id_new {
   type: string
 }
@@ -289,6 +317,32 @@ dimension: group_id_name {
               when ${group_id_new} = '7f125194-14ec-411b-9369-5116a82ace3b' then 'Jardinage'
               when ${group_id_new} = 'e9145864-d124-4720-8b13-859018ded2f1' then 'Achtsamkeit'
               when ${group_id_new} = '718d1e95-84b4-4d04-8832-a5b0c94d1eff' then 'Fietsen'
+              when ${group_id_new} = '44f29671-5fe0-4dab-a317-a87d605592e3' then 'Vegetarisch'
+              when ${group_id_new} = '53430d0c-438d-4c7d-abec-6d5a74dd7035' then 'En famille'
+              when ${group_id_new} = '8af2e67b-2742-4092-9ef6-f2fc850ca59a' then 'Turtle Club'
+              when ${group_id_new} = '94421a9f-114a-4af6-b9af-b7f063cba2fc' then 'Craft Corner'
+              when ${group_id_new} = '9ca40a57-dc66-4f73-9b6b-7ebfd17e7979' then 'Walking'
+              when ${group_id_new} = 'bd620f26-273a-48c8-a8e8-6e480ea913bb' then 'Meal Prep'
+              when ${group_id_new} = 'c4cf9e38-fcf2-491c-a722-a755e0886ab8' then 'Maintaining'
+              when ${group_id_new} = 'f421dc3e-9091-4de7-83d0-33815266e7aa' then 'Yoga / Pilates et cie'
+              when ${group_id_new} = '1afef7c5-e867-4e6a-891f-2a7c1ca972bc' then 'Back on Track'
+              when ${group_id_new} = 'b8c6ee3c-c08a-4693-9c66-b27530cca6ca' then 'Newbies'
+              when ${group_id_new} = 'bc33dd33-83eb-405d-adfb-d5fb7fc510a6' then 'Marche'
+              when ${group_id_new} = '7483eedb-5ac8-4c93-b373-2ddfebe8bd56' then 'Mamas unter sich'
+              when ${group_id_new} = 'a596a353-65f0-4abc-9485-38bd0bc5774d' then 'Vegan'
+              when ${group_id_new} = '0a9a1fb5-9c3c-4b8c-a2d3-1c6292909136' then 'Laufen'
+              when ${group_id_new} = 'a9c78002-3999-4c0c-862b-53be46a03589' then 'Vegan'
+              when ${group_id_new} = '8da8838a-8376-475a-9668-9c7fbcf999c3' then 'Over 50 and Fabulous'
+              when ${group_id_new} = '2e23884d-c315-4841-bfd6-ceac5fa1dc95' then 'Grooms'
+              when ${group_id_new} = '5a67ff54-64fc-484e-a9c4-c531b1e01272' then 'Foodies'
+              when ${group_id_new} = '70a60962-6460-4354-9790-237dc86f52be' then 'Vegetarian'
+              when ${group_id_new} = 'b0ba67ae-e6ff-4bdf-bd95-7c05d98dc438' then 'Team slak'
+              when ${group_id_new} = '2ec112d5-5d92-4892-9b5e-6163000d47af' then 'Maintaining'
+              when ${group_id_new} = '3d75f614-e90f-42b8-a32e-7ea28b7a7b5b' then 'Mums'
+              when ${group_id_new} = '908f8a65-3fb1-4fe5-8d67-103c72700f5c' then 'Proferences alimentaires'
+              when ${group_id_new} = 'a81aa3f8-ff3b-4b59-b39a-a4faa78ab0cb' then 'Over 50 and Fabulous'
+              when ${group_id_new} =  '81675bab-5a08-4afa-b6dd-265813ade60f' THEN 'Recipes'
+              when ${group_id_new} =  '7f56e262-b062-4729-b99b-634b7edd7113' THEN 'Newbies'
               ELSE ${group_id_new}
               END ;;
 }
