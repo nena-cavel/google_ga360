@@ -1993,7 +1993,7 @@ dimension: tenure_or_date {
 }
 
   dimension: onboarding_type_yesno {
-    sql:  ${onboarding_card_name} in ( 'Tutorial Start', 'Tutorial Finish')
+    sql:  ${onboarding_card_name} in ( 'Completed Tutorial')
                      ;;
     type: yesno
 
