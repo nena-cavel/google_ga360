@@ -1972,7 +1972,7 @@ dimension: tenure_or_date {
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_6 ' then 'Connect'
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_7' then 'Mindset of Success'
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_8' then 'How to Sync Fitness Device'
-
+ when ((${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' or ${eventAction} = 'onb_start_tutorial1') AND (${hits_appInfo.screenName} = 'onb_tfs_complete' or ${eventAction} = 'onb_tutorial203_complete' or ${eventAction} = 'onb_tutorial204_complete')) then 'Completed Tutorial'
 
   -- Continue with the rest of the cards
               else 'Other' end
@@ -1985,7 +1985,7 @@ dimension: tenure_or_date {
 
   dimension: onboarding_type {
     label: "Onboarding Tutorial Type - Completed or Skipped"
-    sql: case when ${onboarding_card_name} in( 'Tutorial Start', 'Tutorial Finish') then 'Completed Tutorial'
+    sql: case when ${onboarding_card_name} in( 'Completed Tutorial') then 'Completed Tutorial'
             when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
        else null end;;
     suggestions: ["Completed Tutorial","Skipped Tutorial" ]
