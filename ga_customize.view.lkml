@@ -1986,29 +1986,46 @@ dimension: tenure_or_date {
 
   dimension: onboarding_type {
     label: "Onboarding Tutorial Type - Completed or Skipped"
-    sql: case when ${onboarding_card_name} in('Tutorial Start', 'Tutorial Finish' ) then 'Completed Tutorial'
+    sql: case when (${onboarding_card_name} = 'Tutorial Start' and ${onboarding_card_name} =  'Tutorial Finish')  then 'Completed Tutorial'
             when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
        else null end;;
     suggestions: ["Completed Tutorial","Skipped Tutorial" ]
 
 }
 
-  dimension: onboarding_type_yesno {
-    sql:  ${onboarding_type} in ('Completed Tutorial')
+  dimension: onboarding_type_finish_yesno {
+    sql:  ${onboarding_card_name} in ('Tutorial Finish')
                      ;;
     type: yesno
 
 }
 
-  measure: completed_onb_session_count {
+
+  dimension: onboarding_type_start_yesno {
+    sql:  ${onboarding_card_name} in ('Tutorial Start')
+      ;;
+    type: yesno
+
+  }
+
+
+  measure: completed_onb_session_count_start {
     type: count_distinct
     sql: ${ga_sessions.id};;
     filters: {
-      field: onboarding_type_yesno
+      field: onboarding_type_start_yesno
       value: "Yes"
     }
   }
 
+  measure: completed_onb_session_count_finish {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_finish_yesno
+      value: "Yes"
+    }
+  }
 
 
 
