@@ -85,6 +85,11 @@
     }
 
 
+    dimension: did_ONB_completed {
+      type: yesno
+      sql: ${completed_onb_session_count_finish}= 1 and ${completed_onb_session_count_start}= 1 ;;
+    }
+
     dimension: is_prospect{
       type: yesno
       sql: ${funnel_prospect_session_count} = 1;;
