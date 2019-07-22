@@ -1119,7 +1119,7 @@ dimension: choose_photo_connect {
 }
 
 dimension: browse_groups {
-  sql: regexp_contains(${eventAction}, '^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
+  sql: regexp_contains(${eventAction}, 'groups_my_day_browse|^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
   type: yesno
 }
 

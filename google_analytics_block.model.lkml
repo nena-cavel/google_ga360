@@ -190,3 +190,5 @@ explore: groups_carousel_funnel  {}
 explore: ga_sessions_monthly {
   persist_with: monthly_cache_ga
 }
+explore: groups_seeall_funnel {}
+explore: groups_specific_funnel {}
