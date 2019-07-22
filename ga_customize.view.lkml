@@ -1955,6 +1955,7 @@ dimension: tenure_or_date {
     sql: case when ${hits_appInfo.screenName} = 'onb_welcomescreen' then 'Welcome Screen'
     when (${hits_appInfo.screenName} = 'onb_profilescreen1' or ${eventAction} = 'onb_profile_step1') then 'Personal Information 1'
     when (${hits_appInfo.screenName} = 'onb_profilescreen2' or ${eventAction} = 'onb_profile_step2') then 'Personal Information 2 (Activity)'
+    when ${eventAction} = 'complete_profile' then 'Complete Onboarding Profile'
     when (${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
     when (${eventAction} = 'tutorial_skip' or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
     when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
@@ -1985,7 +1986,7 @@ dimension: tenure_or_date {
 
   dimension: onboarding_type {
     label: "Onboarding Tutorial Type - Completed or Skipped"
-    sql: case when ${onboarding_card_name} in( 'Tutorial Start', 'Tutorial Finish') then 'Completed Tutorial'
+    sql: case when ${onboarding_card_name} in('Tutorial Start', 'Tutorial Finish' ) then 'Completed Tutorial'
             when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
        else null end;;
     suggestions: ["Completed Tutorial","Skipped Tutorial" ]
@@ -1993,11 +1994,20 @@ dimension: tenure_or_date {
 }
 
   dimension: onboarding_type_yesno {
-    sql:  ${onboarding_card_name} in ( 'Tutorial Start', 'Tutorial Finish')
+    sql:  ${onboarding_type} in ('Completed Tutorial')
                      ;;
     type: yesno
 
 }
+
+  measure: completed_onb_session_count {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_yesno
+      value: "Yes"
+    }
+  }
 
 
 

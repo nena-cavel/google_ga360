@@ -337,6 +337,8 @@ view: ga_sessions_base {
       value: "Yes"
     }
   }
+
+
   measure: average_sessions_ver_visitor {
     type: number
     sql: 1.0 * (${session_count}/NULLIF(${unique_visitors},0))  ;;
