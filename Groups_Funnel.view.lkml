@@ -11,35 +11,23 @@ view: groups_funnel {
             ) AS browse_groups_1
           , MIN (
             CASE WHEN
-            REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich|connect_groups_see_allmein_weg|connect_groups_see_allessen|connect_groups_see_allumdenken|connect_groups_find_group|connect_groups_find_|connect_groups_see_all')
-             THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
-             ELSE NULL END
-            ) AS see_all_2_first
-            , Max (
-            CASE WHEN
-            REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich|connect_groups_see_allmein_weg|connect_groups_see_allessen|connect_groups_see_allumdenken|connect_groups_find_group|connect_groups_find_|connect_groups_see_all')
-             THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
-             ELSE NULL END
-            ) AS see_all_2_last
-          , MIN (
-            CASE WHEN
             REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_type_see_group$')
              THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
              ELSE NULL END
-            ) AS view_group_3_first
+            ) AS view_group_2_first
           , Max (
             CASE WHEN
             REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_type_see_group')
              THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
              ELSE NULL END
-            ) AS view_group_3_last
+            ) AS view_group_2_last
 
             , MIN (
             CASE WHEN
             REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_join_public_group$')
              THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
              ELSE NULL END
-            ) AS join_group_4
+            ) AS join_group_3
 
          FROM ${ga_sessions.SQL_TABLE_NAME} AS sessions
           LEFT JOIN UNNEST(sessions.hits) as hits
@@ -87,49 +75,31 @@ view: groups_funnel {
     sql: ${TABLE}.browse_groups_1 ;;
   }
 
-  dimension_group:  see_all_2_first {
-    description: "see all category"
-    type: time
-    convert_tz: no
-    timeframes: [time]
-    hidden: yes
-    sql: ${TABLE}.see_all_2_first ;;
-  }
-
-  dimension_group:  see_all_2_last{
-    description: "see all category"
-    type: time
-    convert_tz: no
-    timeframes: [time]
-    hidden: yes
-    sql: ${TABLE}.see_all_2_last ;;
-  }
-
-  dimension_group: view_group_3_first {
+  dimension_group: view_group_2_first {
     description: "view a group"
     type: time
     convert_tz: no
     timeframes: [time]
     hidden: yes
-    sql: ${TABLE}.view_group_3_first ;;
+    sql: ${TABLE}.view_group_2_first ;;
   }
 
-  dimension_group: view_group_3_last {
+  dimension_group: view_group_2_last {
     description: "view a group"
     type: time
     convert_tz: no
     timeframes: [time]
     hidden: yes
-    sql: ${TABLE}.view_group_3_last ;;
+    sql: ${TABLE}.view_group_2_last ;;
   }
 
-  dimension_group: join_group_4 {
+  dimension_group: join_group_3 {
     description: "join a group"
     type: time
     convert_tz: no
     timeframes: [time]
     hidden: yes
-    sql: ${TABLE}.join_group_4 ;;
+    sql: ${TABLE}.join_group_3;;
   }
 
 
@@ -145,40 +115,24 @@ view: groups_funnel {
   dimension: reached_event_2 {
     hidden: no
     type: yesno
-    sql: (${browse_groups_1_time} IS NOT NULL AND ${see_all_2_last_time} is not null AND ${browse_groups_1_time}  < ${see_all_2_last_time})
+    sql: (${browse_groups_1_time} IS NOT NULL AND ${view_group_2_last_time} is not null AND ${browse_groups_1_time}  <  ${view_group_2_last_time})
       ;;
   }
 
   dimension: reached_event_23 {
     hidden: no
     type: yesno
-    sql: (${browse_groups_1_time} IS NOT NULL AND ${see_all_2_last_time} IS NOT NULL AND ${view_group_3_last_time} IS NOT NULL
-         AND ${browse_groups_1_time} < ${see_all_2_last_time} AND ${see_all_2_first_time} < ${view_group_3_last_time})
+    sql: (${browse_groups_1_time} IS NOT NULL AND ${view_group_2_last_time} IS NOT NULL AND ${join_group_3_time} IS NOT NULL
+         AND ${browse_groups_1_time} < ${view_group_2_last_time} AND ${view_group_2_first_time} < ${join_group_3_time})
           ;;
   }
 
-
-  dimension: reached_event_234 {
-    hidden: no
-    type: yesno
-    sql: (${browse_groups_1_time} IS NOT NULL AND ${see_all_2_first_time} IS NOT NULL AND ${view_group_3_last_time} IS NOT NULL and ${join_group_4_time} is not null
-         AND ${view_group_3_first_time} < ${join_group_4_time})
-          ;;
-  }
 
   dimension: reached_event_13 {
     hidden: no
     type: yesno
-    sql: (${browse_groups_1_time} IS NOT NULL  AND ${view_group_3_last_time} IS NOT NULL
-         AND ${browse_groups_1_time} <  ${view_group_3_last_time})
-          ;;
-  }
-
-  dimension: reached_event_134 {
-    hidden: no
-    type: yesno
-    sql: (${browse_groups_1_time} IS NOT NULL AND ${view_group_3_last_time} IS NOT NULL and ${join_group_4_time} is not null
-         AND ${view_group_3_first_time} < ${join_group_4_time})
+    sql: (${browse_groups_1_time} IS NOT NULL  AND ${join_group_3_time} IS NOT NULL
+         AND ${browse_groups_1_time} <  ${join_group_3_time})
           ;;
   }
 
@@ -196,7 +150,7 @@ view: groups_funnel {
     sql: ${id} ;;
     filters: {
       field: furthest_step
-      value:  "1st, 2nd, 2-3, 2-3-4, 1-3, 1-3-4"
+      value:  "1st, 2nd, 2-3, 1-3"
       # drill_fields: [detail*]
     }
   }
@@ -206,30 +160,30 @@ view: groups_funnel {
     type: count
     filters: {
       field: furthest_step
-      value:  "1st, 2nd, 2-3, 2-3-4, 1-3, 1-3-4"
+      value:  "1st, 2nd, 2-3, 1-3"
       # drill_fields: [detail*]
     }
   }
 
   measure: count_sessions_event12 {
-    label: "see all groups"
+    label: "browse to visit groups"
     description: "Only includes sessions which also completed event 1"
     type: count_distinct
     sql: ${id} ;;
     filters: {
       field: furthest_step
-      value:  " 2nd, 2-3, 2-3-4"
+      value:  " 2nd, 2-3"
     }
   }
 
   measure: count_sessions_event123 {
-    label: "see all groups to view group"
+    label: "visit to join"
     description: "Only includes sessions which also completed event 1 & 2 & 3"
     type: count_distinct
     sql: ${id} ;;
     filters: {
       field: furthest_step
-      value:  "2-3, 2-3-4"
+      value:  "2-3"
     }
   }
   measure: count_sessions_event13 {
@@ -239,33 +193,9 @@ view: groups_funnel {
     sql: ${id} ;;
     filters: {
       field: furthest_step
-      value:  "1-3, 1-3-4"
+      value:  "1-3"
     }
   }
-
-  measure: count_sessions_event134 {
-    label: "browse > view > join"
-    description: "Only includes sessions which also completed event 1 & 3"
-    type: count_distinct
-    sql: ${id} ;;
-    filters: {
-      field: furthest_step
-      value:  "1-3-4"
-    }
-  }
-
-
-  measure: count_sessions_event1234 {
-    label: "see all > join"
-    description: "Only includes sessions which also completed event 1 & 2 &3 "
-    type: count_distinct
-    sql: ${id} ;;
-    filters: {
-      field: furthest_step
-      value: "2-3-4"
-    }
-  }
-
 
 
 
@@ -274,10 +204,7 @@ view: groups_funnel {
   dimension: furthest_step {
     label: "Furthest Funnel Step Reached"
     case: {
-      when: {
-        sql: ${reached_event_234} = true ;;
-        label: "2-3-4"
-      }
+
       when: {
         sql: ${reached_event_23} = true ;;
         label: "2-3"
@@ -505,7 +432,7 @@ view: groups_seeall_funnel {
           , sessions.suffix as suffix
           , MIN (
             CASE WHEN
-            REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich|connect_groups_see_allmein_weg|connect_groups_see_allessen|connect_groups_see_allumdenken|connect_groups_find_group|connect_groups_find_|connect_groups_see_all')
+            REGEXP_CONTAINS(hits_events.eventAction, '^connect_groups_see_all_|^connect_groups_see_alldas_bin_ich|connect_groups_see_allmein_weg|connect_groups_see_allessen|connect_groups_see_allumdenken|connect_groups_see_all')
              THEN TIMESTAMP_MILLIS(UNIX_MILLIS(TIMESTAMP_SECONDS(sessions.visitStarttime)) + hits.time)
              ELSE NULL END
             ) AS see_all_1
