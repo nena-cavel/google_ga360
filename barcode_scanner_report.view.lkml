@@ -1,81 +1,159 @@
-view: barcode_scanner_report {
+
+view: barcode_scanner_weekly {
+  view_label: "Monthly Sessions Summary"
   derived_table: {
-    persist_for: "72 hours"
-    sql:SELECT DISTINCT
-date as gen_date,
-(CASE WHEN cd.index=53 then cd.value END) AS region,
-device.operatingSystem AS os ,
-h.eventinfo.eventaction as scan_name,
-CONCAT(fullvisitorid, CAST(visitId AS STRING), CAST(h.hitnumber AS STRING)) as total_events,
-fullvisitorId as users
-FROM `wwi-datalake-1.wwi_ga_pond.ga_sessions`, unnest(customdimensions) as cd, unnest(hits) as h
-INNER JOIN
-unnest(GENERATE_DATE_ARRAY('2018-01-01', '2019-12-31', INTERVAL 1 month)) as date
-ON (EXTRACT( WEEK FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(week from date)
-  AND EXTRACT( year FROM TIMESTAMP_MILLIS((visitStartTime*1000)+h.time)) = extract(year from date) )
-WHERE SUFFIX Between '20180101'AND '20191231'
-AND REGEXP_CONTAINS(h.eventinfo.eventaction, 'barcodescanner_fooddatabase|barcodescanner_crowdsourced|barcodescanner_crowdsourceditem|barcodescanner_foodsnondatabase')
-AND (CASE WHEN cd.index=53 then cd.value END) is not null
-GROUP BY 1,2,3,4,5,6 ;;
+    datagroup_trigger: weekly_cache
+    explore_source: ga_sessions {
+      timezone: "America/New_York"
+      column: visitStart_week {}
+      column: operatingSystem {field: device.operatingSystem}
+      column: screenName { field: hits_appInfo.screenName}
+      column: market {}
+      column: language { field: device.language}
+      column: event_action { field: hits_eventInfo.eventAction}
+      column: event_label { field: hits_eventInfo.eventLabel}
+      derived_column: group_id {
+        sql: case when regexp_contains(event_action, 'connect_groups') then event_label end  ;;
+      }
+      column: connect_users {}
+      derived_column: my_day_users {
+        sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
+      }
+
+      column: fullVisitorId {}
+      derived_column: barcode_scanners {
+        sql: CASE WHEN barcode_scan_names is not null then fullVisitorId end ;;
+      }
+      column: total_barcode_scans {}
+      derived_column: groups_users {
+        sql: case when event_action = 'connect_groups_landing' then fullVisitorId end ;;
+      }
+      column: barcode_scan_names {field: hits_eventInfo.barcode_scan_names}
+#       column: unique_invited_visitors { field: invited_users.unique_visitors }
+      filters: {
+        field: ga_sessions.partition_date
+        value: "70 weeks ago for 70 weeks"
+#         value: "1 weeks ago for 1 weeks"
+      }
+      filters: {
+        field: ga_sessions.visitStart_week
+        value: "70 weeks ago for 70 weeks"
+#           value: "1 weeks ago for 1 weeks"
+      }
+
+#       filters: {
+#         field: invited_users.partition_date
+#         value: "70 weeks ago for 70 weeks"
+#         # value: "1 weeks ago for 1 weeks"
+#       }
+#       filters: {
+#         # This filter enables us to force a left join on the invited_users view.
+#         field: invited_users.left_join
+#         value: "Yes"
+#       }
+
+    }
   }
-  dimension_group: week_date {
+  dimension: visitStart_week {
+    view_label: "Session"
+    label: "Visit Start Month"
+    type: date_week
+    convert_tz: no
+  }
+
+  dimension_group: date {
+    timeframes: [date,raw, week]
+    datatype: datetime
     type: time
     convert_tz: no
-    timeframes: [date,week,month,month_name,week_of_year,raw]
-    sql: timestamp(${TABLE}.gen_date) ;;
+    sql: timestamp(cast(${visitStart_week} as date)) ;;
   }
 
-dimension: region {
-  type: string
-  sql: ${TABLE}.region ;;
-}
+  dimension: market {
+    view_label: "Session"
+    label: "Market"
+  }
 
-  dimension: market_name {
+  dimension: region_name {
     type: string
-    sql: (case when ${TABLE}.region ='us' then 'United States'
-                WHEN ${TABLE}.region ='de' then 'Germany'
-                WHEN ${TABLE}.region ='gb' then 'UK'
-                WHEN ${TABLE}.region = 'ca' then 'Canada'
-                WHEN ${TABLE}.region ='fr' then 'France'
-                WHEN ${TABLE}.region ='nl' then 'Netherlands'
-                when ${TABLE}.region ='be' then 'Belgium'
-                WHEN ${TABLE}.region ='ch' then 'Switzerland'
-                when ${TABLE}.region ='au' then 'ANZ'
-                WHEN ${TABLE}.region ='nz' then 'ANZ'
-                WHEN ${TABLE}.region ='se' then 'Sweden'
-                when ${TABLE}.region ='br' then 'Brazil'
-    END) ;;
+    sql: CASE WHEN ${market} = 'US' THEN 'United States'
+            WHEN ${market} = 'DE' THEN 'Germany'
+            WHEN ${market} = 'GB' then 'United Kingdom'
+            WHEN ${market} = 'FR' then 'France'
+            WHEN ${market} = 'CA' then 'Canada'
+            when ${market} = 'SE' then 'Sweden'
+            when ${market} = 'AU' then 'ANZ'
+            WHEN ${market} = 'NL' then 'Netherlands'
+            when ${market} = 'BE' then 'Belgium'
+            WHEN ${market} = 'CH' then 'Switzerland'
+            end ;;
   }
 
-dimension: operating_system {
-  type: string
-  sql: ${TABLE}.os ;;
-}
 
-dimension: scan_name {
-  type: string
-  sql: ${TABLE}.scan_name ;;
-}
+  dimension: language {
+    type: string
+  }
 
-dimension: scan_name_group {
-  type: string
-  sql: (CASE WHEN ${TABLE}.scan_name = "barcodescanner_crowdsourced"
-  THEN "Crowdsourced"
-  WHEN ${TABLE}.scan_name="barcodescanner_crowdsourceditem" THEN "Crowdsourced"
-  WHEN ${TABLE}.scan_name= "barcodescanner_fooddatabase" THEN "WW Verified Food"
-  WHEN ${TABLE}.scan_name="barcodescanner_foodsnondatabase" THEN "Not in DB"
-  end)
-  ;;
-}
+  dimension: device_language {
+    type: string
+    sql: CASE WHEN regexp_contains(${language}, 'en-') then 'English'
+              WHEN regexp_contains(${language}, 'de-') then 'German'
+              when regexp_contains(${language}, 'fr-') then 'French'
+              WHEN regexp_contains(${language}, 'nl-') then 'Dutch'
+              WHEN regexp_contains(${language}, 'sv-') then 'Swedish'
+              WHEN regexp_contains(${language}, 'pt-') then 'Portuguese'
+              END;;
+  }
 
-measure: total_events {
-  type: count_distinct
-  sql: ${TABLE}.total_events ;;
-  value_format: "0.000,,\" M\""
-}
+  dimension: operatingSystem {
+    view_label: "Session"
+    type: string
+  }
 
-measure: total_scanners {
-  type: count_distinct
-  sql: ${TABLE}.total_events ;;
-}
+  dimension: deviceCategory {
+    view_label: "Session"
+    label: "Device Category"
+  }
+
+  measure: connect_users {
+    view_label: "Session"
+    type: sum
+  }
+
+  measure: barcode_scanners {
+    view_label: "Session"
+    type: count_distinct
+  }
+
+  measure: total_barcode_scans {
+    view_label: "Session"
+    type: sum
+  }
+
+  dimension: barcode_scan_names {
+    view_label: "Session"
+    type: string
+  }
+
+  measure: my_day_users {
+    view_label: "Session"
+    type: count_distinct
+  }
+
+  dimension: group_id {
+    type: string
+  }
+
+  measure: groups_users {
+    view_label: "Session"
+    type: count_distinct
+  }
+
+  measure: unique_visitors {
+    view_label: "Session"
+    label: "Unique Visitors"
+    type: sum
+  }
+
+
 }
