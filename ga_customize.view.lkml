@@ -2009,6 +2009,16 @@ dimension: tenure_or_date {
   }
 
 
+  dimension: onboarding_type_skip_yesno {
+    sql:  ${onboarding_card_name} in ('Skip Tutorial')
+      ;;
+    type: yesno
+
+  }
+
+
+
+
   measure: completed_onb_session_count_start {
     type: count_distinct
     sql: ${ga_sessions.id};;
@@ -2027,6 +2037,14 @@ dimension: tenure_or_date {
     }
   }
 
+  measure: completed_onb_session_count_skip {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_skip_yesno
+      value: "Yes"
+    }
+  }
 
 
 

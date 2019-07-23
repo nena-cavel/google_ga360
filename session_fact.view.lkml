@@ -11,6 +11,7 @@
         column: funnel_prospect_session_count {}
         column: completed_onb_session_count_start {field:hits_eventInfo.completed_onb_session_count_start}
         column: completed_onb_session_count_finish {field:hits_eventInfo.completed_onb_session_count_finish}
+        column: completed_onb_session_count_skip {field:hits_eventInfo.completed_onb_session_count_skip}
         column:  iaf_page_desktop_users {}
         column: channelGrouping {}
         column: fullVisitorId {}
@@ -74,6 +75,12 @@
       type: number
     }
 
+    dimension:  completed_onb_session_count_skip {
+      hidden: yes
+      label: "Session ONB completed Session Count Skip"
+      type: number
+    }
+
     dimension: did_ONB_start {
       type: yesno
       sql: ${completed_onb_session_count_start}= 1 ;;
@@ -85,10 +92,20 @@
     }
 
 
+    dimension: did_ONB_skip {
+      type: yesno
+      sql: ${completed_onb_session_count_skip}= 1 ;;
+    }
+
+
     dimension: did_ONB_completed {
       type: yesno
-      sql: ${completed_onb_session_count_finish}= 1 and ${completed_onb_session_count_start}= 1 ;;
+      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1 then true
+      when ${completed_onb_session_count_skip}= 1 then false
+      else null end;;
     }
+
+
 
     dimension: is_prospect{
       type: yesno
