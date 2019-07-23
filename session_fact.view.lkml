@@ -99,10 +99,10 @@
 
 
     dimension: did_ONB_completed {
-      type: yesno
-      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1) then true
-      when ${completed_onb_session_count_skip}= 1 then false
-      else null end;;
+      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1) then 'Completed Tutorial'
+      when ${completed_onb_session_count_skip}= 1 then 'Skipped Tutorial'
+      else 'Other' end;;
+      suggestions: ["Completed Tutorial","Skipped Tutorial" ]
     }
 
 
