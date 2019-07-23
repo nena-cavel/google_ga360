@@ -100,7 +100,7 @@
 
     dimension: did_ONB_completed {
       type: yesno
-      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1 then true
+      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1) then true
       when ${completed_onb_session_count_skip}= 1 then false
       else null end;;
     }
