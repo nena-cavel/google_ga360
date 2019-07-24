@@ -1521,17 +1521,25 @@ when (${eventAction} = 'meditation' and ${eventLabel} in ('Walk_at_Home_or_Anywh
 when (${eventAction} = 'meditation' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Achtsames_Kochen', 'Uppskatta_matlagning', 'Bewust_koken',
 'Appr_ciez__vraiment__la_cuisine', 'Manger_en_toute_conscience'))
 then 'Appreciate Cooking'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Ta_en_promenad', 'Walk_in_your_neighborhood', 'Walk_in_your_neighbourhood', 'Wandelen_in_je_buurt', 'Dreh_eine_Runde_um_den_Block', 'Marchez_dans_votre_quartier',
+'Faites_une_promenade_dans_le_voisinage', 'Faites_une_promenade_dans_le_voisinage')) then 'Walk in Your Neighborhood'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Release_and_restore', 'release_and_restore', 'Sl_pp_tag_och__terst_ll', 'Ontspannen_en_batterij_weer_opladen', 'Loslassen_und_st_rken', 'Relaxez_vous_et_rechargez_vos_batteries',
+'Lib_rez_et_ressourcez', 'Rel_cher_et_r_cup_rer')) then 'Release & Restore'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Sleep_music', 'sleep_music', 'Avslappningsmusik', 'Muziek_in_slaap_te_vallen', 'Einschlaf_Musik', 'Musique_pour_dormir', 'Musique_propice_au_sommeil',
+'S_endormir_en_musique')) then 'Sleep Music'
+
+
 
 
     else 'Other' end
               ;;
     suggestions: [ "Headspace", "Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking"]
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking", "Walk in Your Neighborhood", "Release & Restore", "Sleep Music"]
     }
 
   dimension: headspace_cards {
     sql: case when  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking") then ${headspace_card_name}
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking" , "Walk in Your Neighborhood", "Release & Restore", "Sleep Music") then ${headspace_card_name}
         else null end
          ;;
     type: string
@@ -1540,7 +1548,7 @@ then 'Appreciate Cooking'
 
   dimension: headspace_cards_yesno {
     sql:  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking")
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking" , "Walk in Your Neighborhood", "Release & Restore", "Sleep Music")
 
                ;;
     type: yesno
