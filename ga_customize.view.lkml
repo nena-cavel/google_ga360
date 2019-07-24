@@ -1964,7 +1964,7 @@ dimension: tenure_or_date {
     when (${eventAction} = 'onb_my_day_checklist_tutorial203' or ${eventAction} = 'dashboard_tutorial') then 'Dashboard Tutorial'
     when (${eventAction} = 'onb_my_day_checklist_setweightgoal' or ${eventAction} = 'weight_goal') then 'Weight Goal Tutorial'
     when (${eventAction} = 'onb_my_day_checklist_weighinday' or ${eventAction} = 'weight_tracking_day') then 'Weight Tracking Day Tutorial'
-    when (${eventAction} = 'onb_my_day_checklist_check' or ${hits_appInfo.screenName} = 'onb_tips_success') then 'Tips for Success'
+    when ((${eventAction} = 'onb_my_day_checklist_check' and ${hits.type} = 'EVENT') or (${hits_appInfo.screenName} = 'onb_tips_success' and ${hits.type} = 'APPVIEW')) then 'Tips for Success'
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_1 ' then 'How Freestyle Works Article'
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_2 ' then 'Understanding SP Budget'
     when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_3' then 'Zero Point Food'
