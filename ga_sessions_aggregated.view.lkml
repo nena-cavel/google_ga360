@@ -437,6 +437,7 @@ dimension: group_id_name {
     label: "My Day Desktop Users"
     type: sum
   }
+
 }
 
 view: ga_iaf_weekly {

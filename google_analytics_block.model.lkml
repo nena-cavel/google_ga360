@@ -147,6 +147,11 @@ explore: kpi_funnel_static {
 explore: ga_sessions_weekly {
   persist_with: weekly_cache
   description: "Aggregates key GA metrics to the weekly level"
+  join: weekly_signup_numbers{
+    type: left_outer
+    relationship: one_to_one
+    sql_on: Concat(${ga_sessions_weekly.visitStart_week},${ga_sessions_weekly.market}) = concat(cast(${weekly_signup_numbers.enrollment_date_current_week_start_date} as string),${weekly_signup_numbers.member_market_1}) ;;
+  }
 }
 explore: ga_iaf_weekly {
   persist_with: weekly_cache
@@ -155,10 +160,10 @@ explore: ga_iaf_weekly {
 explore: ga_test {
   persist_with: weekly_cache
   description: "test for new stuff"
-  join: connect_test {
+  join: weekly_signup_numbers{
     type: left_outer
-    relationship: many_to_many
-    sql_on: Concat(${ga_test.visitStart_week},${ga_test.market}) = concat(${connect_test.visitStart_week},${connect_test.market}) ;;
+    relationship: one_to_one
+    sql_on: Concat(${ga_test.visitStart_week},${ga_test.market}) = concat(cast(${weekly_signup_numbers.enrollment_date_current_week_start_date} as string),${weekly_signup_numbers.member_market_1}) ;;
   }
 }
 
