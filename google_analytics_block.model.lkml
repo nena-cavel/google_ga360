@@ -134,7 +134,7 @@ explore: kpi_funnel_static {
     persist_for: "24 hours"
   }
 
-  explore: barcode_scanner_report {
+  explore: barcode_scanner_weekly {
     persist_for: "72 hours"
   }
   explore: connect_daily_counts {
@@ -195,3 +195,5 @@ explore: groups_carousel_funnel  {}
 explore: ga_sessions_monthly {
   persist_with: monthly_cache_ga
 }
+explore: groups_seeall_funnel {}
+explore: groups_specific_funnel {}

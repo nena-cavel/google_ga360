@@ -64,6 +64,24 @@ view: ga_sessions_monthly {
     view_label: "Session"
     label: "Market"
   }
+
+ dimension: region_name {
+   type: string
+  sql: CASE WHEN ${market} = 'US' THEN 'United States'
+            WHEN ${market} = 'DE' THEN 'Germany'
+            WHEN ${market} = 'GB' then 'United Kingdom'
+            WHEN ${market} = 'FR' then 'France'
+            WHEN ${market} = 'CA' then 'Canada'
+            when ${market} = 'SE' then 'Sweden'
+            when ${market} = 'AU' then 'ANZ'
+            WHEN ${market} = 'NL' then 'Netherlands'
+            when ${market} = 'BE' then 'Belgium'
+            WHEN ${market} = 'CH' then 'Switzerland'
+            end ;;
+ }
+
+
+
   dimension: language {
     type: string
   }

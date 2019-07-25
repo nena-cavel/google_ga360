@@ -1119,7 +1119,7 @@ dimension: choose_photo_connect {
 }
 
 dimension: browse_groups {
-  sql: regexp_contains(${eventAction}, '^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
+  sql: regexp_contains(${eventAction}, 'groups_my_day_browse|^connect_groups_find_group$|^connect_groups_find_first_group$|^connect_groups_popup_findgroup$') ;;
   type: yesno
 }
 
@@ -1521,17 +1521,25 @@ when (${eventAction} = 'meditation' and ${eventLabel} in ('Walk_at_Home_or_Anywh
 when (${eventAction} = 'meditation' and ${eventLabel} in ('Appreciate_Cooking', 'Appreciate_cooking', 'Achtsames_Kochen', 'Uppskatta_matlagning', 'Bewust_koken',
 'Appr_ciez__vraiment__la_cuisine', 'Manger_en_toute_conscience'))
 then 'Appreciate Cooking'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Ta_en_promenad', 'Walk_in_your_neighborhood', 'Walk_in_your_neighbourhood', 'Wandelen_in_je_buurt', 'Dreh_eine_Runde_um_den_Block', 'Marchez_dans_votre_quartier',
+'Faites_une_promenade_dans_le_voisinage', 'Faites_une_promenade_dans_le_voisinage')) then 'Walk in Your Neighborhood'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Release_and_restore', 'release_and_restore', 'Sl_pp_tag_och__terst_ll', 'Ontspannen_en_batterij_weer_opladen', 'Loslassen_und_st_rken', 'Relaxez_vous_et_rechargez_vos_batteries',
+'Lib_rez_et_ressourcez', 'Rel_cher_et_r_cup_rer')) then 'Release & Restore'
+when (${eventAction} = 'meditation' and ${eventLabel} in ('Sleep_music', 'sleep_music', 'Avslappningsmusik', 'Muziek_in_slaap_te_vallen', 'Einschlaf_Musik', 'Musique_pour_dormir', 'Musique_propice_au_sommeil',
+'S_endormir_en_musique')) then 'Sleep Music'
+
+
 
 
     else 'Other' end
               ;;
     suggestions: [ "Headspace", "Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking"]
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking", "Walk in Your Neighborhood", "Release & Restore", "Sleep Music"]
     }
 
   dimension: headspace_cards {
     sql: case when  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking") then ${headspace_card_name}
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking" , "Walk in Your Neighborhood", "Release & Restore", "Sleep Music") then ${headspace_card_name}
         else null end
          ;;
     type: string
@@ -1540,7 +1548,7 @@ then 'Appreciate Cooking'
 
   dimension: headspace_cards_yesno {
     sql:  ${headspace_card_name} in ("Basics", "Changing Perspectives", "Take a Moment to Pause", "End of Day", "Engage Your Senses When Eating",
-      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking")
+      "Accepting the Mind", "Walking in Your Home", "Refresh", "Focus", "Monkey Mind", "Take a Break", "Walk at Home or Anywhere", "Appreciate Cooking" , "Walk in Your Neighborhood", "Release & Restore", "Sleep Music")
 
                ;;
     type: yesno
@@ -1952,27 +1960,27 @@ dimension: tenure_or_date {
 
 
   dimension: onboarding_card_name {
-    sql: case when ${hits_appInfo.screenName} = 'onb_welcomescreen' then 'Welcome Screen'
-    when (${hits_appInfo.screenName} = 'onb_profilescreen1' or ${eventAction} = 'onb_profile_step1') then 'Personal Information 1'
-    when (${hits_appInfo.screenName} = 'onb_profilescreen2' or ${eventAction} = 'onb_profile_step2') then 'Personal Information 2 (Activity)'
-    when ${eventAction} = 'complete_profile' then 'Complete Onboarding Profile'
-    when (${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' or ${eventAction} = 'onb_start_tutorial1') then 'Tutorial Start'
-    when (${eventAction} = 'tutorial_skip' or ${eventAction} = 'onb_skip_tutorials') then 'Skip Tutorial'
-    when ${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' then 'Tutorial 0 Pt Introduction'
-    when (${hits_appInfo.screenName} = 'onb_tfs_complete' or ${eventAction} = 'onb_tutorial203_complete' or ${eventAction} = 'onb_tutorial204_complete') then 'Tutorial Finish'
-    when (${eventAction} = 'onb_my_day_checklist_tutorial204' or ${eventAction} = 'tracking_tutorial') then 'Tracking Tutorial'
-    when (${eventAction} = 'onb_my_day_checklist_tutorial203' or ${eventAction} = 'dashboard_tutorial') then 'Dashboard Tutorial'
-    when (${eventAction} = 'onb_my_day_checklist_setweightgoal' or ${eventAction} = 'weight_goal') then 'Weight Goal Tutorial'
-    when (${eventAction} = 'onb_my_day_checklist_weighinday' or ${eventAction} = 'weight_tracking_day') then 'Weight Tracking Day Tutorial'
-    when (${eventAction} = 'onb_my_day_checklist_check' or ${hits_appInfo.screenName} = 'onb_tips_success') then 'Tips for Success'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_1 ' then 'How Freestyle Works Article'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_2 ' then 'Understanding SP Budget'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_3' then 'Zero Point Food'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_4' then 'Sample Meals'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_5' then 'WellnessWins'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_6 ' then 'Connect'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_7' then 'Mindset of Success'
-    when ${eventAction} = 'onb_my_day_checklist_nextsteps_url_8' then 'How to Sync Fitness Device'
+    sql: case when (${hits_appInfo.screenName} = 'onb_welcomescreen' and ${hits.type} = 'APPVIEW') then 'Welcome Screen'
+    when ((${hits_appInfo.screenName} = 'onb_profilescreen1'and ${hits.type} = 'APPVIEW') or (${eventAction} = 'onb_profile_step1' and ${hits.type} = 'EVENT')) then 'Personal Information 1'
+    when ((${hits_appInfo.screenName} = 'onb_profilescreen2' and ${hits.type} = 'APPVIEW') or (${eventAction} = 'onb_profile_step2' and ${hits.type} = 'EVENT')) then 'Personal Information 2 (Activity)'
+    when (${eventAction} = 'complete_profile' and ${hits.type} = 'EVENT') then 'Complete Onboarding Profile'
+    when ((${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' and ${hits.type} = 'APPVIEW') or (${eventAction} = 'onb_start_tutorial1' and ${hits.type} = 'EVENT')) then 'Tutorial Start'
+    when ((${eventAction} = 'tutorial_skip' and ${hits.type} = 'EVENT') or (${eventAction} = 'onb_skip_tutorials' and ${hits.type} = 'EVENT')) then 'Skip Tutorial'
+    when (${hits_appInfo.screenName} = 'onb_tutorial_smartpoints' and ${hits.type} = 'APPVIEW') then 'Tutorial 0 Pt Introduction'
+    when ((${hits_appInfo.screenName} = 'onb_tfs_complete' and ${hits.type} = 'APPVIEW') or (${eventAction} = 'onb_tutorial203_complete' and ${hits.type} = 'EVENT') or (${eventAction} = 'onb_tutorial204_complete' and ${hits.type} = 'EVENT')) then 'Tutorial Finish'
+    when ((${eventAction} = 'onb_my_day_checklist_tutorial204' and ${hits.type} = 'EVENT') or (${eventAction} = 'tracking_tutorial' and ${hits.type} = 'EVENT')) then 'Tracking Tutorial'
+    when ((${eventAction} = 'onb_my_day_checklist_tutorial203' and ${hits.type} = 'EVENT') or (${eventAction} = 'dashboard_tutorial' and ${hits.type} = 'EVENT')) then 'Dashboard Tutorial'
+    when ((${eventAction} = 'onb_my_day_checklist_setweightgoal' and ${hits.type} = 'EVENT') or (${eventAction} = 'weight_goal' and ${hits.type} = 'EVENT')) then 'Weight Goal Tutorial'
+    when ((${eventAction} = 'onb_my_day_checklist_weighinday' and ${hits.type} = 'EVENT') or (${eventAction} = 'weight_tracking_day' and ${hits.type} = 'EVENT')) then 'Weight Tracking Day Tutorial'
+    when ((${eventAction} = 'onb_my_day_checklist_check' and ${hits.type} = 'EVENT') or (${hits_appInfo.screenName} = 'onb_tips_success' and ${hits.type} = 'APPVIEW')) then 'Tips for Success'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_1 ' and ${hits.type} = 'EVENT') then 'How Freestyle Works Article'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_2 ' and ${hits.type} = 'EVENT') then 'Understanding SP Budget'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_3' and ${hits.type} = 'EVENT') then 'Zero Point Food'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_4' and ${hits.type} = 'EVENT') then 'Sample Meals'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_5' and ${hits.type} = 'EVENT') then 'WellnessWins'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_6 ' and ${hits.type} = 'EVENT') then 'Connect'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_7' and ${hits.type} = 'EVENT') then 'Mindset of Success'
+    when (${eventAction} = 'onb_my_day_checklist_nextsteps_url_8' and ${hits.type} = 'EVENT') then 'How to Sync Fitness Device'
 
 
   -- Continue with the rest of the cards
@@ -1986,30 +1994,65 @@ dimension: tenure_or_date {
 
   dimension: onboarding_type {
     label: "Onboarding Tutorial Type - Completed or Skipped"
-    sql: case when ${onboarding_card_name} in('Tutorial Start', 'Tutorial Finish' ) then 'Completed Tutorial'
+    sql: case when (${onboarding_card_name} = 'Tutorial Start' and ${onboarding_card_name} =  'Tutorial Finish')  then 'Completed Tutorial'
             when ${onboarding_card_name} in ('Skip Tutorial') then 'Skipped Tutorial'
        else null end;;
     suggestions: ["Completed Tutorial","Skipped Tutorial" ]
 
 }
 
-  dimension: onboarding_type_yesno {
-    sql:  ${onboarding_type} in ('Completed Tutorial')
+  dimension: onboarding_type_finish_yesno {
+    sql:  ${onboarding_card_name} in ('Tutorial Finish')
                      ;;
     type: yesno
 
 }
 
-  measure: completed_onb_session_count {
+
+  dimension: onboarding_type_start_yesno {
+    sql:  ${onboarding_card_name} in ('Tutorial Start')
+      ;;
+    type: yesno
+
+  }
+
+
+  dimension: onboarding_type_skip_yesno {
+    sql:  ${onboarding_card_name} in ('Skip Tutorial')
+      ;;
+    type: yesno
+
+  }
+
+
+
+
+  measure: completed_onb_session_count_start {
     type: count_distinct
     sql: ${ga_sessions.id};;
     filters: {
-      field: onboarding_type_yesno
+      field: onboarding_type_start_yesno
       value: "Yes"
     }
   }
 
+  measure: completed_onb_session_count_finish {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_finish_yesno
+      value: "Yes"
+    }
+  }
 
+  measure: completed_onb_session_count_skip {
+    type: count_distinct
+    sql: ${ga_sessions.id};;
+    filters: {
+      field: onboarding_type_skip_yesno
+      value: "Yes"
+    }
+  }
 
 
 
