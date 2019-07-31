@@ -61,6 +61,13 @@ explore: ga_sessions {
       relationship:  one_to_one
       sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
     }
+
+  join: cbs_funnel {
+    from: cbs_funnel
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${ga_sessions.funnelid}=${cbs_funnel.id} ;;
+  }
   }
 
 explore: dau_mau_derived {
