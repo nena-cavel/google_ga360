@@ -16,6 +16,9 @@ view: ga_sessions_monthly {
         sql: case when regexp_contains(event_action, 'connect_groups') then event_label end  ;;
       }
       column: connect_users {}
+      column: connect_posters {}
+      column: connect_likers {}
+      column: connect_commenters {}
       derived_column: my_day_users {
           sql: case when  screenName = 'food_dashboard' then fullVisitorId end ;;
       }
@@ -111,6 +114,19 @@ view: ga_sessions_monthly {
     view_label: "Session"
     type: sum
   }
+  measure: connect_posters {
+    view_label: "Session"
+    type: sum
+  }
+  measure: connect_likers {
+    view_label: "Session"
+    type: sum
+  }
+  measure: connect_commenters {
+    view_label: "Session"
+    type: sum
+  }
+
 
 measure: barcode_scanners {
   view_label: "Session"

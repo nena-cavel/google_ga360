@@ -15,6 +15,7 @@ view: ga_sessions_weekly {
       column: my_day_users {}
       column: connect_users {}
       column: groups_users {}
+      column: myday_groups_carousel_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
       column: unique_prospects {}
@@ -84,6 +85,10 @@ view: ga_sessions_weekly {
   }
 
   measure: connect_users {
+    type: sum
+  }
+
+  measure: myday_groups_carousel_users {
     type: sum
   }
 

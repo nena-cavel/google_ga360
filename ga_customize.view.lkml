@@ -75,6 +75,15 @@ view: ga_sessions {
     }
   }
 
+  measure: myday_groups_carousel_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.myday_groups_carousel
+      value: "yes"
+    }
+  }
+
 measure: fullvisitid_count {
   type: count_distinct
   sql: ${fullVisitorId} ;;
@@ -293,6 +302,24 @@ measure: profile_weightseeall_users {
     filters: {
         field: hits_eventInfo.connect_commenters
         value: "yes"
+    }
+  }
+
+  measure: total_connect_comments {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.connect_commenters
+      value: "yes"
+    }
+  }
+
+  measure: total_connect_likes {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),cast(hits.hitnumber as string)) ;;
+    filters: {
+      field:  hits_eventInfo.connect_likers
+      value: "yes"
     }
   }
 
@@ -1148,6 +1175,11 @@ dimension: backbutton_connectpost {
   }
 dimension: join_group {
   sql: ${eventAction} = 'connect_groups_join_public_group' ;;
+  type: yesno
+}
+
+dimension: myday_groups_carousel {
+  sql: regexp_contains(${eventAction}, 'groups_my_day_browse|groups_my_day_') ;;
   type: yesno
 }
 
