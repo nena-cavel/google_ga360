@@ -98,6 +98,33 @@ measure: fullvisitid_count {
     }
   }
 
+  measure: weight_mydaycard_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.connect_users_dimension
+      value: "yes"
+    }
+  }
+
+  measure: weight_mydaycard_sessions {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId});;
+    filters: {
+      field: hits_appInfo.connect_users_dimension
+      value: "yes"
+    }
+  }
+
+  measure: journey_messages_users {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field: hits_appInfo.connect_users_dimension
+      value: "yes"
+    }
+  }
+
 measure:  profile_follows {
   type: count_distinct
   sql: concat(cast(${visitId} as string),${fullVisitorId});;
@@ -1026,6 +1053,11 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: journey_messages {
+    sql: ${screenName} = 'journey_messages' ;;
+    type: yesno
+  }
+
 dimension: search_bar {
   sql: ${screenName} = 'Search' ;;
   type: yesno
@@ -1412,8 +1444,7 @@ dimension: group_id_name {
 
 
 dimension: connect_commenters {
-  sql: (${eventAction} =  'connect_comment'
-      or ${eventAction} = 'connect_reply_to_member') ;;
+  sql: regexp_contains(${eventAction},  'connect_comment|connect_reply_to_member|add-comment$') ;;
   type: yesno
 }
 
@@ -1457,6 +1488,12 @@ dimension: weight_changemanagement {
   sql:  ${eventLabel} = 'see_on_profile' ;;
   type: yesno
 }
+
+  dimension: weight_mydaycard {
+    sql:  ${eventAction} = 'track_weight_mydaycard' ;;
+    type: yesno
+  }
+
 
 
 
