@@ -110,9 +110,7 @@ explore: kpi_funnel_static {
     join: post_love_score_daily {
       type: inner
       relationship: one_to_one
-      sql_on: ${engagement_score.region}=${post_love_score_daily.region}
-              AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
-              and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
+      sql_on: ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
     }
   }
 
