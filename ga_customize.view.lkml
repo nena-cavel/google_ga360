@@ -102,7 +102,7 @@ measure: fullvisitid_count {
     type: count_distinct
     sql: ${fullVisitorId} ;;
     filters: {
-      field: hits_appInfo.connect_users_dimension
+      field: hits_eventInfo.weight_mydaycard
       value: "yes"
     }
   }
@@ -111,7 +111,7 @@ measure: fullvisitid_count {
     type: count_distinct
     sql: concat(cast(${visitId} as string),${fullVisitorId});;
     filters: {
-      field: hits_appInfo.connect_users_dimension
+      field: hits_eventInfo.weight_mydaycard
       value: "yes"
     }
   }
@@ -120,7 +120,7 @@ measure: fullvisitid_count {
     type: count_distinct
     sql: ${fullVisitorId};;
     filters: {
-      field: hits_appInfo.connect_users_dimension
+      field: hits_appInfo.journey_messages
       value: "yes"
     }
   }
@@ -1516,6 +1516,7 @@ dimension: all_follows {
   sql: regexp_contains(${eventAction}, 'connect_user_follow|connect_member_fast_follow') ;;
   type: yesno
 }
+
 
 dimension: member_blocks {
   sql: regexp_contains(${eventAction}, 'connect_user_block|connect_block_member_profile') ;;
