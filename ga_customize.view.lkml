@@ -37,6 +37,54 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+
+  measure: natural_search_users {
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: natural_search_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_digital_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Digital"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_studio_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Studio"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
   measure:  unique_funnel_prospects{
     filters: {
       field: Prospect
