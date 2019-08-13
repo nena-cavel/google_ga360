@@ -37,6 +37,54 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+
+  measure: natural_search_users {
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: natural_search_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_digital_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Digital"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_studio_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Studio"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
   measure:  unique_funnel_prospects{
     filters: {
       field: Prospect
@@ -1808,17 +1856,17 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
 
   dimension: aaptiv_action_card_name {
-    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Meditation'
-          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Workout'
+          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Workout'
  else 'Other' end
               ;;
-    suggestions: [ "Played Meditation", "Completed Meditation"]
+    suggestions: [ "Played Workout", "Completed Workout"]
   }
 
 
 
   dimension: aaptiv_actions {
-    sql: case when  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation") then ${aaptiv_action_card_name}
+    sql: case when  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout") then ${aaptiv_action_card_name}
         else null end
          ;;
     type: string
@@ -1826,7 +1874,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
   }
 
   dimension: aaptiv_actions_yesno {
-    sql:  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation")
+    sql:  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout")
 
                                  ;;
     type: yesno
