@@ -23,7 +23,7 @@ GROUP BY 1,2,3
 #WHERE regexp_contains(region, 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz') ;;
 }
 dimension_group: month_visited {
-  timeframes: [month,month_num,month_name,date]
+  timeframes: [year, month,month_num,month_name,date]
   datatype: datetime  # was date, but support changed it to datetime
   type: time
   convert_tz: no
