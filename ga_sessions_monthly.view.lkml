@@ -35,12 +35,12 @@ view: ga_sessions_monthly {
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
-        value: "70 weeks ago for 70 weeks"
+        value: "90 weeks ago for 90 weeks"
 #         value: "1 weeks ago for 1 weeks"
       }
       filters: {
         field: ga_sessions.visitStart_week
-        value: "70 weeks ago for 70 weeks"
+        value: "90 weeks ago for 90 weeks"
 #           value: "1 weeks ago for 1 weeks"
       }
 
