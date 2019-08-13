@@ -361,6 +361,24 @@ measure: profile_weightseeall_users {
     }
   }
 
+  measure: close_mydayweight_total {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.close_myday_weightcard
+      value: "yes"
+    }
+  }
+
+  measure: mini_post_total_x{
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.mini_post_x
+      value: "yes"
+    }
+  }
+
   measure: connect_likers {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -1510,6 +1528,16 @@ dimension: connect_posters {
   sql: ${eventAction}= 'connect_post';;
   type: yesno
 }
+
+dimension: close_myday_weightcard {
+  sql: ${eventAction}= 'close_myday_weightcard' ;;
+  type: yesno
+}
+
+  dimension: mini_post_x {
+    sql: ${eventAction}= 'connect_mini_post_x' ;;
+    type: yesno
+  }
 
   dimension: groups_users {
     sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
