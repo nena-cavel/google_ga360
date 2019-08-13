@@ -1856,17 +1856,17 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
 
   dimension: aaptiv_action_card_name {
-    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Meditation'
-          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Workout'
+          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Workout'
  else 'Other' end
               ;;
-    suggestions: [ "Played Meditation", "Completed Meditation"]
+    suggestions: [ "Played Workout", "Completed Workout"]
   }
 
 
 
   dimension: aaptiv_actions {
-    sql: case when  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation") then ${aaptiv_action_card_name}
+    sql: case when  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout") then ${aaptiv_action_card_name}
         else null end
          ;;
     type: string
@@ -1874,7 +1874,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
   }
 
   dimension: aaptiv_actions_yesno {
-    sql:  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation")
+    sql:  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout")
 
                                  ;;
     type: yesno
