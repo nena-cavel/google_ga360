@@ -1840,13 +1840,13 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
       when (${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
       'activity_card_aaptiv_Cardio___muscu') or (${eventAction} = 'workout' and  ${eventLabel} in ('Cardio___strength', 'Cardio___renforcement', 'Cardio___Kraft',
       'Cardio___muscu')))then 'Cardio + Strength'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('Start_walking', 'start_walking')) then 'Start Walking'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('Stretch_and_relax', 'stretch_and_relax')) then 'Stretch and Relax'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('walk_to_the_music', 'Walk_to_the_music')) then 'Walk to the Music'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('power_your_walk', 'Power_your_walk')) then 'Power Your Walk'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('Ease_into_yoga', 'ease_into_yoga')) then 'Ease into Yoga'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_strength', 'Find_your_strength')) then 'Find Your Strength'
-      where (${eventAction} = 'workout' and  ${eventLabel} in ('run_to_the_beat', 'Run_to_the_beat')) then 'Run to the Beat'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('Start_walking', 'start_walking')) then 'Start Walking'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('Stretch_and_relax', 'stretch_and_relax')) then 'Stretch and Relax'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('walk_to_the_music', 'Walk_to_the_music')) then 'Walk to the Music'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('power_your_walk', 'Power_your_walk')) then 'Power Your Walk'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('Ease_into_yoga', 'ease_into_yoga')) then 'Ease into Yoga'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_strength', 'Find_your_strength')) then 'Find Your Strength'
+     when (${eventAction} = 'workout' and  ${eventLabel} in ('run_to_the_beat', 'Run_to_the_beat')) then 'Run to the Beat'
 
 
 
