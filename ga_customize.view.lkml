@@ -1813,6 +1813,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
+    when ${eventAction} = 'workout' and  (${eventLabel} = 'Start_walking' or ${eventLabel} = 'start_walking') then 'Start Walking'
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
       'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')))  then 'Start Getting Stronger'
@@ -1840,7 +1841,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
       when (${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
       'activity_card_aaptiv_Cardio___muscu') or (${eventAction} = 'workout' and  ${eventLabel} in ('Cardio___strength', 'Cardio___renforcement', 'Cardio___Kraft',
       'Cardio___muscu')))then 'Cardio + Strength'
-      when ${eventAction} = 'workout' and  (${eventLabel} = 'Start_walking' or ${eventLabel} = 'start_walking') then 'Start Walking'
+
       when (${eventAction} = 'workout' and  ${eventLabel} in ('Stretch_and_relax', 'stretch_and_relax')) then 'Stretch and Relax'
       when (${eventAction} = 'workout' and  ${eventLabel} in ('walk_to_the_music', 'Walk_to_the_music')) then 'Walk to the Music'
       when (${eventAction} = 'workout' and  ${eventLabel} in ('power_your_walk', 'Power_your_walk')) then 'Power Your Walk'
