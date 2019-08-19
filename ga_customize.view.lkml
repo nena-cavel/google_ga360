@@ -1857,8 +1857,7 @@ when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_speed', 'Find
      else 'Other' end
               ;;
     suggestions: [ "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength",
-      "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"]
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"]
     }
 
   dimension: aaptiv_cards {
