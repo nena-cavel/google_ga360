@@ -1836,6 +1836,18 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
+    when ${eventAction} = 'workout' and  (${eventLabel} = 'Start_walking' or ${eventLabel} = 'start_walking') then 'Start Walking'
+    when (${eventAction} = 'workout' and  ${eventLabel} in ('Stretch_and_relax', 'stretch_and_relax')) then 'Stretch and Relax'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('walk_to_the_music', 'Walk_to_the_music')) then 'Walk to the Music'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('power_your_walk', 'Power_your_walk')) then 'Power Your Walk'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('Ease_into_yoga', 'ease_into_yoga')) then 'Ease into Yoga'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_strength', 'Find_your_strength')) then 'Find Your Strength'
+     when (${eventAction} = 'workout' and  ${eventLabel} in ('run_to_the_beat', 'Run_to_the_beat')) then 'Run to the Beat'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('Build_stamina', 'build_stamina')) then 'Build Stamina'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('keep_on_moving', 'Keep_on_moving')) then 'Keep on Moving'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_speed', 'Find_your_speed')) then 'Find Your Speed'
+
+
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
       'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')))  then 'Start Getting Stronger'
@@ -1865,15 +1877,19 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
       'Cardio___muscu')))then 'Cardio + Strength'
 
 
+
+
+
      else 'Other' end
               ;;
     suggestions: [ "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength"]
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"]
     }
 
   dimension: aaptiv_cards {
     sql: case when  ${aaptiv_card_name} in ( "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength" ) then ${aaptiv_card_name}
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"
+      ) then ${aaptiv_card_name}
         else null end
          ;;
     type: string
@@ -1882,7 +1898,8 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_cards_yesno {
     sql:  ${aaptiv_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength")
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"
+      )
 
                ;;
     type: yesno
