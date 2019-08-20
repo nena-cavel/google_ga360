@@ -175,10 +175,19 @@ measure: fullvisitid_count {
 
 measure:  profile_follows {
   type: count_distinct
-  sql: concat(cast(${visitId} as string),${fullVisitorId});;
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
   filters: {
     field: hits_eventInfo.profile_followers
     value: "yes"
+    }
+  }
+
+  measure:  feed_follows {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.feed_fast_follow
+      value: "yes"
     }
   }
 
@@ -336,7 +345,16 @@ measure: profile_weightseeall_users {
 
   measure: connect_profile_views {
     type: count_distinct
-    sql: concat(cast(${visitId} as string),${fullVisitorId});;
+    sql:  concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
+  measure: total_connect_profile_views {
+    type: count_distinct
+    sql:concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
     filters: {
       field: hits_appInfo.connect_profile_views
       value: "yes"
@@ -1162,7 +1180,7 @@ dimension: notifications_page {
 
   dimension: connect_profile_views {
     type: yesno
-    sql: regexp_contains(${screenName}, 'connect_profile|profile_other_view') ;;
+    sql: regexp_contains(${screenName}, '^connect_profile$|^profile_other_view$') ;;
 
   }
 
@@ -1545,6 +1563,11 @@ dimension: close_myday_weightcard {
   }
 dimension: profile_followers {
   sql: ${eventAction} = 'connect_user_follow';;
+  type: yesno
+}
+
+dimension: feed_fast_follow {
+  sql: ${eventAction} = 'connect_member_fast_follow' ;;
   type: yesno
 }
 
