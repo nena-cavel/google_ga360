@@ -2324,7 +2324,7 @@ dimension: tenure_or_date {
             when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
             when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
             when ${eventAction} = 'track_activity' then 'Track Activity'
-            when {eventAction} = 'activity_favorited' then 'Activity Favorited'
+            when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
 
             else 'Other' end
         ;;
