@@ -2319,6 +2319,75 @@ dimension: tenure_or_date {
 
 
 
+  dimension: activity {
+    sql: case when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
+            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
+            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+            when ${eventAction} = 'track_activity' then 'Track Activity'
+            when {eventAction} = 'activity_favorited' then 'Activity Favorited'
+
+            else 'Other' end
+        ;;
+    suggestions: ["Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited"]
+  }
+
+
+
+  dimension: activity_name {
+    sql: case when  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited") then ${activity}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_name_yesno {
+    sql:  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited")
+
+                                 ;;
+    type: yesno
+
+  }
+
+
+  dimension: activity_device {
+    sql: case
+            when ${eventAction} = 'sync_activity' then 'Sync Activity'
+            when ${eventAction} = 'sync_device' then 'Sync Device'
+            when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
+            when ${eventAction} = 'connect' then 'Connect Activity'
+            when ${eventAction} = 'connect_success' then 'Connect Success'
+            when ${eventAction} = 'connect_failed' then 'Connect Failed'
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed"]
+  }
+
+
+
+  dimension: activity_device_name {
+    sql: case when  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed") then ${activity_device}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_device_name_yesno {
+    sql:  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed")
+
+                                       ;;
+    type: yesno
+
+  }
+
+
+
+
+
 
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
