@@ -16,7 +16,8 @@ view: owned_social {
 
   dimension: asset_type {
     type: string
-    sql: ${TABLE}.assetType ;;
+    sql: CASE WHEN ${TABLE}.assetType LIKE "%forinstagram%"
+    THEN "link (incl instagram link in bio)" ELSE ${TABLE}.assetType END  ;;
   }
 
 
@@ -113,7 +114,7 @@ measure: bounces {
   }
   measure: visits {
     type: sum
-    sql: ${TABLE}.visits ;;
+    sql: ${TABLE}.visits ;; #count of distince visitIDs in the BQ original view
   }
   measure: sign_ups {
     type: sum
