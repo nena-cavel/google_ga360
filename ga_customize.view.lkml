@@ -2355,6 +2355,41 @@ dimension: tenure_or_date {
             when ${eventAction} = 'sync_activity' then 'Sync Activity'
             when ${eventAction} = 'sync_device' then 'Sync Device'
             when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
+
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Sync Activity", "Sync Device", "Sync Device Failed"]
+  }
+
+
+
+  dimension: activity_device_name {
+    sql: case when  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed") then ${activity_device}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_device_name_yesno {
+    sql:  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed")
+
+                                       ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
+
+  dimension: activity_device_connect {
+    sql: case
             when ${eventAction} = 'connect' then 'Connect Activity'
             when ${eventAction} = 'connect_success' then 'Connect Success'
             when ${eventAction} = 'connect_failed' then 'Connect Failed'
@@ -2363,28 +2398,26 @@ dimension: tenure_or_date {
 
             else 'Other' end
         ;;
-    suggestions: ["Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed"]
+    suggestions: ["Connect Activity", "Connect Success", "Connect Failed"]
   }
 
 
 
-  dimension: activity_device_name {
-    sql: case when  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed") then ${activity_device}
+  dimension: activity_device_connect_name {
+    sql: case when  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed") then ${activity_device}
         else null end
          ;;
     type: string
 
   }
 
-  dimension: activity_device_name_yesno {
-    sql:  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed")
+  dimension: activity_device_connect_name_yesno {
+    sql:  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed")
 
-                                       ;;
+                                             ;;
     type: yesno
 
   }
-
-
 
 
 
