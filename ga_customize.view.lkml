@@ -37,6 +37,54 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+
+  measure: natural_search_users {
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: natural_search_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_digital_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Digital"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: natural_search_studio_signups{
+    filters: {
+      field: channelGrouping
+      value: "Natural Search"
+    }
+    filters: {
+      field: hits_product.Product
+      value: "Studio"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
   measure:  unique_funnel_prospects{
     filters: {
       field: Prospect
@@ -98,12 +146,48 @@ measure: fullvisitid_count {
     }
   }
 
+  measure: weight_mydaycard_users {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.weight_mydaycard
+      value: "yes"
+    }
+  }
+
+  measure: weight_mydaycard_sessions {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId});;
+    filters: {
+      field: hits_eventInfo.weight_mydaycard
+      value: "yes"
+    }
+  }
+
+  measure: journey_messages_users {
+    type: count_distinct
+    sql: ${fullVisitorId};;
+    filters: {
+      field: hits_appInfo.journey_messages
+      value: "yes"
+    }
+  }
+
 measure:  profile_follows {
   type: count_distinct
-  sql: concat(cast(${visitId} as string),${fullVisitorId});;
+  sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
   filters: {
     field: hits_eventInfo.profile_followers
     value: "yes"
+    }
+  }
+
+  measure:  feed_follows {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
+    filters: {
+      field: hits_eventInfo.feed_fast_follow
+      value: "yes"
     }
   }
 
@@ -261,7 +345,16 @@ measure: profile_weightseeall_users {
 
   measure: connect_profile_views {
     type: count_distinct
-    sql: concat(cast(${visitId} as string),${fullVisitorId});;
+    sql:  concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_appInfo.connect_profile_views
+      value: "yes"
+    }
+  }
+
+  measure: total_connect_profile_views {
+    type: count_distinct
+    sql:concat(cast(${visitId} as string),${fullVisitorId},cast(hits.hitnumber as string)) ;;
     filters: {
       field: hits_appInfo.connect_profile_views
       value: "yes"
@@ -282,6 +375,24 @@ measure: profile_weightseeall_users {
     sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
     filters: {
       field: hits_eventInfo.groups_users
+      value: "yes"
+    }
+  }
+
+  measure: close_mydayweight_total {
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.close_myday_weightcard
+      value: "yes"
+    }
+  }
+
+  measure: mini_post_total_x{
+    type: count_distinct
+    sql: concat(cast(${visitId} as string),${fullVisitorId}) ;;
+    filters: {
+      field: hits_eventInfo.mini_post_x
       value: "yes"
     }
   }
@@ -1026,6 +1137,11 @@ view: hits_appInfo {
     type: yesno
   }
 
+  dimension: journey_messages {
+    sql: ${screenName} = 'journey_messages' ;;
+    type: yesno
+  }
+
 dimension: search_bar {
   sql: ${screenName} = 'Search' ;;
   type: yesno
@@ -1064,7 +1180,7 @@ dimension: notifications_page {
 
   dimension: connect_profile_views {
     type: yesno
-    sql: regexp_contains(${screenName}, 'connect_profile|profile_other_view') ;;
+    sql: regexp_contains(${screenName}, '^connect_profile$|^profile_other_view$') ;;
 
   }
 
@@ -1412,8 +1528,7 @@ dimension: group_id_name {
 
 
 dimension: connect_commenters {
-  sql: (${eventAction} =  'connect_comment'
-      or ${eventAction} = 'connect_reply_to_member') ;;
+  sql: regexp_contains(${eventAction},  'connect_comment|connect_reply_to_member|add-comment$') ;;
   type: yesno
 }
 
@@ -1432,12 +1547,27 @@ dimension: connect_posters {
   type: yesno
 }
 
+dimension: close_myday_weightcard {
+  sql: ${eventAction}= 'close_myday_weightcard' ;;
+  type: yesno
+}
+
+  dimension: mini_post_x {
+    sql: ${eventAction}= 'connect_mini_post_x' ;;
+    type: yesno
+  }
+
   dimension: groups_users {
     sql: regexp_contains(${eventAction},'connect_groups_landing|connect_groups_join_first_group|connect_groups_join_public_group') ;;
     type: yesno
   }
 dimension: profile_followers {
   sql: ${eventAction} = 'connect_user_follow';;
+  type: yesno
+}
+
+dimension: feed_fast_follow {
+  sql: ${eventAction} = 'connect_member_fast_follow' ;;
   type: yesno
 }
 
@@ -1457,6 +1587,12 @@ dimension: weight_changemanagement {
   sql:  ${eventLabel} = 'see_on_profile' ;;
   type: yesno
 }
+
+  dimension: weight_mydaycard {
+    sql:  ${eventAction} = 'track_weight_mydaycard' ;;
+    type: yesno
+  }
+
 
 
 
@@ -1479,6 +1615,7 @@ dimension: all_follows {
   sql: regexp_contains(${eventAction}, 'connect_user_follow|connect_member_fast_follow') ;;
   type: yesno
 }
+
 
 dimension: member_blocks {
   sql: regexp_contains(${eventAction}, 'connect_user_block|connect_block_member_profile') ;;
@@ -1699,6 +1836,18 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_card_name {
     sql: case when ${eventAction} in ('activity_card_aaptiv','aaptivcard') then 'Aaptiv'
+    when ${eventAction} = 'workout' and  (${eventLabel} = 'Start_walking' or ${eventLabel} = 'start_walking') then 'Start Walking'
+    when (${eventAction} = 'workout' and  ${eventLabel} in ('Stretch_and_relax', 'stretch_and_relax')) then 'Stretch and Relax'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('walk_to_the_music', 'Walk_to_the_music')) then 'Walk to the Music'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('power_your_walk', 'Power_your_walk')) then 'Power Your Walk'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('Ease_into_yoga', 'ease_into_yoga')) then 'Ease into Yoga'
+      when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_strength', 'Find_your_strength')) then 'Find Your Strength'
+     when (${eventAction} = 'workout' and  ${eventLabel} in ('run_to_the_beat', 'Run_to_the_beat')) then 'Run to the Beat'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('Build_stamina', 'build_stamina')) then 'Build Stamina'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('keep_on_moving', 'Keep_on_moving')) then 'Keep on Moving'
+when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_speed', 'Find_your_speed')) then 'Find Your Speed'
+
+
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
       'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')))  then 'Start Getting Stronger'
@@ -1728,15 +1877,19 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
       'Cardio___muscu')))then 'Cardio + Strength'
 
 
+
+
+
      else 'Other' end
               ;;
     suggestions: [ "Aaptiv", "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength"]
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"]
     }
 
   dimension: aaptiv_cards {
     sql: case when  ${aaptiv_card_name} in ( "Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength" ) then ${aaptiv_card_name}
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"
+      ) then ${aaptiv_card_name}
         else null end
          ;;
     type: string
@@ -1745,7 +1898,8 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
   dimension: aaptiv_cards_yesno {
     sql:  ${aaptiv_card_name} in ("Start Getting Stronger", "Basic Walking", "Walk to the Beat", "Pick Up the Pace", "Fast and Total Training", "Find your Strength", "Jog/Run",
-      "Get Strong Faster", "Cardio + Strength")
+      "Get Strong Faster", "Cardio + Strength", "Start Walking", "Stretch and Relax", "Walk to the Music", "Power Your Walk", "Ease into Yoga", "Find Your Strength", "Run to the Beat", "Build Stamina", "Keep on Moving", "Find Your Speed"
+      )
 
                ;;
     type: yesno
@@ -1770,17 +1924,17 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
 
 
   dimension: aaptiv_action_card_name {
-    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Meditation'
-          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Meditation'
+    sql: case when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_play')) then 'Played Workout'
+          when (${eventCategory} = ('aaptiv') and ${eventAction} = ('media_100')) then 'Completed Workout'
  else 'Other' end
               ;;
-    suggestions: [ "Played Meditation", "Completed Meditation"]
+    suggestions: [ "Played Workout", "Completed Workout"]
   }
 
 
 
   dimension: aaptiv_actions {
-    sql: case when  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation") then ${aaptiv_action_card_name}
+    sql: case when  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout") then ${aaptiv_action_card_name}
         else null end
          ;;
     type: string
@@ -1788,7 +1942,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Achtsames_Gehen')) the
   }
 
   dimension: aaptiv_actions_yesno {
-    sql:  ${aaptiv_action_card_name} in ("Played Meditation", "Completed Meditation")
+    sql:  ${aaptiv_action_card_name} in ("Played Workout", "Completed Workout")
 
                                  ;;
     type: yesno
@@ -1919,19 +2073,22 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               when (${eventAction} = 'food_browse_featuredcollectionscroll' and ${hits.type} = 'EVENT') then 'Featured Collection Scroll'
                when (${eventAction} = 'food_browse_created' and ${hits.type} = 'EVENT') then 'Created'
               when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
+              when (${eventAction} = 'zero_point_foods' and ${hits.type} = 'EVENT') then 'Zero Point Foods'
 
 
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
-    suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder" ]
+    suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder",
+      "Zero Point Foods"]
   }
 
 
 
 
 dimension: my_day_cards {
-  sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date") then ${card_name}
+  sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
+  "Zero Point Foods") then ${card_name}
   else null end
    ;;
   type: string
@@ -1939,7 +2096,8 @@ dimension: my_day_cards {
 }
 
   dimension: my_day_cards_yesno {
-    sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date")
+    sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
+    "Zero Point Foods")
 
          ;;
     type: yesno
@@ -2153,6 +2311,75 @@ dimension: tenure_or_date {
     "How to Sync Fitness Device")
 
                      ;;
+    type: yesno
+
+  }
+
+
+
+
+
+  dimension: activity {
+    sql: case when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
+            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
+            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+            when ${eventAction} = 'track_activity' then 'Track Activity'
+            when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
+
+            else 'Other' end
+        ;;
+    suggestions: ["Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited"]
+  }
+
+
+
+  dimension: activity_name {
+    sql: case when  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited") then ${activity}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_name_yesno {
+    sql:  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited")
+
+                                 ;;
+    type: yesno
+
+  }
+
+
+  dimension: activity_device {
+    sql: case
+            when ${eventAction} = 'sync_activity' then 'Sync Activity'
+            when ${eventAction} = 'sync_device' then 'Sync Device'
+            when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
+            when ${eventAction} = 'connect' then 'Connect Activity'
+            when ${eventAction} = 'connect_success' then 'Connect Success'
+            when ${eventAction} = 'connect_failed' then 'Connect Failed'
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed"]
+  }
+
+
+
+  dimension: activity_device_name {
+    sql: case when  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed") then ${activity_device}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_device_name_yesno {
+    sql:  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed")
+
+                                       ;;
     type: yesno
 
   }
