@@ -61,6 +61,13 @@ explore: ga_sessions {
       relationship:  one_to_one
       sql_on: ${ga_sessions.funnelid}=${b2b_signup_funnel.id} ;;
     }
+
+  join: cbs_funnel {
+    from: cbs_funnel
+    type: inner
+    relationship:  one_to_one
+    sql_on: ${ga_sessions.funnelid}=${cbs_funnel.id} ;;
+  }
   }
 
 explore: dau_mau_derived {
@@ -103,9 +110,7 @@ explore: kpi_funnel_static {
     join: post_love_score_daily {
       type: inner
       relationship: one_to_one
-      sql_on: ${engagement_score.region}=${post_love_score_daily.region}
-              AND ${engagement_score.region_group} = ${post_love_score_daily.region_group}
-              and ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
+      sql_on: ${engagement_score.session_date_date} = ${post_love_score_daily.date_date};;
     }
   }
 
@@ -134,7 +139,7 @@ explore: kpi_funnel_static {
     persist_for: "24 hours"
   }
 
-  explore: barcode_scanner_report {
+  explore: barcode_scanner_weekly {
     persist_for: "72 hours"
   }
   explore: connect_daily_counts {
@@ -147,9 +152,24 @@ explore: kpi_funnel_static {
 explore: ga_sessions_weekly {
   persist_with: weekly_cache
   description: "Aggregates key GA metrics to the weekly level"
+  join: weekly_signup_numbers{
+    type: left_outer
+    relationship: one_to_one
+    sql_on: Concat(${ga_sessions_weekly.visitStart_week},${ga_sessions_weekly.market}) = concat(cast(${weekly_signup_numbers.enrollment_date_current_week_start_date} as string),${weekly_signup_numbers.member_market_1}) ;;
+  }
 }
 explore: ga_iaf_weekly {
   persist_with: weekly_cache
+}
+
+explore: ga_test {
+  persist_with: weekly_cache
+  description: "test for new stuff"
+  join: weekly_signup_numbers{
+    type: left_outer
+    relationship: one_to_one
+    sql_on: Concat(${ga_test.visitStart_week},${ga_test.market}) = concat(cast(${weekly_signup_numbers.enrollment_date_current_week_start_date} as string),${weekly_signup_numbers.member_market_1}) ;;
+  }
 }
 
 explore: new_autobanned_words {
@@ -180,3 +200,5 @@ explore: groups_carousel_funnel  {}
 explore: ga_sessions_monthly {
   persist_with: monthly_cache_ga
 }
+explore: groups_seeall_funnel {}
+explore: groups_specific_funnel {}

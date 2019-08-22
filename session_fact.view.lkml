@@ -9,6 +9,9 @@
         column: visitStart_date {}
         column: id {}
         column: funnel_prospect_session_count {}
+        column: completed_onb_session_count_start {field:hits_eventInfo.completed_onb_session_count_start}
+        column: completed_onb_session_count_finish {field:hits_eventInfo.completed_onb_session_count_finish}
+        column: completed_onb_session_count_skip {field:hits_eventInfo.completed_onb_session_count_skip}
         column:  iaf_page_desktop_users {}
         column: channelGrouping {}
         column: fullVisitorId {}
@@ -58,6 +61,51 @@
       label: "Session Funnel Prospect Session Count"
       type: number
     }
+
+    dimension:  completed_onb_session_count_start {
+      hidden: yes
+      label: "Session ONB completed Session Count Start"
+      type: number
+    }
+
+
+    dimension:  completed_onb_session_count_finish {
+      hidden: yes
+      label: "Session ONB completed Session Count Finish"
+      type: number
+    }
+
+    dimension:  completed_onb_session_count_skip {
+      hidden: yes
+      label: "Session ONB completed Session Count Skip"
+      type: number
+    }
+
+    dimension: did_ONB_start {
+      type: yesno
+      sql: ${completed_onb_session_count_start}= 1 ;;
+    }
+
+    dimension: did_ONB_finish {
+      type: yesno
+      sql: ${completed_onb_session_count_finish}= 1 ;;
+    }
+
+
+    dimension: did_ONB_skip {
+      type: yesno
+      sql: ${completed_onb_session_count_skip}= 1 ;;
+    }
+
+
+    dimension: did_ONB_completed {
+      sql: case when (${completed_onb_session_count_start}= 1 and ${completed_onb_session_count_finish}= 1) then 'Completed Tutorial'
+      when ${completed_onb_session_count_skip}= 1 then 'Skipped Tutorial'
+      else 'Other' end;;
+      suggestions: ["Completed Tutorial","Skipped Tutorial" ]
+    }
+
+
 
     dimension: is_prospect{
       type: yesno

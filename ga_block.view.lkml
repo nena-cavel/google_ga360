@@ -337,6 +337,8 @@ view: ga_sessions_base {
       value: "Yes"
     }
   }
+
+
   measure: average_sessions_ver_visitor {
     type: number
     sql: 1.0 * (${session_count}/NULLIF(${unique_visitors},0))  ;;
@@ -386,6 +388,38 @@ view: ga_sessions_base {
     sql:  CASE WHEN ${trafficSource}.source = "facebook" AND ${trafficSource}.medium = "cpc" THEN "Paid Social" ELSE ${channelGrouping} END ;;
     drill_fields: [trafficSource.source]
     }
+
+  dimension: channelNew {
+    label: "Test Channel Grouping"
+    hidden:  yes
+    type: string
+    sql:
+            CASE WHEN REGEXP_CONTAINS(${first_page.pagePath},'/sampleclient$|/itw$|/nyc$|/carmax$|/target$|/stateofco$|/labcorp$|/healthnet$|/generalmills$|/dhmp$|/childrenshealth$|/lbusd$|/johndeere$|/zimmerbiomet$|/sonic$|/csx$|/clevelandclinic$|/sjusd$|/PRAHS$|/Michelin$|/msc$|/Centrica$|/ssc$|/sherwinwilliams$|/nyct$|/cintas$|/thermofisherscientific$|/marriott-international$|/wwandkohls$|/methodisthealthsystem$|/JohnsHopkinsUniversity$|/BD$|/AIG$|/Bayer$|/thehomedepot$|/memorialhermann$|/Baystate$|/NovoNordisk$|/Discover$|/NRGEnergy$|/McDermott$|/Synchrony$|/MSK$|/Comcast$|/Pfizer$|/nVent$|/SoutheasternGrocers$|/Ally$|/BAH$|/CHI$|/BCM$|/Amtrak$|/SGWS$|/DTE$|/APTIM$|/GEICO$')
+                      THEN 'Health Solutions Clients'
+                  WHEN REGEXP_CONTAINS(${first_page.pagePath}, 'invite-a-friend')
+                      THEN 'IAF'
+                  WHEN ${trafficSource.medium} = 'cpc' THEN 'Paid Search'
+                  WHEN ${trafficSource.medium} = 'email' THEN 'Email'
+                  WHEN ${trafficSource.medium} = 'triggeredemail' THEN 'Triggered Emails'
+                  WHEN ${trafficSource.medium} = 'newsletteremail' THEN 'Newsletter Emails'
+                  WHEN ${trafficSource.medium} = 'marketingemail' THEN 'Marketing Emails'
+                  WHEN ${trafficSource.medium} = 'display'  AND ${trafficSource.source}!= 'ww_display' THEN 'Display'
+                  WHEN ${trafficSource.medium} = 'affiliate' THEN  'Affiliates'
+                  WHEN ${trafficSource.medium} = 'app' THEN 'App'
+                  WHEN ${trafficSource.medium} = 'sms' THEN 'SMS'
+                  WHEN ${trafficSource.medium} = 'paidsocial' THEN 'Paid Social'
+                  WHEN ${trafficSource.medium} = 'ownedsocial' THEN 'Owned Social'
+                  WHEN ${hits_social.hasSocialSourceReferral} = 'Yes' THEN 'Organic Social'
+                  WHEN (${channelGrouping} = 'Natural Search'
+                          OR (REGEXP_CONTAINS(${trafficSource.source},'local') OR ${trafficSource.medium} = '(not set)')) THEN 'Natural Search'
+                  WHEN ${channelGrouping} = 'Referral' THEN 'Referring Domain'
+                  WHEN ${channelGrouping} = 'Direct' THEN 'Direct'
+                  WHEN ${trafficSource.medium} = 'olv' THEN 'Online Video'
+                  WHEN regexp_Contains(${trafficSource.medium}, 'ecommemail') THEN 'Ecomm Email'
+                  ELSE 'Other' END
+
+                  ;;
+  }
 
   # subrecords
   dimension: geoNetwork {hidden: yes}
