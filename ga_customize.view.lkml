@@ -2404,7 +2404,7 @@ dimension: tenure_or_date {
 
 
   dimension: activity_device_connect_name {
-    sql: case when  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed") then ${activity_device}
+    sql: case when  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed") then ${activity_device_connect}
         else null end
          ;;
     type: string
@@ -2418,6 +2418,55 @@ dimension: tenure_or_date {
     type: yesno
 
   }
+
+
+
+
+
+
+
+
+  dimension: activity_allcards {
+    sql: case when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
+            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
+            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+            when ${eventAction} = 'track_activity' then 'Track Activity'
+            when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
+            when ${eventAction} = 'sync_activity' then 'Sync Activity'
+            when ${eventAction} = 'sync_device' then 'Sync Device'
+            when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
+            when ${eventAction} = 'connect' then 'Connect Activity'
+            when ${eventAction} = 'connect_success' then 'Connect Success'
+            when ${eventAction} = 'connect_failed' then 'Connect Failed'
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed"]
+  }
+
+
+
+  dimension: activity_allcards_name {
+    sql: case when  ${activity_allcards} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed") then ${activity_allcards}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_allcards_name_yesno {
+    sql:  ${activity_allcards} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed")
+
+                                       ;;
+    type: yesno
+
+  }
+
+
+
+
+
 
 
 
