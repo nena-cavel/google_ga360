@@ -2320,11 +2320,11 @@ dimension: tenure_or_date {
 
 
   dimension: activity {
-    sql: case when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
-            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
-            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
-            when ${eventAction} = 'track_activity' then 'Track Activity'
-            when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
+    sql: case when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+            when (${hits_appInfo.screenName} = 'activity_search' and ${hits.type} = 'APPVIEW') then 'Activity Search'
+            when (${hits_appInfo.screenName} = 'activity_details' and ${hits.type} = 'APPVIEW') then 'Activity Details'
+            when (${eventAction} = 'track_activity' and ${hits.type} = 'EVENT') then 'Track Activity'
+            when (${eventAction} = 'activity_favorited' and ${hits.type} = 'EVENT') then 'Activity Favorited'
 
             else 'Other' end
         ;;
@@ -2352,9 +2352,9 @@ dimension: tenure_or_date {
 
   dimension: activity_device {
     sql: case
-            when ${eventAction} = 'sync_activity' then 'Sync Activity'
-            when ${eventAction} = 'sync_device' then 'Sync Device'
-            when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
+            when (${eventAction} = 'sync_activity' and ${hits.type} = 'EVENT') then 'Sync Activity'
+            when (${eventAction} = 'sync_device' and ${hits.type} = 'EVENT') then 'Sync Device'
+            when (${eventAction} = 'sync_device_failed' and ${hits.type} = 'EVENT') then 'Sync Device Failed'
 
 
 
@@ -2390,9 +2390,9 @@ dimension: tenure_or_date {
 
   dimension: activity_device_connect {
     sql: case
-            when ${eventAction} = 'connect' then 'Connect Activity'
-            when ${eventAction} = 'connect_success' then 'Connect Success'
-            when ${eventAction} = 'connect_failed' then 'Connect Failed'
+            when (${eventAction} = 'connect' and ${hits.type} = 'EVENT') then 'Connect Activity'
+            when (${eventAction} = 'connect_success' and ${hits.type} = 'EVENT') then 'Connect Success'
+            when (${eventAction} = 'connect_failed' and ${hits.type} = 'EVENT') then 'Connect Failed'
 
 
 
@@ -2428,17 +2428,17 @@ dimension: tenure_or_date {
 
   dimension: activity_allcards {
     sql: case
-            when ${eventAction} = 'track_activity' then 'Track Activity'
-            when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
-            when ${eventAction} = 'sync_activity' then 'Sync Activity'
-            when ${eventAction} = 'sync_device' then 'Sync Device'
-            when ${eventAction} = 'sync_device_failed' then 'Sync Device Failed'
-            when ${eventAction} = 'connect' then 'Connect Activity'
-            when ${eventAction} = 'connect_success' then 'Connect Success'
-            when ${eventAction} = 'connect_failed' then 'Connect Failed'
-            when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
-            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
-            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+            when (${eventAction} = 'track_activity' and ${hits.type} = 'EVENT') then 'Track Activity'
+            when (${eventAction} = 'activity_favorited' and ${hits.type} = 'EVENT') then 'Activity Favorited'
+            when (${eventAction} = 'sync_activity' and ${hits.type} = 'EVENT') then 'Sync Activity'
+            when (${eventAction} = 'sync_device' and ${hits.type} = 'EVENT') then 'Sync Device'
+            when (${eventAction} = 'sync_device_failed' and ${hits.type} = 'EVENT') then 'Sync Device Failed'
+            when (${eventAction} = 'connect' and ${hits.type} = 'EVENT') then 'Connect Activity'
+            when (${eventAction} = 'connect_success' and ${hits.type} = 'EVENT') then 'Connect Success'
+            when (${eventAction} = 'connect_failed' and ${hits.type} = 'EVENT') then 'Connect Failed'
+            when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+            when (${hits_appInfo.screenName} = 'activity_search'  and ${hits.type} = 'APPVIEW') then 'Activity Search'
+            when (${hits_appInfo.screenName} = 'activity_details' and ${hits.type} = 'APPVIEW') then 'Activity Details'
 
 
 
