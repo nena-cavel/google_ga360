@@ -2427,9 +2427,7 @@ dimension: tenure_or_date {
 
 
   dimension: activity_allcards {
-    sql: case when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
-            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
-            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+    sql: case
             when ${eventAction} = 'track_activity' then 'Track Activity'
             when ${eventAction} = 'activity_favorited' then 'Activity Favorited'
             when ${eventAction} = 'sync_activity' then 'Sync Activity'
@@ -2438,6 +2436,12 @@ dimension: tenure_or_date {
             when ${eventAction} = 'connect' then 'Connect Activity'
             when ${eventAction} = 'connect_success' then 'Connect Success'
             when ${eventAction} = 'connect_failed' then 'Connect Failed'
+            when ${hits_appInfo.screenName} = 'activity_dashboard' then 'Activity Dashboard'
+            when ${hits_appInfo.screenName} = 'activity_search' then 'Activity Search'
+            when ${hits_appInfo.screenName} = 'activity_details ' then 'Activity Details'
+
+
+
 
 
             else 'Other' end
