@@ -2319,6 +2319,161 @@ dimension: tenure_or_date {
 
 
 
+  dimension: activity {
+    sql: case when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+            when (${hits_appInfo.screenName} = 'activity_search' and ${hits.type} = 'APPVIEW') then 'Activity Search'
+            when (${hits_appInfo.screenName} = 'activity_details' and ${hits.type} = 'APPVIEW') then 'Activity Details'
+            when (${eventAction} = 'track_activity' and ${hits.type} = 'EVENT') then 'Track Activity'
+            when (${eventAction} = 'activity_favorited' and ${hits.type} = 'EVENT') then 'Activity Favorited'
+
+            else 'Other' end
+        ;;
+    suggestions: ["Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited"]
+  }
+
+
+
+  dimension: activity_name {
+    sql: case when  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited") then ${activity}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_name_yesno {
+    sql:  ${activity} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited")
+
+                                 ;;
+    type: yesno
+
+  }
+
+
+  dimension: activity_device {
+    sql: case
+            when (${eventAction} = 'sync_activity' and ${hits.type} = 'EVENT') then 'Sync Activity'
+            when (${eventAction} = 'sync_device' and ${hits.type} = 'EVENT') then 'Sync Device'
+            when (${eventAction} = 'sync_device_failed' and ${hits.type} = 'EVENT') then 'Sync Device Failed'
+
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Sync Activity", "Sync Device", "Sync Device Failed"]
+  }
+
+
+
+  dimension: activity_device_name {
+    sql: case when  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed") then ${activity_device}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_device_name_yesno {
+    sql:  ${activity_device} in ("Sync Activity", "Sync Device", "Sync Device Failed")
+
+                                       ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
+
+  dimension: activity_device_connect {
+    sql: case
+            when (${eventAction} = 'connect' and ${hits.type} = 'EVENT') then 'Connect Activity'
+            when (${eventAction} = 'connect_success' and ${hits.type} = 'EVENT') then 'Connect Success'
+            when (${eventAction} = 'connect_failed' and ${hits.type} = 'EVENT') then 'Connect Failed'
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Connect Activity", "Connect Success", "Connect Failed"]
+  }
+
+
+
+  dimension: activity_device_connect_name {
+    sql: case when  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed") then ${activity_device_connect}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_device_connect_name_yesno {
+    sql:  ${activity_device_connect} in ("Connect Activity", "Connect Success", "Connect Failed")
+
+                                             ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
+
+
+  dimension: activity_allcards {
+    sql: case
+            when (${eventAction} = 'track_activity' and ${hits.type} = 'EVENT') then 'Track Activity'
+            when (${eventAction} = 'activity_favorited' and ${hits.type} = 'EVENT') then 'Activity Favorited'
+            when (${eventAction} = 'sync_activity' and ${hits.type} = 'EVENT') then 'Sync Activity'
+            when (${eventAction} = 'sync_device' and ${hits.type} = 'EVENT') then 'Sync Device'
+            when (${eventAction} = 'sync_device_failed' and ${hits.type} = 'EVENT') then 'Sync Device Failed'
+            when (${eventAction} = 'connect' and ${hits.type} = 'EVENT') then 'Connect Activity'
+            when (${eventAction} = 'connect_success' and ${hits.type} = 'EVENT') then 'Connect Success'
+            when (${eventAction} = 'connect_failed' and ${hits.type} = 'EVENT') then 'Connect Failed'
+            when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+            when (${hits_appInfo.screenName} = 'activity_search'  and ${hits.type} = 'APPVIEW') then 'Activity Search'
+            when (${hits_appInfo.screenName} = 'activity_details' and ${hits.type} = 'APPVIEW') then 'Activity Details'
+
+
+
+
+
+            else 'Other' end
+        ;;
+    suggestions: ["Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed"]
+  }
+
+
+
+  dimension: activity_allcards_name {
+    sql: case when  ${activity_allcards} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed") then ${activity_allcards}
+        else null end
+         ;;
+    type: string
+
+  }
+
+  dimension: activity_allcards_name_yesno {
+    sql:  ${activity_allcards} in ("Activity Dashboard", "Activity Search", "Activity Details", "Track Activity", "Activity Favorited", "Sync Activity", "Sync Device", "Sync Device Failed", "Connect Activity", "Connect Success", "Connect Failed")
+
+                                       ;;
+    type: yesno
+
+  }
+
+
+
+
+
+
+
+
 
   dimension: iaf_myDay_desktop {
     sql: ${eventAction} = 'send_invite' AND ${eventLabel} = 'my_day' ;;
