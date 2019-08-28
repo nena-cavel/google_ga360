@@ -2074,13 +2074,15 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
                when (${eventAction} = 'food_browse_created' and ${hits.type} = 'EVENT') then 'Created'
               when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
               when (${eventAction} = 'zero_point_foods' and ${hits.type} = 'EVENT') then 'Zero Point Foods'
+when (${hits_appInfo.screenName} = 'help_help_landing' and ${hits.type} = 'APPVIEW') then 'Coach (Bottom of My Day)'
+when (${hits_appInfo.screenName} = 'rewards_journey_home' and ${hits.type} = 'APPVIEW') then 'Journey (Bottom of My Day)'
 
 
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
     suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder",
-      "Zero Point Foods"]
+      "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)"]
   }
 
 
@@ -2088,7 +2090,7 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
 
 dimension: my_day_cards {
   sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
-  "Zero Point Foods") then ${card_name}
+  "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)") then ${card_name}
   else null end
    ;;
   type: string
@@ -2097,7 +2099,7 @@ dimension: my_day_cards {
 
   dimension: my_day_cards_yesno {
     sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
-    "Zero Point Foods")
+    "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)")
 
          ;;
     type: yesno
