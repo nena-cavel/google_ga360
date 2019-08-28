@@ -2023,6 +2023,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Ma
               when (${hits_appInfo.screenName} = 'food_rollovercard' and ${hits.type} = 'APPVIEW') then 'Rollover Card'
 
               when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+              when (${hits_appInfo.screenName} = 'rewards_journey_home' and ${hits.type} = 'APPVIEW') then 'Journey (Bottom of My Day)'
               when (${eventAction} = 'onb_skip_tutorials' and ${hits.type} = 'EVENT') then 'Onboarding - Skip Tutorial'
               when (${eventAction} = 'onb_start_tutorial1' and ${hits.type} = 'EVENT') then 'Onboarding - Start Tutorial'
               when (${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
@@ -2075,7 +2076,7 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
               when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
               when (${eventAction} = 'zero_point_foods' and ${hits.type} = 'EVENT') then 'Zero Point Foods'
 when (${hits_appInfo.screenName} = 'help_help_landing' and ${hits.type} = 'APPVIEW') then 'Coach (Bottom of My Day)'
-when (${hits_appInfo.screenName} = 'rewards_journey_home' and ${hits.type} = 'APPVIEW') then 'Journey (Bottom of My Day)'
+
 
 
               -- Continue with the rest of the cards
