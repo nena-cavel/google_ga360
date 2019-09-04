@@ -346,6 +346,34 @@ view: ga_sessions_base {
     drill_fields: [fullVisitorId, visitnumber, session_count, totals.hits, totals.page_views, totals.timeonsite]
   }
 
+  measure: visitCount {
+    type: count_distinct
+    sql: concat(cast(${fullVisitorId} as string), Cast (${visitnumber} as string)) ;;
+    sql_distinct_key: concat(cast(${fullVisitorId} as string), Cast (${visitnumber} as string));;
+  }
+
+  dimension: convertingSession {
+    type: yesno
+    sql: ${totals.transactions} IS NOT NULL  ;;
+  }
+
+  measure: numVisits {
+    type: average_distinct
+    sql: ${visitnumber}  ;;
+    sql_distinct_key: concat(cast(${fullVisitorId} as string), Cast (${visitnumber} as string)) ;;
+  }
+
+  measure: numVisitsConverting {
+    type: average_distinct
+    sql: ${visitnumber} ;;
+     sql_distinct_key: concat(cast(${fullVisitorId} as string), Cast (${visitnumber} as string)) ;;
+    filters: {
+      field: convertingSession
+      value: "Yes"
+    }
+
+  }
+
   measure: total_visitors {
     type: count
     drill_fields: [fullVisitorId, visitnumber, session_count, totals.hits, totals.page_views, totals.timeonsite]
@@ -549,7 +577,7 @@ view: totals_base {
     value_format_name: percent_2
   }
   measure: transactions_count {
-    type: sum_distinct
+    type:sum_distinct
     sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
     sql: ${TABLE}.transactions ;;
   }

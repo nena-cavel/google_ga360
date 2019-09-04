@@ -30,6 +30,7 @@ view: ga_sessions_weekly {
       column: iaf_copyLink_desktop {}
       column: iaf_sendEmail_desktop {}
       column: iaf_myDay_users_desktop {}
+      column: numVisitsConverting {}
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
@@ -468,6 +469,12 @@ dimension: group_id_name {
     view_label: "Session"
     label: "My Day Desktop Users"
     type: sum
+  }
+
+  measure: numVisitsConverting {
+    view_label: "Session"
+    label: "Average Visits before Signup"
+    type: average
   }
 
 }
