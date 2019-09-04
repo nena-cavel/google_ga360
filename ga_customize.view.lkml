@@ -2092,6 +2092,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Ma
               when (${hits_appInfo.screenName} = 'food_rollovercard' and ${hits.type} = 'APPVIEW') then 'Rollover Card'
 
               when (${hits_appInfo.screenName} = 'activity_dashboard' and ${hits.type} = 'APPVIEW') then 'Activity Dashboard'
+              when (${hits_appInfo.screenName} = 'rewards_journey_home' and ${hits.type} = 'EVENT') then 'Journey (Bottom of My Day)'
               when (${eventAction} = 'onb_skip_tutorials' and ${hits.type} = 'EVENT') then 'Onboarding - Skip Tutorial'
               when (${eventAction} = 'onb_start_tutorial1' and ${hits.type} = 'EVENT') then 'Onboarding - Start Tutorial'
               when (${hits_appInfo.screenName} in ('food_card_recipes_Starter_Meals','food_card_recipes_Meals_for_Protein_Lovers','food_card_recipes_Meals_for_Carb_Lovers',
@@ -2143,13 +2144,15 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
                when (${eventAction} = 'food_browse_created' and ${hits.type} = 'EVENT') then 'Created'
               when (${hits_appInfo.screenName} = 'food_dashboard' and ${hits.type} = 'APPVIEW') then 'My Day'
               when (${eventAction} = 'zero_point_foods' and ${hits.type} = 'EVENT') then 'Zero Point Foods'
+when (${hits_appInfo.screenName} = 'help_help_landing' and ${hits.type} = 'APPVIEW') then 'Coach (Bottom of My Day)'
+
 
 
               -- Continue with the rest of the cards
               else 'Other' end
               ;;
     suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder",
-      "Zero Point Foods"]
+      "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)"]
   }
 
 
@@ -2157,7 +2160,7 @@ when (${hits_appInfo.screenName} not in ('food_card_article_Don_t_Know_What_to_E
 
 dimension: my_day_cards {
   sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
-  "Zero Point Foods") then ${card_name}
+  "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)") then ${card_name}
   else null end
    ;;
   type: string
@@ -2166,7 +2169,7 @@ dimension: my_day_cards {
 
   dimension: my_day_cards_yesno {
     sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
-    "Zero Point Foods")
+    "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)")
 
          ;;
     type: yesno
