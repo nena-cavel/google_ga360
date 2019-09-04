@@ -695,6 +695,18 @@ view: device_base {
   dimension: language {}
   dimension: screenColors {label: "Screen Colors"}
   dimension: screenResolution {label: "Screen Resolution"}
+
+  dimension: device_name {
+      type: string
+      sql: CASE WHEN regexp_contains(${device.screenResolution}, "1125x2436|375x812") THEN "iPhone X"
+                when regexp_contains(${device.screenResolution}, "1080x1920|414x736") then "iPhone 8+/7+/6+"
+                when regexp_contains(${device.screenResolution}, "750x1334|375x667") then "iPhone 8/7/6/6s"
+                when ${device.screenResolution}= "828x1792" then "iPhone Xr"
+                when regexp_contains(${device.screenResolution}, "414x896") then "iPhone X+"
+                when regexp_contains(${device.screenResolution}, "1242x2688") then "iPhone Xs Max"
+                when regexp_contains(${device.screenResolution},  "640x1136|320x568") then "iPhone SE"
+      ELSE ${device.mobileDeviceInfo} end;;
+  }
   dimension: mobileDeviceBranding {label: "Mobile Device Branding"}
   dimension: mobileDeviceInfo {label: "Mobile Device Info"}
   dimension: mobileDeviceMarketingName {label: "Mobile Device Marketing Name"}

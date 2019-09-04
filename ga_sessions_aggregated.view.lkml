@@ -18,9 +18,12 @@ view: ga_sessions_weekly {
       column: myday_groups_carousel_users {}
       column: homepage_prospect_visitors {}
       column: deviceCategory { field: device.deviceCategory }
+      column: screenResolution {field:device.screenResolution}
+      column: deviceInfo {field:device.mobileDeviceInfo}
       column: unique_prospects {}
       column: unique_funnel_prospects {}
       column: unique_visitors {}
+      column: session_count {}
       column: transactions_count { field: totals.transactions_count }
       column: count_sessions_event1 { field: funnel_growth_dashboard.count_sessions_event1_prospects }
       column: count_sessions_event12 { field: funnel_growth_dashboard.count_sessions_event12_prospects }
@@ -85,9 +88,23 @@ view: ga_sessions_weekly {
     label: "Device Category"
   }
 
+  dimension: screenResolution {
+    view_label: "Session"
+    label: "screenResolution"
+  }
+
+  dimension: deviceInfo {
+    view_label: "Session"
+    label: "deviceInfo"
+  }
+
   measure: connect_users {
     type: sum
   }
+
+measure: session_count {
+  type: sum
+}
 
   measure: myday_groups_carousel_users {
     type: sum
