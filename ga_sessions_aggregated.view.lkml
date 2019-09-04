@@ -13,6 +13,7 @@ view: ga_sessions_weekly {
       column: homepage_visitors {}
       column: group_id_new { field:hits_eventInfo.group_id_new}
       column: my_day_users {}
+      column: weigh_tracking_users {}
       column: connect_users {}
       column: groups_users {}
       column: myday_groups_carousel_users {}
@@ -68,6 +69,8 @@ view: ga_sessions_weekly {
     type: date_week
     convert_tz: no
   }
+
+
   dimension: market {
     view_label: "Session"
     label: "Market"
@@ -102,6 +105,10 @@ view: ga_sessions_weekly {
   }
 
 measure: session_count {
+  type: sum
+}
+
+measure: weigh_tracking_users {
   type: sum
 }
 

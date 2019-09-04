@@ -123,6 +123,51 @@ view: ga_sessions {
     }
   }
 
+  measure: profile_mthlypass {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_appInfo.profile_mthlypass
+      value: "yes"
+    }
+  }
+
+  measure: chat_with_coach {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.chat_with_coach
+      value: "yes"
+    }
+  }
+
+  measure: find_studio {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.profile_mtgfinderweb
+      value: "yes"
+    }
+  }
+
+  measure: personal_coaching {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.personal_coaching
+      value: "yes"
+    }
+  }
+
+  measure: more_resources {
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+    filters: {
+      field: hits_eventInfo.more_resources
+      value: "yes"
+    }
+  }
+
   measure: myday_groups_carousel_users {
     type: count_distinct
     sql: ${fullVisitorId} ;;
@@ -1173,6 +1218,11 @@ dimension: notifications_page {
     type: yesno
   }
 
+  dimension: profile_mthlypass {
+    sql: ${screenName} = 'profile_mthlypass';;
+    type: yesno
+  }
+
   dimension: connect_follow_tab {
     sql: ${screenName} = 'connect_stream_following';;
     type: yesno
@@ -1536,6 +1586,25 @@ dimension: myday_iaf {
   sql: ${eventAction} = 'iaf_my_day_card' ;;
   type: yesno
 }
+
+dimension: chat_with_coach {
+  sql: ${eventAction} = 'resources_chat_with_a_coach_clicked' ;;
+  type: yesno
+}
+
+dimension:profile_mtgfinderweb {
+    sql: ${eventAction} = 'profile_mtgfinderweb' ;;
+    type: yesno
+  }
+  dimension: personal_coaching {
+    sql: ${eventAction} = 'resources_personal_coaching_clicked' ;;
+    type: yesno
+  }
+
+  dimension: more_resources {
+    sql: ${eventAction} = 'resources_more_resources_clicked' ;;
+    type: yesno
+  }
 
 dimension: myday_connect_carousel {
   type: yesno
