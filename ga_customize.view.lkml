@@ -37,7 +37,53 @@ view: ga_sessions {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+#   dimension: Landing_site_section {
+#   type: string
+#   sql: CASE WHEN regexp_contains(${first_pagename.contentGroup3}, 'visi:..:home') THEN "Homepage"
+#             WHEN regexp_contains(${first_pagename.contentGroup3},'(visi:..:home)|(visi:..:plans.*)|(visi:..:our-approach)') THEN "Main Pages"
+#             WHEN regexp_contains(${first_pagename.contentGroup3},'(visi:..:daily-feed)|(visi:..:article.*)|(visi:..:recipe.*)') THEN "Content Pages"
+#             WHEN regexp_contains(${first_pagename.contentGroup3},'sign:..:plan|registration|payment|review|confirmation') THEN "Checkout"
+#             ELSE "Other" END;;
+#   }
 
+dimension: homepage {
+  type: yesno
+  hidden: yes
+  sql: regexp_contains(${first_pagename.contentGroup3}, 'visi:..:home') ;;
+}
+
+  dimension: main_pages {
+    type: yesno
+    hidden: yes
+    sql:  regexp_contains(${first_pagename.contentGroup3},'(visi:..:home)|(visi:..:plans.*)|(visi:..:our-approach)');;
+  }
+
+  dimension: checkout{
+    type: yesno
+    hidden: yes
+    sql: regexp_contains(${first_pagename.contentGroup3},'sign:..:plan|registration|payment|review|confirmation') ;;
+  }
+
+  dimension: landing_site_section_new {
+    type: string
+    sql: CASE WHEN ${homepage} THEN "Homepage"
+              WHEN ${main_pages} THEN "Main Pages"
+              WHEN ${checkout} THEN "Checkout"
+              ELSE "Other" END;;
+  }
+
+  measure: homepage_landing_prospects {
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: homepage
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
   measure: natural_search_users {
     filters: {
       field: channelGrouping
