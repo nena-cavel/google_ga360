@@ -13,8 +13,14 @@ view: ga_sessions_weekly {
       column: homepage_visitors {}
       column: group_id_new { field:hits_eventInfo.group_id_new}
       column: my_day_users {}
+      column: users_joining_groups {}
+      column: browse_groups_users {}
       column: weigh_tracking_users {}
       column: connect_users {}
+      column: browse_groups {}
+      column: view_incarousel_group {}
+      column: see_all_groups {}
+      column: groups_either_selection {}
       column: groups_users {}
       column: myday_groups_carousel_users {}
       column: homepage_prospect_visitors {}
@@ -107,6 +113,21 @@ view: ga_sessions_weekly {
 measure: session_count {
   type: sum
 }
+
+measure: browse_groups_users {
+  type: sum
+}
+
+measure: users_joining_groups {
+  type: sum
+}
+
+
+measure: view_incarousel_group {}
+
+measure: see_all_groups {}
+
+measure: groups_either_selection {}
 
 measure: weigh_tracking_users {
   type: sum
