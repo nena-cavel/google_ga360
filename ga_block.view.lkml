@@ -338,6 +338,16 @@ view: ga_sessions_base {
     }
   }
 
+  measure: HPOprah_count {
+    hidden: yes
+    type: count_distinct
+    sql: ${id};;
+    filters: {
+      field: HPtoOprah
+      value: "Yes"
+    }
+  }
+
 
   measure: average_sessions_ver_visitor {
     type: number

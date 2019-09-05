@@ -15,13 +15,14 @@
         column:  iaf_page_desktop_users {}
         column: channelGrouping {}
         column: fullVisitorId {}
+        column: HPOprah_count {}
         filters: {
           field: ga_sessions.partition_date
-          value: "70 weeks ago for 70 weeks"
+          value: "490 days ago for 490 days"
         }
         filters: {
           field: ga_sessions.visitStart_date
-          value: "70 weeks ago for 70 weeks"
+          value: "490 days ago for 490 days"
         }
 
       }
@@ -31,7 +32,7 @@
     dimension: visitStart_date {
       hidden: yes
       view_label: "Session"
-      label: "Visit Start Week"
+      label: "Visit Start Date"
       type: date
       convert_tz: no
     }
@@ -57,6 +58,11 @@
     }
 
     dimension: funnel_prospect_session_count {
+      hidden: yes
+      label: "Session Funnel Prospect Session Count"
+      type: number
+    }
+    dimension: HPOprah_count {
       hidden: yes
       label: "Session Funnel Prospect Session Count"
       type: number
@@ -105,7 +111,10 @@
       suggestions: ["Completed Tutorial","Skipped Tutorial" ]
     }
 
-
+    dimension: Oprah_to_HP{
+      type: yesno
+      sql: ${HPOprah_count} = 1;;
+    }
 
     dimension: is_prospect{
       type: yesno

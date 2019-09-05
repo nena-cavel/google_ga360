@@ -93,6 +93,11 @@ dimension: homepage {
     sql: ${fullVisitorId} ;;
   }
 
+  dimension: HPtoOprah {
+    type: yesno
+    sql: ${first_pagename.contentGroup3} = 'visi:us:home' AND ${hits_eventInfo.eventAction} = 'cta_ticket-details-here' ;;
+  }
+
   measure: natural_search_signups{
     filters: {
       field: channelGrouping
