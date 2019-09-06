@@ -16,6 +16,10 @@ datagroup: daily_sessions_cache {
   sql_trigger: select extract(dayofweek from timestamp_sub(current_timestamp(), interval 11 hour)) as every_day ;;
 }
 
+datagroup: session_fact {
+  sql_trigger: select extract(dayofweek from timestamp_sub(current_timestamp(), interval 12 hour)) as every_day ;;
+}
+
 datagroup: static_pdt {
   sql_trigger:  select 1 ;;
 }

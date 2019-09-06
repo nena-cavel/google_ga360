@@ -26,7 +26,7 @@
         }
 
       }
-      datagroup_trigger: daily_sessions_cache
+      datagroup_trigger: session_fact
     }
 
     dimension: visitStart_date {
