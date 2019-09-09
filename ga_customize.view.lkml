@@ -1639,7 +1639,7 @@ dimension: chat_with_coach {
 }
 
 dimension:profile_mtgfinderweb {
-    sql: ${eventAction} = 'profile_mtgfinderweb' ;;
+    sql: regexp_contains(${eventAction} ,  'profile_mtgfinderweb|profile:mtgfinderweb') ;;
     type: yesno
   }
   dimension: personal_coaching {
