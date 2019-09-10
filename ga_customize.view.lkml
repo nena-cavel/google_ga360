@@ -47,32 +47,39 @@ view: ga_sessions {
 #   }
 
 dimension: homepage {
+  group_label: "Site Section"
   type: yesno
-  hidden: yes
+
   sql: regexp_contains(${first_pagename.contentGroup3}, 'visi:..:home') ;;
 }
 
   dimension: main_pages {
+    group_label: "Site Section"
     type: yesno
-    hidden: yes
     sql:  regexp_contains(${first_pagename.contentGroup3},'(visi:..:home)|(visi:..:plans.*)|(visi:..:our-approach)');;
   }
 
   dimension: checkout{
+    group_label: "Site Section"
     type: yesno
-    hidden: yes
     sql: regexp_contains(${first_pagename.contentGroup3},'sign:..:plan|registration|payment|review|confirmation') ;;
   }
 
-  dimension: landing_site_section_new {
-    type: string
-    sql: CASE WHEN ${homepage} THEN "Homepage"
-              WHEN ${main_pages} THEN "Main Pages"
-              WHEN ${checkout} THEN "Checkout"
-              ELSE "Other" END;;
+  dimension: content_pages {
+    group_label: "Site Section"
+    type: yesno
+    sql: regexp_contains(${first_pagename.contentGroup3},'(visi:..:daily-feed)|(visi:..:article.*)|(visi:..:recipe.*)') ;;
   }
+  # dimension: landing_site_section_new {
+  #   type: string
+  #   sql: CASE WHEN ${homepage} THEN "Homepage"
+  #             WHEN ${main_pages} THEN "Main Pages"
+  #             WHEN ${checkout} THEN "Checkout"
+  #             ELSE "Other" END;;
+  # }
 
   measure: homepage_landing_prospects {
+    group_label: "Site Section"
     filters:{
       field: Prospect
       value: "Yes"
@@ -84,6 +91,93 @@ dimension: homepage {
     type: count_distinct
     sql: ${fullVisitorId} ;;
   }
+
+  measure: main_page_landing_prospects {
+    group_label: "Site Section"
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: main_pages
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: content_page_landing_prospects {
+    group_label: "Site Section"
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: content_pages
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: checkout_landing_prospects {
+    group_label: "Site Section"
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: checkout
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: Content_Page_Signups{
+    group_label: "Site Section"
+    filters: {
+      field: content_pages
+      value: "Yes"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: Main_Page_Signups{
+    group_label: "Site Section"
+    filters: {
+      field: main_pages
+      value: "Yes"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: Homepage_Signups{
+    group_label: "Site Section"
+    filters: {
+      field: homepage
+      value: "Yes"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
+  measure: Checkout_Signups{
+    group_label: "Site Section"
+    filters: {
+      field: checkout
+      value: "Yes"
+    }
+    type: sum_distinct
+    sql_distinct_key: concat(${hits_item.transactionId},${hits_product.v2ProductName},${hits.id}) ;;
+    sql: ${totals.transactions} ;;
+  }
+
   measure: natural_search_users {
     filters: {
       field: channelGrouping
