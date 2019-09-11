@@ -2231,7 +2231,7 @@ when (${eventAction} = 'media_100' and ${eventLabel} in ('Courir_en_mesure', 'Ma
               when (${hits_appInfo.screenName} = 'Search' and ${hits.type} = 'APPVIEW') then 'Search'
                when ((${eventAction} = 'food_browse_Recipes' or ${eventAction} = 'browse_recipe') and ${hits.type} = 'EVENT') then 'Discover Recipes'
                when (${hits_appInfo.screenName} = 'connect_stream_trending' and ${hits.type} = 'APPVIEW') then 'Connect (Bottom of My Day)'
-              when (${eventAction} = 'connect_seemoreposts_myday' and ${hits.type} = 'EVENT') then 'Connect (See More)'
+              when (${eventAction} = 'connect_seemoreposts_myday' and ${hits.type} = 'EVENT') then 'Connect (See More on Carousel)'
               when (${eventAction} = 'iaf_my_day_card' and ${hits.type} = 'EVENT') then 'Invite a Friend'
               when (${hits_appInfo.screenName} = 'food_browse_Restaurants' and ${hits.type} = 'APPVIEW') then 'Restaurants'
               when (${hits_appInfo.screenName} = 'food_rollovercard' and ${hits.type} = 'APPVIEW') then 'Rollover Card'
@@ -2297,14 +2297,14 @@ when (${hits_appInfo.screenName} = 'help_help_landing' and ${hits.type} = 'APPVI
               else 'Other' end
               ;;
     suggestions: ["My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial","Onboarding - Start Tutorial", "All Recipes","All Articles", "Article Tenure", "Default Collections - Discover Recipes", "Other", "Article Date", "Recipe Date", "Created", "Featured Collection Scroll", "Favorites (+)", "Favorites", "See All",  "Member Recipes", "Recipe Builder",
-      "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)"]
+      "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)", "Connect (See More on Carousel)"]
   }
 
 
 
 
 dimension: my_day_cards {
-  sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
+  sql: case when  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More on Carousel)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
   "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)") then ${card_name}
   else null end
    ;;
@@ -2313,7 +2313,7 @@ dimension: my_day_cards {
 }
 
   dimension: my_day_cards_yesno {
-    sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
+    sql:  ${card_name} in ("My Day","Search","Headspace", "Aaptiv", "Recipe Tenure","Discover Recipes","Connect (Bottom of My Day)","Connect (See More on Carousel)", "Invite a Friend", "Restaurants", "Rollover Card" ,"Activity Dashboard", "Onboarding - Skip Tutorial", "Onboarding - Start Tutorial", "Article Tenure", "Article Date", "Recipe Date",
     "Zero Point Foods", "Coach (Bottom of My Day)", "Journey (Bottom of My Day)")
 
          ;;
