@@ -314,7 +314,7 @@ dimension: group_id_name {
               WHEN ${group_id_new} =  '6a385303-75dd-4082-866d-39d1dddb5dde' then 'Goal Setting'
               WHEN ${group_id_new} =  '72062975-0bf5-483b-9397-cb2c05253eed' then 'Goal Setting'
               WHEN ${group_id_new} =  '068e786c-3328-4c06-ba0b-ceafbfd2bb37' then 'Get Back on Track'
-              ##WHEN ${group_id_new} =  'b7d79c1a-8213-4d57-af1d-773b56c9d8c3' then 'WW on the road'
+              WHEN ${group_id_new} =  'b7d79c1a-8213-4d57-af1d-773b56c9d8c3' then 'WW on the road'
               WHEN ${group_id_new} =  'ae63367b-41b8-490d-8f02-f43450acccae' then 'Hiking'
               WHEN ${group_id_new} =  '5cc9e4e8-c83f-4f3e-868b-7d6ed5e20995' then 'Vegetarisch'
               WHEN ${group_id_new} =  '9748291f-2dfd-47c8-bc59-8ab55bbcc13a' then 'Family friendly foodies'
