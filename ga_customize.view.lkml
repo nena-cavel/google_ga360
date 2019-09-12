@@ -53,6 +53,20 @@ dimension: homepage {
   sql: regexp_contains(${first_pagename.contentGroup3}, 'visi:..:home') ;;
 }
 
+  dimension:article {
+    group_label: "Site Section"
+    type: yesno
+
+    sql: regexp_contains(${first_pagename.contentGroup3}, 'visi:..:article.*') ;;
+  }
+
+  dimension:recipe {
+    group_label: "Site Section"
+    type: yesno
+
+    sql: regexp_contains(${first_pagename.contentGroup3}, 'visi:..:recipe.*') ;;
+  }
+
   dimension: main_pages {
     group_label: "Site Section"
     type: yesno
@@ -77,6 +91,34 @@ dimension: homepage {
   #             WHEN ${checkout} THEN "Checkout"
   #             ELSE "Other" END;;
   # }
+
+  measure: article_landing_prospects {
+    group_label: "Site Section"
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: article
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
+
+  measure: recipe_page_landing_prospects {
+    group_label: "Site Section"
+    filters:{
+      field: Prospect
+      value: "Yes"
+    }
+    filters: {
+      field: recipe
+      value: "Yes"
+    }
+    type: count_distinct
+    sql: ${fullVisitorId} ;;
+  }
 
   measure: homepage_landing_prospects {
     group_label: "Site Section"
