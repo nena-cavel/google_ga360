@@ -41,6 +41,16 @@ view: ga_sessions_weekly {
       column: iaf_sendEmail_desktop {}
       column: iaf_myDay_users_desktop {}
       column: numVisitsConverting {}
+      column: article_landing_prospects {}
+      column: recipe_page_landing_prospects {}
+      column: homepage_landing_prospects {}
+      column: main_page_landing_prospects {}
+      column: content_page_landing_prospects {}
+      column: Content_Page_Signups {}
+      column: Main_Page_Signups {}
+      column:  Homepage_Signups {}
+      column: Checkout_Signups {}
+
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
         field: ga_sessions.partition_date
@@ -582,6 +592,51 @@ dimension: group_id_name {
     type: average
   }
 
+
+  measure: article_landing_prospects {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure: recipe_page_landing_prospects {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  homepage_landing_prospects {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  main_page_landing_prospects {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  content_page_landing_prospects {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  Content_Page_Signups {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  Main_Page_Signups {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  Homepage_Signups {
+    view_label: "Site Section"
+    type: sum
+  }
+
+  measure:  Checkout_Signups {
+    view_label: "Site Section"
+    type: sum
+  }
 }
 
 view: ga_iaf_weekly {
