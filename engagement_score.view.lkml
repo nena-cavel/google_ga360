@@ -6,6 +6,7 @@ view: engagement_score {
 subquery.test_date as session_date,
 d.FiscalWeekOfYear AS fiscal_week,
 d.FiscalYear as fiscal_year,
+region,
 subquery.operating_system as operating_system,
 COUNT(DISTINCT visitidcalc)*
 (AVG(subquery.view_profile)+AVG(subquery.view_comments*2)+AVG(subquery.view_hashtag)
@@ -28,6 +29,7 @@ FROM
 (
 SELECT
 visitidcalc,
+region,
 CAST(test.start_time AS date) as test_date,
 test.operating_system as operating_system,
 SUM(CASE WHEN (test.screen_name = 'connect_stream_trending' AND test.hit_type = 'APPVIEW') THEN test.total_screenviews ELSE 0 END) AS view_stream,
@@ -42,6 +44,7 @@ FROM
  (
  SELECT DISTINCT
   (fullVisitorId) AS uuid,
+  (CASE WHEN cd.index=53 then cd.value else null end) as region,
   device.operatingSystem  AS operating_system,
   concat(cast(visitId as string),fullVisitorID) as visitidcalc,
   (timestamp_seconds(visitStartTime)) as start_time,
@@ -56,9 +59,9 @@ FROM
   or regexp_contains(h.eventInfo.eventAction, 'connect_post_see_more|connect_comment|connect_reply_to_member|connect_member_fast_follow|connect_user_follow|connect_post_like|connect_comment_like|connect_reply_like'))
   AND visitId IS NOT NULL
   #and regexp_contains((CASE WHEN cd.index=53 then cd.value else null end), 'us|ca|br|gb|se|fr|de|be|nl|ch|au|nz|)$')
-  GROUP BY 1,2,3,4,5,6,7,8  #,9
+  GROUP BY 1,2,3,4,5,6,7,8  ,9
   ) test
-  GROUP BY 1,2,3  #,4
+  GROUP BY 1,2,3  ,4,5
   ) subquery
 
 
@@ -83,6 +86,13 @@ GROUP BY 1, 2, 3, 4  ;;
       type: string
       sql: ${TABLE}.operating_system;;
     }
+
+
+  dimension: region{
+    type: string
+    sql: ${TABLE}.region;;
+  }
+
 
   measure: profile_views {
     type: sum
