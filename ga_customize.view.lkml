@@ -2106,31 +2106,31 @@ when (${eventAction} = 'workout' and  ${eventLabel} in ('find_your_speed', 'Find
 
       when (${eventAction} in ('activity_card_aaptiv_Start_getting_st_0', 'activity_card_aaptiv_Start_getting_stron', 'activity_card_aaptiv_Start_getting_', 'activity_card_aaptiv_Start_getting' , 'activity_card_aaptiv_Start_getting_stro',
       'activity_card_aaptiv_Commencer___de', 'activity_card_aaptiv_Commencer_à_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Start_getting_stronger', 'Krafttraining_f_r_Einsteiger',
-      'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants')))  then 'Start Getting Stronger'
+      'Commencer___devenir_plus_fort', 'Entra_nement_de_musculation_pour_d_butants', 'start_getting_stronger')))  then 'Start Getting Stronger'
       when (${eventAction} in ('activity_card_aaptiv_Basic_walking_wo_0' , 'activity_card_aaptiv_Basic_walking_worko', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking_work', 'activity_card_aaptiv_Basic_walking',
-      'activity_card_aaptiv_Entra_nement_d') or (${eventAction} = 'workout' and ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Walking_Workout_f_r_Einsteiger',
+      'activity_card_aaptiv_Entra_nement_d', 'basic_walking_workout') or (${eventAction} = 'workout' and ${eventLabel} in ('Basic_walking_workout', 'Entra_nement_de_base___la_marche', 'Walking_Workout_f_r_Einsteiger',
       'Entra_nement_de_jogging_pour_d_butants')))then 'Basic Walking'
       when (${eventAction} in ('activity_card_aaptiv_Walk_to_the_beat_0', 'activity_card_aaptiv_Walk_to_the_beat', 'activity_card_aaptiv_Walk_to_the_be', 'activity_card_aaptiv_Walk_to_the_b', 'activity_card_aaptiv_Marcher_en_ryt', 'activity_card_aaptiv_Marcher_en_ry', 'activity_card_aaptiv_Courir_en_mesu',
       'activity_card_aaptiv_Courir_en_mes') or (${eventAction} = 'workout' and  ${eventLabel} in ('Walk_to_the_beat', 'Marcher_en_rythme', 'Walking_im_Takt',
-      'Courir_en_mesure'))) then 'Walk to the Beat'
+      'Courir_en_mesure', 'walk_to_the_beat'))) then 'Walk to the Beat'
       when (${eventAction} in ('activity_card_aaptiv_Pick_up_the_pace_0', 'activity_card_aaptiv_Pick_up_the_pace', 'activity_card_aaptiv_Pick_up_the_pa', 'activity_card_aaptiv_Pick_up_the_p', 'activity_card_aaptiv_Acc_l_rer_le_r', 'activity_card_aaptiv_Accélérer_le_',
       'activity_card_aaptiv_De_la_marche_a') or (${eventAction} = 'workout' and ${eventLabel} in ('Pick_up_the_pace', 'Acc_l_rer_le_rythme', 'Vom_Walken_zum_Joggen',
-      'De_la_marche_au_jogging')))then 'Pick Up the Pace'
+      'De_la_marche_au_jogging', 'pick_up_the_pace')))then 'Pick Up the Pace'
       when (${eventAction} in ('activity_card_aaptiv_Fast_and_total_t_0', 'activity_card_aaptiv_Fast_and_total_trai', 'activity_card_aaptiv_Fast_and_total_tra', 'activity_card_aaptiv_Fast_and_total', 'activity_card_aaptiv_Fast_and_tota', 'activity_card_aaptiv_Entra_nement_r',
       'activity_card_aaptiv_Entra_nement_c') or (${eventAction} = 'workout' or  ${eventLabel} in ('Fast_and_total_training', 'Entra_nement_rapide_et_total', 'HIT_Ganzk_rper_Workout',
-      'Entra_nement_corporel_complet'))) then 'Fast and Total Training'
+      'Entra_nement_corporel_complet', 'fast_and_total_training'))) then 'Fast and Total Training'
       when (${eventAction} in ('activity_card_aaptiv_Find_your_streng_0', 'activity_card_aaptiv_Find_your_strength', 'activity_card_aaptiv_Find_your_stre', 'activity_card_aaptiv_Find_your_str', 'activity_card_aaptiv_Trouvez_votre_', 'activity_card_aaptiv_Trouvez_votre',
       'activity_card_aaptiv_D_couvrez_votr') or (${eventAction} = 'workout' and ${eventLabel} in ('Find_your_strength', 'Trouvez_votre_point_fort', 'Entdecke_deine_Kraft',
-      'D_couvrez_votre_force_physique', 'Trouve_ton_point_fort' )))then 'Find your Strength'
+      'D_couvrez_votre_force_physique', 'Trouve_ton_point_fort', 'find_your_strength' )))then 'Find your Strength'
       when (${eventAction} in ('activity_card_aaptiv_Jog_run_interval_0', 'activity_card_aaptiv_Jog_run_intervals', 'activity_card_aaptiv_Jog_run_interv', 'activity_card_aaptiv_Jog_run_inter', 'activity_card_aaptiv_Intervalles_jo', 'activity_card_aaptiv_Intervalles_j',
       'activity_card_aaptiv_Entra_nement_f') or (${eventAction} = 'workout' and ${eventLabel} in ('Jog_run_intervals', 'Intervalltraining', 'Intervalles_jog_course',
-      'Entra_nement_fractionn_')))then 'Jog/Run'
+      'Entra_nement_fractionn_', 'jog_run_intervals')))then 'Jog/Run'
       when (${eventAction} in ('activity_card_aaptiv_Get_strong_faste_0', 'activity_card_aaptiv_Get_strong_faster', 'activity_card_aaptiv_Get_strong_fas', 'activity_card_aaptiv_Get_strong_fa', 'activity_card_aaptiv_Devenir_fort_', 'activity_card_aaptiv_Devenir_fort_p', 'activity_card_aaptiv_Circuit_d_entr',
       'activity_card_aaptiv_Circuit_d_ent') or (${eventAction} = 'workout' and  ${eventLabel} in ('Get_strong_faster', 'Devenir_fort_plus_rapidement', 'Kraft_Zirkeltraining',
-      'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation'))) then 'Get Strong Faster'
+      'Course_fractionn_e', 'Circuit_d_entra_nement___la_musculation', 'get_strong_faster'))) then 'Get Strong Faster'
       when (${eventAction} in ('activity_card_aaptiv_Cardio___strengt_0', 'activity_card_aaptiv_Cardio___strength', 'activity_card_aaptiv_Cardio___stren', 'activity_card_aaptiv_Cardio___stre', 'activity_card_aaptiv_Cardio___renfo', 'activity_card_aaptiv_Cardio___renf',
       'activity_card_aaptiv_Cardio___muscu') or (${eventAction} = 'workout' and  ${eventLabel} in ('Cardio___strength', 'Cardio___renforcement', 'Cardio___Kraft',
-      'Cardio___muscu')))then 'Cardio + Strength'
+      'Cardio___muscu', 'cardio___strength')))then 'Cardio + Strength'
 
 
 
