@@ -50,6 +50,8 @@ view: ga_sessions_weekly {
       column: Main_Page_Signups {}
       column:  Homepage_Signups {}
       column: Checkout_Signups {}
+      column: natural_search_users {}
+      column: natural_search_signups {}
 
 #       column: unique_invited_visitors { field: invited_users.unique_visitors }
       filters: {
@@ -707,6 +709,16 @@ view: ga_iaf_weekly {
     view_label: "Invited Visitors"
   }
   measure: unique_funnel_prospects {
+    type: sum
+    view_label: "Invited Visitors"
+  }
+
+  measure: natural_search_signups {
+    type: sum
+    view_label: "Invited Visitors"
+  }
+
+  measure: natural_search_users {
     type: sum
     view_label: "Invited Visitors"
   }
