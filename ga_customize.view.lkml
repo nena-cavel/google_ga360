@@ -134,6 +134,13 @@ dimension: homepage {
     sql: ${fullVisitorId} ;;
   }
 
+  dimension: numVisitsTiered {
+    type: tier
+    tiers: [1,2,6,9]
+    style: integer
+    sql: ${visitnumber} ;;
+  }
+
   measure: main_page_landing_prospects {
     group_label: "Site Section"
     filters:{
